@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     image: {
-        aspectRatio: 1,
         margin: 0,
-        width: '70px',
-        height: '70px',
+        padding: 0,
+        width: 70,
+        height: 70
     },
     text: {
         fontFamily: 'Roboto',
