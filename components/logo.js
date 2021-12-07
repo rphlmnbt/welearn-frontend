@@ -13,7 +13,9 @@ export default function Logo({title}) {
 
 const styles = StyleSheet.create({
     header: {
+        flex: 1,
         width: '100%',
+        height: undefined,
         flexDirection: 'row',
         margin: 0,
         alignItems: 'center'

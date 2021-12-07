@@ -81,17 +81,20 @@ const styles = StyleSheet.create({
     },
     background: {
         width: '100%',
+        height: undefined,
         aspectRatio: 428/562,
         position: 'absolute',
         bottom: 0
     },
     splash: {
         width: 0.85*vw,
+        height: undefined,
         aspectRatio: 334/263,
         margin: 0.02*vh
     },
     textContainer: {
         width: 1*vw,
+        height: undefined,
         flexDirection: 'column',
         alignItems: 'center'
     },

@@ -1,6 +1,7 @@
 const header = {
     headerTransparent: true,
     headerStyle: {
+      flex: 1,
       shadowColor: 'transparent',
       elevation: 0, 
       borderBottomWidth: 0,
