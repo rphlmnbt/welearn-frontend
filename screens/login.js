@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMobileAlt, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import * as React from 'react';
-import { StyleSheet, View, Text, Button, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import Assets from '../assets/Assets'
 
 function Login() {
@@ -34,13 +34,13 @@ function Login() {
                 <TouchableOpacity
                     style={styles.button1}
                 >
-                    <FontAwesomeIcon icon={faMobileAlt} size='20' color='white'/>
+                    <FontAwesomeIcon icon={faMobileAlt} size={20} color='white'/>
                     <Text style={styles.buttonText1}> Continue With Phone</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button2}
                 >
-                    <FontAwesomeIcon icon={faEnvelope} size='20' color='#EF4765'/>
+                    <FontAwesomeIcon icon={faEnvelope} size={20} color='#EF4765'/>
                     <Text style={styles.buttonText2}> Continue With Email</Text>
                 </TouchableOpacity>
             </View>
@@ -59,6 +59,9 @@ function Login() {
 }
 
 export default Login
+
+const vw = Dimensions.get('window').width;
+const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     container: { 
@@ -83,12 +86,12 @@ const styles = StyleSheet.create({
         bottom: 0
     },
     splash: {
-        width: '85vw',
+        width: 0.85*vw,
         aspectRatio: 334/263,
-        margin: '2vh'
+        margin: 0.02*vh
     },
     textContainer: {
-        width: '100vw',
+        width: 1*vw,
         flexDirection: 'column',
         alignItems: 'center'
     },
@@ -97,7 +100,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         fontSize: 18,
         fontWeight: '500',
-        margin: '3px',
+        margin: 3,
         marginTop: 10
     },
     text2 : {
@@ -105,19 +108,19 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         fontSize: 30,
         fontWeight: '800',
-        margin: '3px'
+        margin: 3
     },
     text3 : {
         color: '#FF9BAD',
         fontFamily: 'Roboto',
         fontSize: 15,
         fontWeight: '500',
-        margin: '3px'
+        margin: 3
     },
     button1: {
         flexDirection: 'row',
         backgroundColor: '#EF4765',
-        width: '75vw',
+        width: 0.75*vw,
         height: 45,
         borderRadius: 5,
         shadowRadius: 5,
@@ -136,7 +139,7 @@ const styles = StyleSheet.create({
     button2: {
         flexDirection: 'row',
         backgroundColor: 'white',
-        width: '75vw',
+        width: 0.75*vw,
         height: 45,
         borderRadius: 5,
         shadowRadius: 5,
@@ -158,7 +161,7 @@ const styles = StyleSheet.create({
         fontSize: 12
     },
     signupText2: {
-        fontWeight: 500,
+        fontWeight: '500',
         color: '#EF4765'
     }
 });

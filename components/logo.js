@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, Div} from 'react-native';
+import { StyleSheet, Text, View, Image} from 'react-native';
 import Assets from '../assets/Assets'
 
 export default function Logo({title}) {
