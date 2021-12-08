@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { StyleSheet, View, Image, Dimensions} from 'react-native';
+import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity} from 'react-native';
 import { Card } from 'react-native-elements'
 import Assets from '../assets/Assets'
-
-
 function SignIn() {
     return (
         <View style={styles.container}>
@@ -20,9 +18,39 @@ function SignIn() {
                 resizeMode="stretch" 
             />
             <Card containerStyle={styles.card}>
-               
-          </Card>
-            
+                <View>
+                <Text style={styles.text}>
+                Email
+                </Text>
+                <TextInput
+                placeholder="Email"
+                autoCapitalize="none"
+                style={styles.textinput1}
+                autoCapitalize="none"
+                >
+                </TextInput>
+                <Text style={styles.text}>
+                Password
+                <Text style={styles.text2}>
+                Forgot Password?    
+                </Text>
+                </Text>
+                <TextInput 
+                placeholder="Password"
+                secureTextEntry={true} 
+                style={styles.textinput2}
+                autoCapitalize="none"
+                >
+                </TextInput>
+                </View>
+                <View style={{marginTop: 20}}>
+                <TouchableOpacity
+                    style={styles.button}
+                >
+                    <Text style={styles.buttontext}> Continue</Text>
+                </TouchableOpacity>
+                </View>
+           </Card>
         </View>
     );
 }
@@ -50,7 +78,7 @@ const styles = StyleSheet.create({
     },
     background: {
         width: '100%',
-        aspectRatio: 328/562,
+        aspectRatio: 329/562,
         position: 'absolute',
         bottom: 0
         
@@ -58,16 +86,73 @@ const styles = StyleSheet.create({
     splash: {
         width: 0.6*vw,
         height: undefined,
-        aspectRatio: 335/263
+        aspectRatio: 340/263,
+        marginTop: 0,
+        marginBottom: 0
     },
     card: {
         width: '80%',
-        height: 0.40*vh,
+        height: 0.35*vh,
         borderRadius: 13,
         shadowRadius: 5,
         shadowOffset: {width:2, height:2},
         shadowOpacity: 0.2, 
-    }
+        marginBottom: 150
+    },
 
+    textContainer: {
+        width: 1*vw,
+        height: undefined,
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+
+    button: {
+        backgroundColor: '#EF4765',
+        width: 0.72*vw,
+        height: 45,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 10,
+        marginTop: 20
+    },
+    buttontext: {
+        color: 'white',
+        fontFamily: 'Roboto',
+        letterSpacing: 0.3,
+        fontWeight: '700'
+    },
+    textinput1:{
+        borderWidth: 1,
+        borderColor: '#777',
+        padding:8,
+        width: 0.71*vw,
+    },
+
+    textinput2:{
+        borderWidth: 1,
+        borderColor: '#777',
+        padding:8,
+        width: 0.71*vw,
+    },
+
+    text: {
+        marginTop: 15,
+        fontFamily: 'Roboto',
+        color: '#5E5E5E',
+        fontSize: 15,
+        fontWeight: '700'
+    },
+
+    text2: {
+        fontWeight: '500',
+        color: '#EF4765',
+        marginLeft: 120,
+        
+    }
 });
 
