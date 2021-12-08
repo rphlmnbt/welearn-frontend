@@ -19,36 +19,36 @@ function SignIn() {
             />
             <Card containerStyle={styles.card}>
                 <View>
-                <Text style={styles.text}>
-                Email
-                </Text>
-                <TextInput
-                placeholder="Email"
-                autoCapitalize="none"
-                style={styles.textinput1}
-                autoCapitalize="none"
-                >
-                </TextInput>
-                <Text style={styles.text}>
-                Password
-                <Text style={styles.text2}>
-                Forgot Password?    
-                </Text>
-                </Text>
-                <TextInput 
-                placeholder="Password"
-                secureTextEntry={true} 
-                style={styles.textinput2}
-                autoCapitalize="none"
-                >
-                </TextInput>
+                    <Text style={styles.text}>
+                        Email
+                    </Text>
+                    <TextInput
+                        placeholder="Email"
+                        autoCapitalize="none"
+                        style={styles.textinput1}
+                        autoCapitalize="none"
+                    />
+                    <View style={{flexDirection: 'row', justifyContent:'space-between', alignItems: 'center'}}>
+                        <Text style={styles.text}>
+                            Password
+                        </Text>
+                        <Text style={styles.text2}>
+                                Forgot Password?    
+                        </Text>
+                    </View>           
+                    <TextInput 
+                        placeholder="Password"
+                        secureTextEntry={true} 
+                        style={styles.textinput2}
+                        autoCapitalize="none"
+                    />
                 </View>
                 <View style={{marginTop: 20}}>
-                <TouchableOpacity
-                    style={styles.button}
-                >
-                    <Text style={styles.buttontext}> Continue</Text>
-                </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.button}
+                        >
+                            <Text style={styles.buttontext}> Continue</Text>
+                        </TouchableOpacity>
                 </View>
            </Card>
         </View>
@@ -97,7 +97,9 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         shadowOffset: {width:2, height:2},
         shadowOpacity: 0.2, 
-        marginBottom: 150
+        marginBottom: 150,
+        flexDirection: 'column',
+        justifyContent: 'center'
     },
 
     textContainer: {
@@ -109,7 +111,7 @@ const styles = StyleSheet.create({
 
     button: {
         backgroundColor: '#EF4765',
-        width: 0.72*vw,
+        width: '100%',
         height: 45,
         borderRadius: 5,
         shadowRadius: 5,
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 10,
-        marginTop: 20
+        marginTop: 10
     },
     buttontext: {
         color: 'white',
@@ -128,16 +130,20 @@ const styles = StyleSheet.create({
     },
     textinput1:{
         borderWidth: 1,
-        borderColor: '#777',
+        borderColor: '#ACACAC',
+        borderRadius: 5,
         padding:8,
-        width: 0.71*vw,
+        width: '100%',
+        marginTop: 5
     },
 
     textinput2:{
         borderWidth: 1,
-        borderColor: '#777',
+        borderColor: '#ACACAC',
+        borderRadius: 5,
         padding:8,
-        width: 0.71*vw,
+        width: '100%',
+        marginTop: 5
     },
 
     text: {
@@ -149,9 +155,9 @@ const styles = StyleSheet.create({
     },
 
     text2: {
+        marginTop: 15,
         fontWeight: '500',
-        color: '#EF4765',
-        marginLeft: 120,
+        color: '#EF4765'
         
     }
 });
