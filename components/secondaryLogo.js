@@ -1,48 +1,37 @@
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import React from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions} from 'react-native';
 import Assets from '../assets/Assets'
 
 export default function secondaryLogo({title}) {
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Image source={Assets.secondarylogoHeader} style={styles.image} />
-            </View>
-
-            <View style={styles.header}>
-                <TouchableOpacity
-                    style={styles.button}
-                >
-                    <FontAwesomeIcon icon={faAngleLeft} size='20' color='white'/>
-                </TouchableOpacity>
-            </View>
-
+            <Image source={Assets.secondarylogoHeader} style={styles.image} />
         </View>
        
       );
 
 }
 
+const vw = Dimensions.get('window').width;
+const vh = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
-    header: {
-        width: '100vw',
+    container: {
+        width: '100%',
         height: '100%',
         flexDirection: 'row',
         margin: 0,
         alignItems: 'center',
         padding: 0,
-        justifyContent: 'space-between'
-
-    
+        justifyContent: 'flex-end'
     },
     image: {
-        margin: 0,
+        marginRight: 20,
         padding: 0,
         width: 100,
-        height: 50,
-        marginLeft: 270
+        height: 50
 
     },
 
@@ -55,7 +44,7 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        width: '5vw',
+        width: 0.05*vw,
         height: 50,
         marginTop: -73
 

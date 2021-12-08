@@ -2,7 +2,8 @@ import * as React from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity} from 'react-native';
 import { Card } from 'react-native-elements'
 import Assets from '../assets/Assets'
-function SignIn() {
+
+function LoginEmail() {
     return (
         <View style={styles.container}>
             <View style={styles.half}>
@@ -55,10 +56,10 @@ function SignIn() {
     );
 }
 
+export default LoginEmail
+
 const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
-
-export default SignIn
 
 const styles = StyleSheet.create({
     container: { 

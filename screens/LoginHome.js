@@ -3,8 +3,10 @@ import { faMobileAlt, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import * as React from 'react';
 import { StyleSheet, View, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import Assets from '../assets/Assets'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-function Login() {
+function LoginHome({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.half}>
@@ -39,6 +41,7 @@ function Login() {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button2}
+                    onPress={() => navigation.navigate('LoginEmail')}
                 >
                     <FontAwesomeIcon icon={faEnvelope} size={20} color='#EF4765'/>
                     <Text style={styles.buttonText2}> Continue With Email</Text>
@@ -58,7 +61,7 @@ function Login() {
     );
 }
 
-export default Login
+export default LoginHome
 
 const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
