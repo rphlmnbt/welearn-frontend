@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './screens/login'
 import header from './components/header';
 import Logo from './components/logo';
+import SignIn from './screens/signin';
+import SecondaryLogo from './components/secondaryLogo'
 
 
 
@@ -16,9 +18,9 @@ function App() {
         screenOptions={header}
       >
         <Stack.Screen 
-          name="Login" 
-          component={Login} 
-          options = {{headerTitle: () => <Logo />}}
+          name="Sigin" 
+          component={SignIn} 
+          options = {{headerTitle: () => <SecondaryLogo />}}
         />
       </Stack.Navigator>
     </NavigationContainer>
