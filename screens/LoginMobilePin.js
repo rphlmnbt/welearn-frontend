@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity} from 'react-native';
 import Assets from '../assets/Assets'
-import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 function LoginMobilePin() {
     return (
         <View style={styles.container}>
@@ -20,11 +19,19 @@ function LoginMobilePin() {
                     <Text style={styles.text2}>
                         sent to
                     </Text>
-                    <SmoothPinCodeInput
-
-                    />
                 </View>
                 <View>
+                <Text style={styles.text3}>
+                        Don't tell anyone the code
+                    </Text>
+
+                    <Text style={styles.text4}>
+                        Code expires in 5 minutes.
+                    </Text>
+                    <Text style={styles.text5}>
+                        RESEND OTP
+                    </Text>
+
                         <TouchableOpacity
                             style={styles.button}
                         >
@@ -88,7 +95,8 @@ const styles = StyleSheet.create({
         shadowOffset: {width:2, height:2},
         shadowOpacity: 0.2,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 25
     },
     buttontext: {
         color: 'white',
@@ -99,16 +107,46 @@ const styles = StyleSheet.create({
 
     text: {
         fontFamily: 'Roboto',
-        color: '#393946',
-        fontSize: 12,
-        alignItems: 'center',
+        color: '#5E5E5E',
+        fontSize: 14,
+        textAlign: 'center',
+        margin: 3,
+
     },
 
     text2: {
-        color: '#505062',
-        fontSize: 12,
-        alignItems: 'center',
+        fontFamily: 'Roboto',
+        color: '#5E5E5E',
+        fontSize: 14,
+        textAlign: 'center',
+        margin: 3,
         
+    },
+    
+    text3: {
+        fontFamily: 'Roboto',
+        color: '#5E5E5E',
+        fontSize: 12,
+        textAlign: 'center',
+        margin: 5,
+        
+    },
+
+    text4: {
+        fontFamily: 'Roboto',
+        color: '#5E5E5E',
+        fontSize: 12,
+        textAlign: 'center',
+        margin: 5,
+        
+    },
+
+    text5: {
+        fontFamily: 'Roboto',
+        color: '#FF9BAD',
+        fontSize: 12,
+        textAlign: 'center',
+        marginTop: 20,
         
     }
 });
