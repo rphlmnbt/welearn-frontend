@@ -9,6 +9,7 @@ import LoginEmail from './screens/LoginEmail';
 import LoginMobile from './screens/LoginMobile'
 import SecondaryLogoBlack from './components/secondaryLogoBlack';
 import BackIcon from './components/backIcon';
+import LoginMobilePin from './screens/LoginMobilePin';
 
 
 
@@ -36,6 +37,13 @@ function App() {
         <Stack.Screen 
           name="LoginMobile" 
           component={LoginMobile} 
+          options = {{headerTitle: () => null,
+            headerRight: () => <SecondaryLogoBlack />,
+            headerLeft: () => <BackIcon />}}
+        />
+         <Stack.Screen 
+          name="LoginOTP" 
+          component={LoginMobilePin} 
           options = {{headerTitle: () => null,
             headerRight: () => <SecondaryLogoBlack />,
             headerLeft: () => <BackIcon />}}

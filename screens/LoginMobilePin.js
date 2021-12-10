@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity} from 'react-native';
 import Assets from '../assets/Assets'
 
-function LoginMobile() {
+function LoginMobilePin() {
     return (
         <View style={styles.container}>
             <View style={styles.half}>
@@ -33,7 +33,7 @@ function LoginMobile() {
     );
 }
 
-export default LoginMobile
+export default LoginMobilePin
 
 const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
