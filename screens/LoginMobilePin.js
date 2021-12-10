@@ -23,18 +23,19 @@ function LoginMobilePin() {
                         Please enter the 4 digit OTP
                     </Text>
                     <Text style={styles.text2}>
-                        sent to
+                        sent to your mobile number.
                     </Text>
                 </View>
                 <View>
-                <KeycodeInput style={styles.inputcode}>
-                numeric={numeric}
-                value={value}
-                onChange={(newValue) => setValue(newValue)}
-                onComplete={(completedValue) => {
-                alert('Completed! Value: ' + completedValue);
-                }}
-                </KeycodeInput>
+                <KeycodeInput style={styles.inputcode}
+                    numeric={numeric}
+                    value={value}
+                    onChange={(newValue) => setValue(newValue)}
+                    onComplete={(completedValue) => {
+                    alert('Completed! Value: ' + completedValue);
+                    }}
+                    tintColor='#EF4765'
+                />
                 </View>
                 <View>
                 <Text style={styles.text3}>
