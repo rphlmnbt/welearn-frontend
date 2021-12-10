@@ -6,6 +6,8 @@ import Logo from './components/logo';
 import SecondaryLogo from './components/secondaryLogo'
 import LoginHome from './screens/LoginHome';
 import LoginEmail from './screens/LoginEmail';
+import LoginMobile from './screens/LoginMobile'
+import SecondaryLogoBlack from './components/secondaryLogoBlack';
 
 
 
@@ -28,6 +30,12 @@ function App() {
           component={LoginEmail} 
           options = {{headerTitle: () => null,
             headerRight: () => <SecondaryLogo />}}
+        />
+        <Stack.Screen 
+          name="LoginMobile" 
+          component={LoginMobile} 
+          options = {{headerTitle: () => null,
+            headerRight: () => <SecondaryLogoBlack />}}
         />
       </Stack.Navigator>
     </NavigationContainer>

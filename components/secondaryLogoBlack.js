@@ -4,10 +4,10 @@ import React from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions} from 'react-native';
 import Assets from '../assets/Assets'
 
-export default function secondaryLogo({title}) {
+export default function secondaryLogoBlack({title}) {
     return (
         <View style={styles.container}>
-            <Image source={Assets.secondarylogoHeader} style={styles.image} />
+            <Image source={Assets.secondarylogoHeaderBlack} style={styles.image} />
         </View>
        
       );

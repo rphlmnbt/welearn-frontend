@@ -35,15 +35,14 @@ function LoginHome({ navigation }) {
             <View style={{marginTop: 20}}>
                 <TouchableOpacity
                     style={styles.button1}
+                    onPress={() => navigation.navigate('LoginMobile')}
                 >
-                    <FontAwesomeIcon icon={faMobileAlt} size={20} color='white'/>
                     <Text style={styles.buttonText1}> Continue With Phone</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button2}
                     onPress={() => navigation.navigate('LoginEmail')}
                 >
-                    <FontAwesomeIcon icon={faEnvelope} size={20} color='#EF4765'/>
                     <Text style={styles.buttonText2}> Continue With Email</Text>
                 </TouchableOpacity>
             </View>
