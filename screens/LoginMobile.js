@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity}
 import { Card } from 'react-native-elements'
 import Assets from '../assets/Assets'
 
-function LoginMobile() {
+function LoginMobile({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.half}>
@@ -31,6 +31,7 @@ function LoginMobile() {
                 <View>
                         <TouchableOpacity
                             style={styles.button}
+                            onPress={() => navigation.navigate('LoginMobilePin')}
                         >
                             <Text style={styles.buttontext}> Continue</Text>
                         </TouchableOpacity>

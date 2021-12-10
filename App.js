@@ -42,7 +42,7 @@ function App() {
             headerLeft: () => <BackIcon />}}
         />
          <Stack.Screen 
-          name="LoginOTP" 
+          name="LoginMobilePin" 
           component={LoginMobilePin} 
           options = {{headerTitle: () => null,
             headerRight: () => <SecondaryLogoBlack />,

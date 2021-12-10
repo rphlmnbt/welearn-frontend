@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity} from 'react-native';
 import Assets from '../assets/Assets'
-
+import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 function LoginMobilePin() {
     return (
         <View style={styles.container}>
@@ -20,12 +20,15 @@ function LoginMobilePin() {
                     <Text style={styles.text2}>
                         sent to
                     </Text>
+                    <SmoothPinCodeInput
+
+                    />
                 </View>
                 <View>
                         <TouchableOpacity
                             style={styles.button}
                         >
-                            <Text style={styles.buttontext}> Continue</Text>
+                            <Text style={styles.buttontext}>Accept</Text>
                         </TouchableOpacity>
                 </View>
            </View>
@@ -97,13 +100,15 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: 'Roboto',
         color: '#393946',
-        fontSize: 34,
-        fontWeight: '800'
+        fontSize: 12,
+        alignItems: 'center',
     },
 
     text2: {
         color: '#505062',
-        fontSize: 12
+        fontSize: 12,
+        alignItems: 'center',
+        
         
     }
 });
