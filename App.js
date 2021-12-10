@@ -8,6 +8,7 @@ import LoginHome from './screens/LoginHome';
 import LoginEmail from './screens/LoginEmail';
 import LoginMobile from './screens/LoginMobile'
 import SecondaryLogoBlack from './components/secondaryLogoBlack';
+import BackIcon from './components/backIcon';
 
 
 
@@ -29,13 +30,15 @@ function App() {
           name="LoginEmail" 
           component={LoginEmail} 
           options = {{headerTitle: () => null,
-            headerRight: () => <SecondaryLogo />}}
+            headerRight: () => <SecondaryLogo />,
+            headerLeft: () => <BackIcon />}}
         />
         <Stack.Screen 
           name="LoginMobile" 
           component={LoginMobile} 
           options = {{headerTitle: () => null,
-            headerRight: () => <SecondaryLogoBlack />}}
+            headerRight: () => <SecondaryLogoBlack />,
+            headerLeft: () => <BackIcon />}}
         />
       </Stack.Navigator>
     </NavigationContainer>

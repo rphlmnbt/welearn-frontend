@@ -6,6 +6,7 @@ export default {
     secondarylogoHeaderBlack: require('./WLBlack.svg'),
     emailLoginBackground: require('./Login BG.svg'),
     emailLoginLogo: require('./Logo.svg'),
-    mobileLoginBackground: require('./Login BG 2.svg')
+    mobileLoginBackground: require('./Login BG 2.svg'),
+    backIcon: require('./Back Icon.svg')
 
 }
