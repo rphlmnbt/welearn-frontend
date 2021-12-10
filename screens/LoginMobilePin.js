@@ -1,7 +1,13 @@
 import * as React from 'react';
-import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, View, Image, Dimensions, Text, TouchableOpacity,} from 'react-native';
 import Assets from '../assets/Assets'
+import { KeycodeInput } from 'react-native-keycode'
+import { useState }  from 'react';
+
 function LoginMobilePin() {
+    const [value, setValue] = useState('');
+    const [numeric, setNumeric] = useState(false);
+
     return (
         <View style={styles.container}>
             <View style={styles.half}>
@@ -19,6 +25,16 @@ function LoginMobilePin() {
                     <Text style={styles.text2}>
                         sent to
                     </Text>
+                </View>
+                <View>
+                <KeycodeInput style={styles.inputcode}>
+                numeric={numeric}
+                value={value}
+                onChange={(newValue) => setValue(newValue)}
+                onComplete={(completedValue) => {
+                alert('Completed! Value: ' + completedValue);
+                }}
+                </KeycodeInput>
                 </View>
                 <View>
                 <Text style={styles.text3}>
@@ -128,7 +144,8 @@ const styles = StyleSheet.create({
         color: '#5E5E5E',
         fontSize: 12,
         textAlign: 'center',
-        margin: 5,
+        margin: 3,
+        marginTop: 35
         
     },
 
@@ -148,6 +165,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 20,
         
+    },
+
+    inputcode:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20
     }
+
 });
 
