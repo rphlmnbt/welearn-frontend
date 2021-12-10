@@ -1,12 +1,12 @@
 export default {
-    logoHeader: require('./Logo 3.svg'),
-    loginBackground: require('./Group 1.svg'),
-    loginSplash: require('./Splash.svg'),
-    secondarylogoHeader: require('./WLWhite.svg'),
-    secondarylogoHeaderBlack: require('./WLBlack.svg'),
-    emailLoginBackground: require('./Login BG.svg'),
-    emailLoginLogo: require('./Logo.svg'),
-    mobileLoginBackground: require('./Login BG 2.svg'),
-    backIcon: require('./Back Icon.svg')
+    logoHeader: require('./logo-header1.svg'),
+    loginBackground: require('./login-home-bg.svg'),
+    loginSplash: require('./login-home-splash.svg'),
+    secondarylogoHeader: require('./wl-white.svg'),
+    secondarylogoHeaderBlack: require('./wl-black.svg'),
+    emailLoginBackground: require('./login-email-bg.svg'),
+    emailLoginLogo: require('./wl-logo.svg'),
+    mobileLoginBackground: require('./login-mobile-bg.svg'),
+    backIcon: require('./back-icon.svg')
 
 }

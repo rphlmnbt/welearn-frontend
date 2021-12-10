@@ -1,8 +1,12 @@
-import * as React from 'react';
+import React, {useState, useRef} from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity} from 'react-native';
 import Assets from '../assets/Assets'
-import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
+
 function LoginMobilePin() {
+
+    const [pin, setPin] = useState(null)
+
+
     return (
         <View style={styles.container}>
             <View style={styles.half}>
@@ -20,9 +24,7 @@ function LoginMobilePin() {
                     <Text style={styles.text2}>
                         sent to
                     </Text>
-                    <SmoothPinCodeInput
 
-                    />
                 </View>
                 <View>
                         <TouchableOpacity
