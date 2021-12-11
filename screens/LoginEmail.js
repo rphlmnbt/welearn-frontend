@@ -2,63 +2,74 @@ import * as React from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity} from 'react-native';
 import { Card } from 'react-native-elements'
 import Background from '../assets/images/login-email-bg.svg'
-import LoginLogo from '../assets/images/wl-logo.svg'
 import LoginLogoImg from '../assets/images/wl-logo.png'
+import AppLoading from 'expo-app-loading';
+import { 
+    useFonts,
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_600SemiBold,
+    Poppins_700Bold
+  } from '@expo-google-fonts/poppins'
 
 function LoginEmail() {
-    return (
-        <View style={styles.container}>
-            <View style={styles.half}>
-                <Background
-                    style={styles.background}
-                    resizeMode="cover" 
+    let [fontsLoaded] = useFonts({
+        Poppins_500Medium,
+        Poppins_600SemiBold
+    });
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    } else {
+        return (
+            <View style={styles.container}>
+                <View style={styles.half}>
+                    <Background
+                        style={styles.background}
+                        resizeMode="cover" 
+                    />
+                </View>
+                <Image
+                    style={styles.splash}
+                    source={LoginLogoImg}
+                    resizeMode="contain" 
                 />
-            </View>
-            {/* <LoginLogo
-                style={styles.splash}
-                resizeMode="stretch" 
-            /> */}
-            <Image
-                style={styles.splash}
-                source={LoginLogoImg}
-                resizeMode="contain" 
-            />
-            <Card containerStyle={styles.card}>
-                <View>
-                    <Text style={styles.text}>
-                        Email
-                    </Text>
-                    <TextInput
-                        placeholder="Email"
-                        autoCapitalize="none"
-                        style={styles.textinput1}
-                        autoCapitalize="none"
-                    />
-                    <View style={{flexDirection: 'row', justifyContent:'space-between', alignItems: 'center'}}>
+                <Card containerStyle={styles.card}>
+                    <View>
                         <Text style={styles.text}>
-                            Password
+                            Email
                         </Text>
-                        <Text style={styles.text2}>
-                                Forgot Password?    
-                        </Text>
-                    </View>           
-                    <TextInput 
-                        placeholder="Password"
-                        secureTextEntry={true} 
-                        style={styles.textinput2}
-                        autoCapitalize="none"
-                    />
-                </View>
-                <View style={{marginTop: 20}}>
-                        <TouchableOpacity
-                            style={styles.button}
-                        >
-                            <Text style={styles.buttontext}> Continue</Text>
-                        </TouchableOpacity>
-                </View>
-           </Card>
-        </View>
-    );
+                        <TextInput
+                            placeholder="Email"
+                            autoCapitalize="none"
+                            style={styles.textinput1}
+                            autoCapitalize="none"
+                        />
+                        <View style={{flexDirection: 'row', justifyContent:'space-between', alignItems: 'center'}}>
+                            <Text style={styles.text}>
+                                Password
+                            </Text>
+                            <Text style={styles.text2}>
+                                    Forgot Password?    
+                            </Text>
+                        </View>           
+                        <TextInput 
+                            placeholder="Password"
+                            secureTextEntry={true} 
+                            style={styles.textinput2}
+                            autoCapitalize="none"
+                        />
+                    </View>
+                    <View style={{marginTop: 20}}>
+                            <TouchableOpacity
+                                style={styles.button}
+                            >
+                                <Text style={styles.buttontext}> Continue</Text>
+                            </TouchableOpacity>
+                    </View>
+            </Card>
+            </View>
+        );
+    }
 }
 
 export default LoginEmail
@@ -128,9 +139,8 @@ const styles = StyleSheet.create({
     },
     buttontext: {
         color: 'white',
-        fontFamily: 'Roboto',
-        letterSpacing: 0.3,
-        fontWeight: '700'
+        fontFamily: 'Poppins_600SemiBold',
+        letterSpacing: 0.3
     },
     textinput1:{
         borderWidth: 1,
@@ -152,15 +162,14 @@ const styles = StyleSheet.create({
 
     text: {
         marginTop: 15,
-        fontFamily: 'Roboto',
+        fontFamily: 'Poppins_600SemiBold',
         color: '#5E5E5E',
-        fontSize: 15,
-        fontWeight: '700'
+        fontSize: 15
     },
 
     text2: {
         marginTop: 15,
-        fontWeight: '500',
+        fontFamily: 'Poppins_500Medium',
         color: '#EF4765'
         
     }

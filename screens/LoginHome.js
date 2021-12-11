@@ -1,60 +1,76 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity } from 'react-native';
 import Background from '../assets/images/login-home-bg.svg'
 import Splash from '../assets/images/login-home-splash.svg'
+import AppLoading from 'expo-app-loading';
+import { 
+    useFonts,
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_600SemiBold,
+    Poppins_700Bold
+  } from '@expo-google-fonts/poppins'
 
 function LoginHome({ navigation }) {
-    return (
-        <View style={styles.container}>
-            <View style={styles.half}>
-                <Background
-                    style={styles.background}
+    let [fontsLoaded] = useFonts({
+        Poppins_400Regular,
+        Poppins_500Medium,
+        Poppins_600SemiBold,
+        Poppins_700Bold,
+    });
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    } else {
+        return (
+            <View style={styles.container}>
+                <View style={styles.half}>
+                    <Background
+                        style={styles.background}
+                        resizeMode="cover" 
+                    />
+                </View>
+                <Splash
+                    style={styles.splash}
                     resizeMode="cover" 
                 />
-            </View>
-            <Splash
-                style={styles.splash}
-                resizeMode="cover" 
-            />
-            <View style={styles.textContainer}>
-                <Text style={styles.text1}>
-                    Welcome To
-                </Text>
-                <Text style={styles.text2}>
-                    WeLearn
-                </Text>
-                <Text style={styles.text3}>
-                    We Link and You Learn
-                </Text>
-            </View>
-            <View style={{marginTop: 20}}>
-                <TouchableOpacity
-                    style={styles.button1}
-                    onPress={() => navigation.navigate('LoginMobile')}
-                >
-                    <Text style={styles.buttonText1}> Continue With Phone</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.button2}
-                    onPress={() => navigation.navigate('LoginEmail')}
-                >
-                    <Text style={styles.buttonText2}> Continue With Email</Text>
-                </TouchableOpacity>
-            </View>
-            <View>
-                <Text style={styles.signupText1}>
-                    Don't have an account?{' '}
-                    <Text style={styles.signupText2}>
-                        Sign Up
+                <View style={styles.textContainer}>
+                    <Text style={styles.text1}>
+                        Welcome To
                     </Text>
-                </Text>
+                    <Text style={styles.text2}>
+                        WeLearn
+                    </Text>
+                    <Text style={styles.text3}>
+                        We Link and You Learn
+                    </Text>
+                </View>
+                <View style={{marginTop: 20}}>
+                    <TouchableOpacity
+                        style={styles.button1}
+                        onPress={() => navigation.navigate('LoginMobile')}
+                    >
+                        <Text style={styles.buttonText1}> Continue With Phone</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.button2}
+                        onPress={() => navigation.navigate('LoginEmail')}
+                    >
+                        <Text style={styles.buttonText2}> Continue With Email</Text>
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <Text style={styles.signupText1}>
+                        Don't have an account?{' '}
+                        <Text style={styles.signupText2}>
+                            Sign Up
+                        </Text>
+                    </Text>
+                </View>
+                
+                
             </View>
-            
-            
-        </View>
-    );
+        );
+    }
 }
 
 export default LoginHome
@@ -99,25 +115,21 @@ const styles = StyleSheet.create({
     },
     text1 : {
         color: '#ACACAC',
-        fontFamily: 'Roboto',
+        fontFamily: 'Poppins_500Medium',
         fontSize: 18,
-        fontWeight: '500',
-        margin: 3,
-        marginTop: 10
+        margin: 1
     },
     text2 : {
         color: '#5E5E5E',
-        fontFamily: 'Roboto',
+        fontFamily: 'Poppins_600SemiBold',
         fontSize: 30,
-        fontWeight: '800',
-        margin: 3
+        margin: 1
     },
     text3 : {
         color: '#FF9BAD',
-        fontFamily: 'Roboto',
+        fontFamily: 'Poppins_500Medium',
         fontSize: 15,
-        fontWeight: '500',
-        margin: 3
+        margin: 1
     },
     button1: {
         flexDirection: 'row',
@@ -134,9 +146,8 @@ const styles = StyleSheet.create({
     },
     buttonText1: {
         color: 'white',
-        fontFamily: 'Roboto',
-        letterSpacing: 0.3,
-        fontWeight: '500'
+        fontFamily: 'Poppins_500Medium',
+        letterSpacing: 0.3
     },
     button2: {
         flexDirection: 'row',
@@ -152,18 +163,17 @@ const styles = StyleSheet.create({
     },
     buttonText2: {
         color: '#EF4765',
-        fontFamily: 'Roboto',
+        fontFamily: 'Poppins_500Medium',
         letterSpacing: 0.3,
-        fontWeight: '500'
     },
     signupText1: {
         marginTop: 15,
-        fontFamily: 'Roboto',
+        fontFamily: 'Poppins_400Regular',
         color: '#ACACAC',
         fontSize: 12
     },
     signupText2: {
-        fontWeight: '500',
+        fontFamily: 'Poppins_500Medium',
         color: '#EF4765'
     }
 });

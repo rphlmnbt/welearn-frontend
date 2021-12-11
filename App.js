@@ -26,15 +26,14 @@ function App() {
         <Stack.Screen 
           name="LoginHome" 
           component={LoginHome} 
-          options = {{headerTitle: () => <Logo />}}
+          options = {{headerTitle: () => null}}
         />
         <Stack.Screen 
           name="LoginEmail" 
           component={LoginEmail} 
           options = {{headerTitle: () => null,
             headerRight: () => <SecondaryLogo />,
-            headerLeft: () => <BackWhite />,
-            headerBac: true}}
+            headerLeft: () => <BackWhite />}}
         />
         <Stack.Screen 
           name="LoginMobile" 

@@ -1,42 +1,61 @@
 import * as React from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity} from 'react-native';
 import Background from '../assets/images/login-mobile-bg.svg'
+import AppLoading from 'expo-app-loading';
+import { 
+    useFonts,
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_600SemiBold,
+    Poppins_700Bold
+  } from '@expo-google-fonts/poppins'
 
 function LoginMobile({ navigation }) {
-    return (
-        <View style={styles.container}>
-            <View style={styles.half}>
-                <Background
-                    style={styles.background}
-                    resizeMode="cover" 
-                />
-            </View>
-            <View style={styles.form}>
-                <View>
-                    <Text style={styles.text}>
-                        My mobile
-                    </Text>
-                    <Text style={styles.text2}>
-                        Please enter your valid phone number. We will send you a 4-digit code to verify your account.
-                    </Text>
-                    <TextInput
-                        placeholder="Mobile Number"
-                        autoCapitalize="none"
-                        style={styles.mobileInput}
-                        autoCapitalize="none"
+    let [fontsLoaded] = useFonts({
+        Poppins_400Regular,
+        Poppins_500Medium,
+        Poppins_600SemiBold,
+        Poppins_700Bold,
+    });
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    } else {
+        return (
+            <View style={styles.container}>
+                <View style={styles.half}>
+                    <Background
+                        style={styles.background}
+                        resizeMode="cover" 
                     />
                 </View>
-                <View>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => navigation.navigate('LoginMobilePin')}
-                        >
-                            <Text style={styles.buttontext}> Continue</Text>
-                        </TouchableOpacity>
-                </View>
-           </View>
-        </View>
-    );
+                <View style={styles.form}>
+                    <View>
+                        <Text style={styles.text}>
+                            My mobile
+                        </Text>
+                        <Text style={styles.text2}>
+                            Please enter your valid phone number. We will send you a 4-digit code to verify your account.
+                        </Text>
+                        <TextInput
+                            placeholder="Mobile Number"
+                            autoCapitalize="none"
+                            style={styles.mobileInput}
+                            autoCapitalize="none"
+                            keyboardType="numeric"
+                        />
+                    </View>
+                    <View>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => navigation.navigate('LoginMobilePin')}
+                            >
+                                <Text style={styles.buttontext}> Continue</Text>
+                            </TouchableOpacity>
+                    </View>
+            </View>
+            </View>
+        );
+        }
 }
 
 export default LoginMobile
@@ -95,9 +114,8 @@ const styles = StyleSheet.create({
     },
     buttontext: {
         color: 'white',
-        fontFamily: 'Roboto',
-        letterSpacing: 0.3,
-        fontWeight: '700'
+        fontFamily: 'Poppins_600SemiBold',
+        letterSpacing: 0.3
     },
     mobileInput:{
         borderWidth: 1,
@@ -109,13 +127,13 @@ const styles = StyleSheet.create({
     },
 
     text: {
-        fontFamily: 'Roboto',
+        fontFamily: 'Poppins_600SemiBold',
         color: '#393946',
-        fontSize: 34,
-        fontWeight: '800'
+        fontSize: 34
     },
 
     text2: {
+        fontFamily: 'Poppins_400Regular',
         color: '#505062',
         fontSize: 12
         
