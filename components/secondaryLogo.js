@@ -1,13 +1,11 @@
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import React from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions} from 'react-native';
-import Assets from '../assets/Assets'
+import LogoHeader from '../assets/images/wl-white.png'
 
 export default function secondaryLogo({title}) {
     return (
         <View style={styles.container}>
-            <Image source={Assets.secondarylogoHeader} style={styles.image} />
+            <Image source={LogoHeader} style={styles.image} />
         </View>
        
       );
@@ -30,8 +28,8 @@ const styles = StyleSheet.create({
     image: {
         marginRight: 20,
         padding: 0,
-        width: 100,
-        height: 50
+        width: 90,
+        height: 40
 
     }
 });

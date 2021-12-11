@@ -1,22 +1,27 @@
 import * as React from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity} from 'react-native';
 import { Card } from 'react-native-elements'
-import Assets from '../assets/Assets'
+import Background from '../assets/images/login-email-bg.svg'
+import LoginLogo from '../assets/images/wl-logo.svg'
+import LoginLogoImg from '../assets/images/wl-logo.png'
 
 function LoginEmail() {
     return (
         <View style={styles.container}>
             <View style={styles.half}>
-                <Image
+                <Background
                     style={styles.background}
-                    source={Assets.emailLoginBackground}
                     resizeMode="cover" 
                 />
             </View>
+            {/* <LoginLogo
+                style={styles.splash}
+                resizeMode="stretch" 
+            /> */}
             <Image
                 style={styles.splash}
-                source={Assets.emailLoginLogo}
-                resizeMode="stretch" 
+                source={LoginLogoImg}
+                resizeMode="contain" 
             />
             <Card containerStyle={styles.card}>
                 <View>
@@ -93,12 +98,10 @@ const styles = StyleSheet.create({
     },
     card: {
         width: '80%',
-        height: 0.35*vh,
         borderRadius: 13,
         shadowRadius: 5,
         shadowOffset: {width:2, height:2},
         shadowOpacity: 0.2, 
-        marginBottom: 150,
         flexDirection: 'column',
         justifyContent: 'center'
     },

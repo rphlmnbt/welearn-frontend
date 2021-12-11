@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TouchableOpacity,} from 'react-native';
-import Assets from '../assets/Assets'
 import { KeycodeInput } from 'react-native-keycode'
 import { useState }  from 'react';
+import Background from '../assets/images/login-mobile-bg.svg'
 
 function LoginMobilePin() {
     const [value, setValue] = useState('');
@@ -11,9 +11,8 @@ function LoginMobilePin() {
     return (
         <View style={styles.container}>
             <View style={styles.half}>
-                <Image
+                <Background
                     style={styles.background}
-                    source={Assets.mobileLoginBackground}
                     resizeMode="cover" 
                 />
             </View>

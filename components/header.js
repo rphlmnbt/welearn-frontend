@@ -1,6 +1,8 @@
-const header = {
+const Header = {
     headerTransparent: true,
     headerStyle: {
+      elevation: 0, 
+      shadowOpacity: 0,
       flex: 1,
       shadowColor: 'transparent',
       borderBottomWidth: 0,
@@ -11,8 +13,9 @@ const header = {
     headerTitleStyle: {
         fontWeight: 'bold',
         color: 'black'
-    }
+    },
+    headerShadowVisible: false
     
 }
 
-export default header
+export default Header

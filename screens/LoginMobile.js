@@ -1,15 +1,13 @@
 import * as React from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity} from 'react-native';
-import { Card } from 'react-native-elements'
-import Assets from '../assets/Assets'
+import Background from '../assets/images/login-mobile-bg.svg'
 
 function LoginMobile({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.half}>
-                <Image
+                <Background
                     style={styles.background}
-                    source={Assets.mobileLoginBackground}
                     resizeMode="cover" 
                 />
             </View>

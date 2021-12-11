@@ -1,11 +1,12 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image} from 'react-native';
-import Assets from '../assets/Assets'
+import HeaderLogo from '../assets/images/logo-header1.png'
 
-export default function Logo({title}) {
+export default function Logo() {
+
     return (
         <View style={styles.header}>       
-            <Image source={Assets.logoHeader} style={styles.image} />
+           <Image source={HeaderLogo} style={styles.image}/>
             <Text style={styles.text}>WeLearn</Text>
         </View>
       );
@@ -13,18 +14,16 @@ export default function Logo({title}) {
 
 const styles = StyleSheet.create({
     header: {
-        flex: 1,
         width: '100%',
-        height: undefined,
+        height: '100%',
         flexDirection: 'row',
         margin: 0,
         alignItems: 'center'
     },
     image: {
-        margin: 0,
-        padding: 0,
         width: 70,
-        height: 70
+        height: 70,
+        aspectRatio: 1
     },
     text: {
         fontFamily: 'Roboto',

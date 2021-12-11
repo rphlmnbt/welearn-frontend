@@ -1,24 +1,21 @@
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faMobileAlt, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import * as React from 'react';
 import { StyleSheet, View, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
-import Assets from '../assets/Assets'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Background from '../assets/images/login-home-bg.svg'
+import Splash from '../assets/images/login-home-splash.svg'
 
 function LoginHome({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.half}>
-                <Image
+                <Background
                     style={styles.background}
-                    source={Assets.loginBackground}
                     resizeMode="cover" 
                 />
             </View>
-            <Image
+            <Splash
                 style={styles.splash}
-                source={Assets.loginSplash}
                 resizeMode="cover" 
             />
             <View style={styles.textContainer}>
