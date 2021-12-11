@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Button, Dimensions} from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BackButton from '../assets/images/back-white.svg'
@@ -9,7 +9,7 @@ export default function BackWhite() {
 
     return (
         <TouchableOpacity
-            onPress={() => navigation.navigate('LoginHome')}
+            onPress={() => navigation.goBack()}
         >
             <BackButton style={styles.image}/>
         </TouchableOpacity>

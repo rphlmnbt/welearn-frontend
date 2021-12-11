@@ -9,12 +9,12 @@ export default function BackBlack() {
 
     return (
         <TouchableOpacity
-            onPress={() => navigation.navigate('LoginHome')}
+            onPress={() => navigation.goBack()}
         >
             <BackButton style={styles.image}/>
         </TouchableOpacity>
         
-      );
+    );
 
 }
 

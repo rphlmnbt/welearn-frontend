@@ -33,7 +33,8 @@ function App() {
           component={LoginEmail} 
           options = {{headerTitle: () => null,
             headerRight: () => <SecondaryLogo />,
-            headerLeft: () => <BackWhite />}}
+            headerLeft: () => <BackWhite />,
+            headerBac: true}}
         />
         <Stack.Screen 
           name="LoginMobile" 
