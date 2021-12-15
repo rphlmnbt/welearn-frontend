@@ -26,6 +26,7 @@ if (!fontsLoaded) {
         {data.map((item) => {
           return (
             <TouchableOpacity 
+              key={item.value}
               onPress={() => setUserOption(item.value)}
               style={item.value === userOption ? styles.selected : styles.unselected}
             >

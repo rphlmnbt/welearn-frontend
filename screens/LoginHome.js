@@ -61,7 +61,7 @@ function LoginHome({ navigation }) {
                 <View>
                     <Text style={styles.signupText1}>
                         Don't have an account?{' '}
-                        <Text style={styles.signupText2}>
+                        <Text style={styles.signupText2} onPress={() => navigation.navigate('SignUpPersonal')}>
                             Sign Up
                         </Text>
                     </Text>

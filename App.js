@@ -11,6 +11,8 @@ import SecondaryLogoBlack from './components/SecondaryLogoBlack';
 import LoginMobilePin from './screens/LoginMobilePin';
 import BackWhite from './components/BackWhite';
 import BackBlack from './components/BackBlack';
+import SignUpPersonal from './screens/SignUpPersonal';
+import SignUpBirth from './screens/SignUpBirth';
 
 
 
@@ -48,6 +50,16 @@ function App() {
           options = {{headerTitle: () => null,
             headerRight: () => <SecondaryLogoBlack />,
             headerLeft: () => <BackBlack />}}
+        />
+        <Stack.Screen 
+          name="SignUpPersonal" 
+          component={SignUpPersonal} 
+          options = {{headerTitle: () => null}}
+        />
+        <Stack.Screen 
+          name="SignUpBirth" 
+          component={SignUpBirth} 
+          options = {{headerTitle: () => null}}
         />
       </Stack.Navigator>
     </NavigationContainer>

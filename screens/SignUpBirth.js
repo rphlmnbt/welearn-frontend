@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, Platform } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Background from '../assets/images/login-mobile-bg.svg'
 import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -13,15 +13,41 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import RadioButton from '../components/RadioButton';
 
-export default function SignUpPersonal({navigation}) {
-   
+export default function SignUpBirth() {
+    const [date, setDate] = useState(new Date());
+    const [show, setShow] = useState(false);
+    const [mode, setMode] = useState('date');
+
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
+    const data = [
+        { value: 'Male' },
+        { value: 'Female' }
+    ];
+
+    const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+    };
+    
+      const showDatepicker = () => {
+        showMode('date');
+    };
+
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+      };
+
+
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -51,24 +77,28 @@ export default function SignUpPersonal({navigation}) {
                             Please provide the following information.
                         </Text>
                     </View>
-                    <TextInput
-                        placeholder="First Name"
-                        autoCapitalize="none"
-                        style={styles.textinput1}
-                        autoCapitalize="none"
-                    />
-                    <TextInput
-                        placeholder="Last Name"
-                        autoCapitalize="none"
-                        style={styles.textinput1}
-                        autoCapitalize="none"
-                    />
+                    <TouchableOpacity
+                        style={styles.datePicker}
+                        onPress={showDatepicker}
+                    >
+                        <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
+                    </TouchableOpacity>
+                    <RadioButton data={data} />
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => navigation.navigate('SignUpBirth')}
+                        onPress={() => navigation.navigate('LoginMobilePin')}
                     >
                         <Text style={styles.buttontext}> Continue</Text>
                     </TouchableOpacity>
+                    {show && (
+                        <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode={mode}
+                        display="default"
+                        onChange={onChange}
+                        />
+                    )}
                 </View>
                 
                 
@@ -90,13 +120,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingTop: 100
     },
-    imageUpload : {
-        height: '20%',
-        width: '100%',
-        backgroundColor: '#ACACAC',
-        alignItems: 'center', 
-        justifyContent: 'center'
-    },
     textinput1:{
         borderWidth: 1,
         borderColor: '#ACACAC',
@@ -104,6 +127,16 @@ const styles = StyleSheet.create({
         padding:8,
         width: '100%',
         marginTop: 15,
+    },
+    datePicker: {
+        borderWidth: 1,
+        borderColor: '#ACACAC',
+        borderRadius: 5,
+        width: '100%',
+        height: 45,
+        marginTop: 15,
+        justifyContent: 'center',
+        padding:8,
     },
     text: {
         marginTop: 15,
@@ -172,5 +205,15 @@ const styles = StyleSheet.create({
     formHeader: {
         alignItems: 'center',
         marginBottom: 15
-    }
+    },
+    picker: {
+        borderWidth: 2,
+        borderColor: '#ACACAC',
+        fontFamily: 'Poppins_600SemiBold',
+    },
+    pickerText: {
+        color: '#ACACAC',
+        fontFamily: 'Poppins_600SemiBold',
+        letterSpacing: 0.3
+    },
 })
