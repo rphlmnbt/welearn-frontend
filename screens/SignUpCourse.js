@@ -1,24 +1,23 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, Platform } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image} from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Background from '../assets/images/login-mobile-bg.svg'
 import LogoImg from '../assets/images/wl-logo2.png'
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { 
+import RadioButton from '../components/RadioButton';
+import {Picker} from '@react-native-picker/picker';
+import{
     useFonts,
     Poppins_400Regular,
     Poppins_500Medium,
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import RadioButton from '../components/RadioButton';
 
-export default function SignUpBirth({navigation}) {
-    const [date, setDate] = useState(new Date());
-    const [show, setShow] = useState(false);
-    const [mode, setMode] = useState('date');
+export default function SignUpCourse({navigation}) {
+
+    const [selectedYear, setSelectedYear] = useState();
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -26,28 +25,6 @@ export default function SignUpBirth({navigation}) {
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
-    const data = [
-        { value: 'Male' },
-        { value: 'Female' }
-    ];
-
-    const showMode = (currentMode) => {
-        setShow(true);
-        setMode(currentMode);
-    };
-    
-      const showDatepicker = () => {
-        showMode('date');
-    };
-
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
-        setDate(currentDate);
-      };
-
-
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -77,28 +54,32 @@ export default function SignUpBirth({navigation}) {
                             Please provide the following information.
                         </Text>
                     </View>
-                    <TouchableOpacity
-                        style={styles.datePicker}
-                        onPress={showDatepicker}
-                    >
-                        <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
-                    </TouchableOpacity>
-                    <RadioButton data={data} />
+                    <TextInput
+                        placeholder="Course Program"
+                        autoCapitalize="none"
+                        style={styles.textinput1}
+                        autoCapitalize="none"
+                    />
+                    <View style={styles.picker}>
+                    <Picker
+                    selectedValue={selectedYear}
+                    onValueChange={(itemValue, itemIndex) =>
+                        setSelectedYear(itemValue)
+                    }>
+                    <Picker.Item label="Year Level" value="select" color="#ACACAC" />
+                    <Picker.Item label="First Year" value="first"/>
+                    <Picker.Item label="Second Year" value="second"/>
+                    <Picker.Item label="Third Year" value="third"/>
+                    <Picker.Item label="Fourth Year" value="fourth"/>
+                    </Picker> 
+                    </View>
+                   
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => navigation.navigate('SignUpContract')}
+                        onPress={() => navigation.navigate('')}
                     >
                         <Text style={styles.buttontext}> Continue</Text>
                     </TouchableOpacity>
-                    {show && (
-                        <DateTimePicker
-                        testID="dateTimePicker"
-                        value={date}
-                        mode={mode}
-                        display="default"
-                        onChange={onChange}
-                        />
-                    )}
                 </View>
                 
                 
@@ -120,6 +101,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingTop: 100
     },
+    imageUpload : {
+        height: '20%',
+        width: '100%',
+        backgroundColor: '#ACACAC',
+        alignItems: 'center', 
+        justifyContent: 'center'
+    },
     textinput1:{
         borderWidth: 1,
         borderColor: '#ACACAC',
@@ -127,16 +115,6 @@ const styles = StyleSheet.create({
         padding:8,
         width: '100%',
         marginTop: 15,
-    },
-    datePicker: {
-        borderWidth: 1,
-        borderColor: '#ACACAC',
-        borderRadius: 5,
-        width: '100%',
-        height: 45,
-        marginTop: 15,
-        justifyContent: 'center',
-        padding:8,
     },
     text: {
         marginTop: 15,
@@ -206,14 +184,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 15
     },
-    picker: {
-        borderWidth: 2,
+
+    picker:{
+        borderWidth: 1,
         borderColor: '#ACACAC',
-        fontFamily: 'Poppins_600SemiBold',
-    },
-    pickerText: {
-        color: '#ACACAC',
-        fontFamily: 'Poppins_600SemiBold',
-        letterSpacing: 0.3
-    },
+        borderRadius: 5,
+        padding: 0,
+        width: '100%',
+        marginTop: 15,
+        height: 48
+    }
 })
