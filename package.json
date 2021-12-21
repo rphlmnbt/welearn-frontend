@@ -13,6 +13,7 @@
     "@fortawesome/react-native-fontawesome": "^0.2.7",
     "@react-native-community/clipboard": "^1.5.1",
     "@react-native-community/datetimepicker": "3.5.2",
+    "@react-native-community/slider": "^4.1.12",
     "@react-native-picker/picker": "^2.2.1",
     "@react-navigation/native-stack": "^6.2.5",
     "expo": "~43.0.2",

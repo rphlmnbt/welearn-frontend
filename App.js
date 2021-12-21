@@ -17,7 +17,8 @@ import SignUpContract from './screens/SignUpContract';
 import SignUpContact from './screens/SignUpContact';
 import SignUpSchool from './screens/SignUpSchool';
 import SignUpCourse from './screens/SignUpCourse';
-
+import SignUpSurveyIntro from './screens/SignUpSurveyIntro';
+import SignUpSurvey from './screens/SignUpSurvey';
 
 
 const Stack = createNativeStackNavigator();
@@ -84,6 +85,19 @@ function App() {
           name="SignUpCourse" 
           component={SignUpCourse} 
           options = {{headerTitle: () => null}}
+        />
+        <Stack.Screen 
+          name="SignUpSurveyIntro" 
+          component={SignUpSurveyIntro} 
+          options = {{headerTitle: () => null,
+            headerRight: () => <SecondaryLogoBlack />,
+            headerLeft: () => <BackBlack />}}
+        />
+        <Stack.Screen 
+          name="SignUpSurvey" 
+          component={SignUpSurvey} 
+          options = {{headerTitle: () => null,
+            headerLeft: () => <BackBlack />}}
         />
       </Stack.Navigator>
     </NavigationContainer>

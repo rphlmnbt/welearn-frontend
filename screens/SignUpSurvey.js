@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image} from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, ImageBackground } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/login-mobile-bg.svg'
+import CardBG from '../assets/images/card-bg1.png'
+import CardBGWh from '../assets/images/card-bg2.png'
 import LogoImg from '../assets/images/wl-logo2.png'
 import RadioButton from '../components/RadioButton';
-import {Picker} from '@react-native-picker/picker';
-import{
+import { 
     useFonts,
     Poppins_400Regular,
     Poppins_500Medium,
@@ -15,10 +15,10 @@ import{
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 
-export default function SignUpCourse({navigation}) {
+export default function SignUpSurvey({navigation}) {
 
-    const [selectedYear, setSelectedYear] = useState();
-
+    const [value, setValue] = useState(1)
+   
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -26,61 +26,61 @@ export default function SignUpCourse({navigation}) {
         Poppins_700Bold,
     });
 
+    const data = [
+        { value: 1 },
+        { value: 2 },
+        { value: 3 },
+        { value: 4 }
+    ];
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
         return (
             <View style={styles.container}>
-                 <View style={styles.half}>
-                    <Background
-                        style={styles.background}
-                        resizeMode="cover" 
-                    />
-                </View>
                 <Image
                     style={styles.splash}
                     source={LogoImg}
                     resizeMode="contain" 
                 />
-                <Text style={styles.text2}>
+                <Text style={styles.logoText}>
                         WeLearn
                 </Text>
-                <View style={styles.form}>
-                    <View style={styles.formHeader}>
+                <ImageBackground
+                    source={CardBG}
+                    style={styles.background}
+                    resizeMode="contain" 
+                >
                         <Text style={styles.text}>
-                            Create a WeLearn Account
+                            Rate Yourself
                         </Text>
-                        <Text style={styles.text3}>
-                            Please provide the following information.
+                        <Text style={styles.questText}>
+                            Question Here
                         </Text>
-                    </View>
-                    <TextInput
-                        placeholder="Course Program"
-                        autoCapitalize="none"
-                        style={styles.textinput1}
-                        autoCapitalize="none"
-                    />
-                    <View style={styles.picker}>
-                    <Picker
-                    selectedValue={selectedYear}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setSelectedYear(itemValue)
-                    }>
-                    <Picker.Item label="Year Level" value="select" color="#ACACAC" />
-                    <Picker.Item label="First Year" value="first"/>
-                    <Picker.Item label="Second Year" value="second"/>
-                    <Picker.Item label="Third Year" value="third"/>
-                    <Picker.Item label="Fourth Year" value="fourth"/>
-                    </Picker> 
-                    </View>
-                   
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => navigation.navigate('SignUpSurveyIntro')}
-                    >
-                        <Text style={styles.buttontext}> Continue</Text>
-                    </TouchableOpacity>
-                </View>
+                        <ImageBackground
+                            source={CardBGWh}
+                            style={styles.background2}
+                            resizeMode="cover" 
+                        >
+                            <View style={{marginTop: 10, marginBottom: 20}}>                     
+                                <Text style={styles.insText}>
+                                    Please rate the following statements from
+                                </Text>
+                                <Text style={styles.insText}>
+                                    1 (Strongly Disagree) to 4 (Strongly Agree)
+                                </Text>
+                            </View>
+                            <View style={{width:'80%'}}>
+                                <RadioButton data={data} />
+                            </View>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => navigation.navigate('LoginHome')}
+                            >
+                                <Text style={styles.buttontext}> Continue</Text>
+                            </TouchableOpacity>
+                        </ImageBackground>
+                </ImageBackground>
                 
                 
             </View>
@@ -119,37 +119,44 @@ const styles = StyleSheet.create({
     text: {
         marginTop: 15,
         fontFamily: 'Poppins_600SemiBold',
-        color: '#5E5E5E',
-        fontSize: 15
+        color: 'white',
+        fontSize: 35,
+        marginHorizontal: 20
     },
-    text2 : {
+    logoText : {
         color: '#5E5E5E',
         fontFamily: 'Poppins_600SemiBold',
         fontSize: 20,
-        margin: 1
+        margin: 1,
+        marginBottom: 20
+    },
+    questText: {
+        marginTop: 15,
+        fontFamily: 'Poppins_600SemiBold',
+        color: 'white',
+        fontSize: 20,
+        marginHorizontal: 20,
+        marginBottom: '10%'
     },
     background: {
         width: '100%',
         height: undefined,
-        aspectRatio: 428/295,
-        position: 'absolute',
-        bottom: 0
+        aspectRatio: 1712/1516
         
     },
-    half: {
+    background2: {
         width: '100%',
-        height: '80%',
-        position: 'absolute',
-        zIndex: 0,
-        elevation: 0,
-        bottom: 0
+        height: undefined,
+        aspectRatio: 1712/1344,
+        alignItems: 'center'
+        
     },
     splash: {
         width: 70,
         height: undefined,
         aspectRatio: 1,
         marginTop: 0,
-        marginBottom: 0
+        marginBottom: 0,
     },
     form: { 
         width: '80%',
@@ -159,7 +166,7 @@ const styles = StyleSheet.create({
 
     button: {
         backgroundColor: '#EF4765',
-        width: '100%',
+        width: '80%',
         height: 45,
         borderRadius: 5,
         shadowRadius: 5,
@@ -167,17 +174,17 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 30
+        marginTop: 38
     },
     buttontext: {
         color: 'white',
         fontFamily: 'Poppins_600SemiBold',
         letterSpacing: 0.3
     },
-    text3: {
-        fontFamily: 'Poppins_400Regular',
-        color: '#505062',
-        fontSize: 12
+    insText: {
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#757575',
+        fontSize: 12,
         
     },
     formHeader: {
@@ -185,13 +192,4 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
 
-    picker:{
-        borderWidth: 1,
-        borderColor: '#ACACAC',
-        borderRadius: 5,
-        padding: 0,
-        width: '100%',
-        marginTop: 15,
-        height: 48
-    }
 })

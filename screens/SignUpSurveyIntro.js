@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image} from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/login-mobile-bg.svg'
+import Background from '../assets/images/survey-bg1.svg'
 import LogoImg from '../assets/images/wl-logo2.png'
 import RadioButton from '../components/RadioButton';
-import {Picker} from '@react-native-picker/picker';
-import{
+import { 
     useFonts,
     Poppins_400Regular,
     Poppins_500Medium,
@@ -15,10 +14,8 @@ import{
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 
-export default function SignUpCourse({navigation}) {
-
-    const [selectedYear, setSelectedYear] = useState();
-
+export default function SignUpSurveyIntro({navigation}) {
+   
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -37,48 +34,29 @@ export default function SignUpCourse({navigation}) {
                         resizeMode="cover" 
                     />
                 </View>
-                <Image
-                    style={styles.splash}
-                    source={LogoImg}
-                    resizeMode="contain" 
-                />
-                <Text style={styles.text2}>
-                        WeLearn
-                </Text>
-                <View style={styles.form}>
-                    <View style={styles.formHeader}>
+                <View style={styles.header}>
+                    <View style={styles.headerContainer}>
                         <Text style={styles.text}>
-                            Create a WeLearn Account
+                            Hi
                         </Text>
                         <Text style={styles.text3}>
-                            Please provide the following information.
+                            User Name
                         </Text>
                     </View>
-                    <TextInput
-                        placeholder="Course Program"
-                        autoCapitalize="none"
-                        style={styles.textinput1}
-                        autoCapitalize="none"
-                    />
-                    <View style={styles.picker}>
-                    <Picker
-                    selectedValue={selectedYear}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setSelectedYear(itemValue)
-                    }>
-                    <Picker.Item label="Year Level" value="select" color="#ACACAC" />
-                    <Picker.Item label="First Year" value="first"/>
-                    <Picker.Item label="Second Year" value="second"/>
-                    <Picker.Item label="Third Year" value="third"/>
-                    <Picker.Item label="Fourth Year" value="fourth"/>
-                    </Picker> 
-                    </View>
-                   
+                    <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
+                </View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.text2}>
+                            Let's link
+                    </Text>
+                    <Text style={styles.text2}>
+                            and LEARN now!
+                    </Text>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => navigation.navigate('SignUpSurveyIntro')}
+                        onPress={() => navigation.navigate('SignUpSurvey')}
                     >
-                        <Text style={styles.buttontext}> Continue</Text>
+                        <Text style={styles.buttontext}> Start</Text>
                     </TouchableOpacity>
                 </View>
                 
@@ -118,27 +96,27 @@ const styles = StyleSheet.create({
     },
     text: {
         marginTop: 15,
-        fontFamily: 'Poppins_600SemiBold',
+        fontFamily: 'Poppins_400Regular',
         color: '#5E5E5E',
         fontSize: 15
     },
     text2 : {
-        color: '#5E5E5E',
-        fontFamily: 'Poppins_600SemiBold',
-        fontSize: 20,
+        color: 'white',
+        fontFamily: 'Poppins_500Medium',
+        fontSize: 23,
         margin: 1
     },
     background: {
         width: '100%',
         height: undefined,
-        aspectRatio: 428/295,
+        aspectRatio: 428/653,
         position: 'absolute',
-        bottom: 0
+        top: 0
         
     },
     half: {
         width: '100%',
-        height: '80%',
+        height: '85%',
         position: 'absolute',
         zIndex: 0,
         elevation: 0,
@@ -151,14 +129,16 @@ const styles = StyleSheet.create({
         marginTop: 0,
         marginBottom: 0
     },
-    form: { 
+    header: { 
         width: '80%',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        marginBottom: '35%'
     },
 
     button: {
-        backgroundColor: '#EF4765',
+        backgroundColor: 'white',
         width: '100%',
         height: 45,
         borderRadius: 5,
@@ -170,28 +150,24 @@ const styles = StyleSheet.create({
         marginTop: 30
     },
     buttontext: {
-        color: 'white',
+        color: '#EF4765',
         fontFamily: 'Poppins_600SemiBold',
         letterSpacing: 0.3
     },
     text3: {
         fontFamily: 'Poppins_400Regular',
         color: '#505062',
-        fontSize: 12
+        fontSize: 30
         
     },
-    formHeader: {
-        alignItems: 'center',
+    headerContainer: {
         marginBottom: 15
     },
-
-    picker:{
-        borderWidth: 1,
-        borderColor: '#ACACAC',
-        borderRadius: 5,
-        padding: 0,
-        width: '100%',
-        marginTop: 15,
-        height: 48
+    textContainer: {
+        width: '80%',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'flex-start'
     }
+
 })

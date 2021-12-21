@@ -52,9 +52,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   unselected: {
+    flex: 1,
+    margin: 4,
     borderColor: '#ACACAC',
     borderWidth: 2,
-    width: '47%',
     height: 45,
     borderRadius: 5,
     shadowRadius: 5,
@@ -72,9 +73,10 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3
   },
   selected: {
+    flex: 1,
+    margin: 4,
     borderColor: '#EF4765',
     borderWidth: 2,
-    width: '47%',
     height: 45,
     borderRadius: 5,
     shadowRadius: 5,
