@@ -13,7 +13,7 @@ import {
   } from '@expo-google-fonts/poppins'
 
 
-function LoginMobilePin() {
+function LoginMobilePin({navigation}) {
     const [value, setValue] = useState('');
     const [numeric, setNumeric] = useState(true);
     let [fontsLoaded] = useFonts({
@@ -67,6 +67,7 @@ function LoginMobilePin() {
 
                             <TouchableOpacity
                                 style={styles.button}
+                                onPress={() => navigation.navigate('LoginDashboardProfile')}
                             >
                                 <Text style={styles.buttontext}>Accept</Text>
                             </TouchableOpacity>

@@ -19,6 +19,7 @@ import SignUpSchool from './screens/SignUpSchool';
 import SignUpCourse from './screens/SignUpCourse';
 import SignUpSurveyIntro from './screens/SignUpSurveyIntro';
 import SignUpSurvey from './screens/SignUpSurvey';
+import LoginDashboardProfile from './screens/LoginDashboardProfile';
 
 
 const Stack = createNativeStackNavigator();
@@ -98,6 +99,11 @@ function App() {
           component={SignUpSurvey} 
           options = {{headerTitle: () => null,
             headerLeft: () => <BackBlack />}}
+        />
+         <Stack.Screen 
+          name="LoginDashboardProfile" 
+          component={LoginDashboardProfile} 
+          options = {{headerTitle: () => null}}
         />
       </Stack.Navigator>
     </NavigationContainer>
