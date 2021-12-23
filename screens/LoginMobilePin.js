@@ -67,7 +67,7 @@ function LoginMobilePin({navigation}) {
 
                             <TouchableOpacity
                                 style={styles.button}
-                                onPress={() => navigation.navigate('LoginDashboardProfile')}
+                                onPress={() => navigation.navigate('UserDashboard')}
                             >
                                 <Text style={styles.buttontext}>Accept</Text>
                             </TouchableOpacity>
