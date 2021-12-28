@@ -12,7 +12,7 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 
-function LoginEmail() {
+function LoginEmail({navigation}) {
     let [fontsLoaded] = useFonts({
         Poppins_500Medium,
         Poppins_600SemiBold
@@ -62,6 +62,7 @@ function LoginEmail() {
                     <View style={{marginTop: 20}}>
                             <TouchableOpacity
                                 style={styles.button}
+                                onPress={() => navigation.navigate('UserDashboard')}
                             >
                                 <Text style={styles.buttontext}> Continue</Text>
                             </TouchableOpacity>
