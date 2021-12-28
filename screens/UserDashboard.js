@@ -39,7 +39,7 @@ import {
                 <View style={styles.menucontainer}>
                   <View style={styles.row}>
                     <View style={styles.column}>
-                      <TouchableOpacity>
+                      <TouchableOpacity onPress={() => navigation.navigate('FindPartner')}>
                         <Image
                           style={styles.images}
                           source={require('../assets/images/user-plus.png')} />

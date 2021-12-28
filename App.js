@@ -20,6 +20,7 @@ import SignUpCourse from './screens/SignUpCourse';
 import SignUpSurveyIntro from './screens/SignUpSurveyIntro';
 import SignUpSurvey from './screens/SignUpSurvey';
 import UserDashboard from './screens/UserDashboard';
+import FindPartner from './screens/FindPartner'
 
 
 const Stack = createNativeStackNavigator();
@@ -100,10 +101,17 @@ function App() {
           options = {{headerTitle: () => null,
             headerLeft: () => <BackBlack />}}
         />
-         <Stack.Screen 
+        <Stack.Screen 
           name="UserDashboard" 
           component={UserDashboard} 
           options = {{headerTitle: () => null}}
+        />
+        <Stack.Screen 
+          name="FindPartner" 
+          component={FindPartner} 
+          options = {{headerTitle: () => null,
+            headerRight: () => <SecondaryLogo />,
+            headerLeft: () => <BackWhite />}}
         />
       </Stack.Navigator>
     </NavigationContainer>
