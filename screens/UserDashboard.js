@@ -46,7 +46,7 @@ import {
                       </TouchableOpacity>
                     </View>
                     <View style={styles.column}>
-                      <TouchableOpacity>
+                      <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
                         <Image
                           style={styles.images}
                           source={require('../assets/images/people-fill.png')} />

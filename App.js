@@ -21,6 +21,7 @@ import SignUpSurveyIntro from './screens/SignUpSurveyIntro';
 import SignUpSurvey from './screens/SignUpSurvey';
 import UserDashboard from './screens/UserDashboard';
 import FindPartner from './screens/FindPartner'
+import FindStudyRoom from './screens/FindStudyRoom';
 
 
 const Stack = createNativeStackNavigator();
@@ -112,6 +113,11 @@ function App() {
           options = {{headerTitle: () => null,
             headerRight: () => <SecondaryLogo />,
             headerLeft: () => <BackWhite />}}
+        />
+         <Stack.Screen 
+          name="FindStudyRoom" 
+          component={FindStudyRoom} 
+          options = {{headerTitle: () => null}}
         />
       </Stack.Navigator>
     </NavigationContainer>
