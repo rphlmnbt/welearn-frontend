@@ -57,7 +57,7 @@ export default function SignUpContact({navigation}) {
                     />
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => navigation.navigate('SignUpSchool')}
+                        onPress={() => navigation.navigate('LoginMobilePin')}
                     >
                         <Text style={styles.buttontext}> Continue</Text>
                     </TouchableOpacity>

@@ -5,6 +5,8 @@ import AvatarImg from '../assets/images/avatar.png'
 import AppLoading from 'expo-app-loading';
 import * as Progress from 'react-native-progress';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 
 import { 
@@ -33,11 +35,14 @@ import {
                    resizeMode="cover" 
                />
             </View>
-            <Image
+            {/* <Image
                 source={AvatarImg}
                 style={styles.images}
-            />
+            /> */}
             <View style={styles.userdetails}>
+                <View style={styles.user}>
+                <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
+                </View>
                 <Text style={styles.text1}>
                    Name, Year Level, Course
                 </Text>
@@ -68,6 +73,24 @@ import {
                 </Text>
                 <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
             </View>
+            <View style={styles.menucontainer}>
+                  <View style={styles.row}>
+                    <View style={styles.column}>
+                      <TouchableOpacity onPress={() => navigation.navigate('')}>
+                        <Image
+                          style={styles.images}
+                          source={require('../assets/images/check-button.png')} />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.column}>
+                      <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
+                        <Image
+                          style={styles.images}
+                          source={require('../assets/images/next.png')} />
+                      </TouchableOpacity>
+                    </View>
+                    </View>
+                    </View>
 
               
        </View>
@@ -105,12 +128,12 @@ const styles = StyleSheet.create({
     userdetails: {
         backgroundColor: 'white',
         width: '100%',
-        height: '40%',
+        height: '83%',
         padding: 25,
         position: 'absolute',
         bottom: 0,
         borderTopRightRadius: 30,
-        borderTopLeftRadius: 30
+        borderTopLeftRadius: 30,
     },
     text1 : {
         fontFamily: 'Poppins_600SemiBold',
@@ -148,9 +171,28 @@ const styles = StyleSheet.create({
 
     },
     images: {
-      width: '100%',
-      marginTop: '35%',
-      borderRadius: 30,
-      borderWidth: 1
+      width: '80%',
+      marginTop: '50%',
+      position: 'absolute',
+      marginLeft: 16
+    },
+
+    user: {
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    menucontainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '55%',
+    },
+    row: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+    },
+    column: {
+      flexDirection: 'column',
+      width: '35%',
     },
 });

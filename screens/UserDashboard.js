@@ -53,7 +53,7 @@ import {
                       </TouchableOpacity>
                     </View>
                     <View style={styles.column}>
-                      <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Requests')}>
                         <Image
                           style={styles.images}
                           source={require('../assets/images/chat-text.png')} />
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         height: undefined,
         aspectRatio: 428/287,
         position: 'absolute',
-        top: -50,
+        top: '-25%',
         zIndex: 0,
         elevation: 0,
     },
