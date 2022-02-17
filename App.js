@@ -21,6 +21,9 @@ import SignUpSurveyIntro from './screens/SignUpSurveyIntro';
 import SignUpSurvey from './screens/SignUpSurvey';
 import UserDashboard from './screens/UserDashboard';
 import FindPartner from './screens/FindPartner'
+import FindStudyRoom from './screens/FindStudyRoom';
+import PickStudyRoom from './screens/PickStudyRoom';
+import Requests from './screens/Requests';
 
 
 const Stack = createNativeStackNavigator();
@@ -112,6 +115,22 @@ function App() {
           options = {{headerTitle: () => null,
             headerRight: () => <SecondaryLogo />,
             headerLeft: () => <BackWhite />}}
+        />
+         <Stack.Screen 
+          name="FindStudyRoom" 
+          component={FindStudyRoom} 
+          options = {{headerTitle: () => null}}
+        />
+         <Stack.Screen 
+          name="PickStudyRoom" 
+          component={PickStudyRoom} 
+          options = {{headerTitle: () => null}}
+        />
+          <Stack.Screen 
+          name="Requests" 
+          component={Requests} 
+          options = {{headerTitle: () => null,
+          headerLeft: () => <BackBlack />}}
         />
       </Stack.Navigator>
     </NavigationContainer>

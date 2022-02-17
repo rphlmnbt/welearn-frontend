@@ -47,7 +47,7 @@ function LoginMobile({ navigation }) {
                     <View>
                             <TouchableOpacity
                                 style={styles.button}
-                                onPress={() => navigation.navigate('LoginMobilePin')}
+                                onPress={() => navigation.navigate('UserDashboard')}
                             >
                                 <Text style={styles.buttontext}> Continue</Text>
                             </TouchableOpacity>
