@@ -30,7 +30,8 @@ export default function SignUpSurvey({navigation}) {
         { value: 1 },
         { value: 2 },
         { value: 3 },
-        { value: 4 }
+        { value: 4 },
+        { value: 5 }
     ];
 
     if (!fontsLoaded) {

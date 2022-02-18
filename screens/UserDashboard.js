@@ -49,21 +49,21 @@ import {
                       <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
                         <Image
                           style={styles.images}
-                          source={require('../assets/images/people-fill.png')} />
+                          source={require('../assets/images/table.png')} />
                       </TouchableOpacity>
                     </View>
                     <View style={styles.column}>
                     <TouchableOpacity onPress={() => navigation.navigate('Requests')}>
                         <Image
                           style={styles.images}
-                          source={require('../assets/images/chat-text.png')} />
+                          source={require('../assets/images/people-fill.png')} />
                       </TouchableOpacity>
                     </View>
                     <View style={styles.column}>
                       <TouchableOpacity style={styles.press}>
                         <Image
                           style={styles.images}
-                          source={require('../assets/images/table.png')} />
+                          source={require('../assets/images/logout.png')} />
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     column: {
       flexDirection: 'column',
       width: '50%',
+      marginBottom: 30
     },
     images: {
       width: 165,
