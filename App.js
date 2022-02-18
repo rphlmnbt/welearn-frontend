@@ -24,6 +24,7 @@ import FindPartner from './screens/FindPartner'
 import FindStudyRoom from './screens/FindStudyRoom';
 import PickStudyRoom from './screens/PickStudyRoom';
 import Requests from './screens/Requests';
+import Statistics from './screens/Statistics';
 
 
 const Stack = createNativeStackNavigator();
@@ -131,6 +132,13 @@ function App() {
           component={Requests} 
           options = {{headerTitle: () => null,
           headerLeft: () => <BackBlack />}}
+        />
+        <Stack.Screen 
+          name="Statistics" 
+          component={Statistics} 
+          options = {{headerTitle: () => null,
+            headerRight: () => <SecondaryLogo />,
+            headerLeft: () => <BackWhite />}}
         />
       </Stack.Navigator>
     </NavigationContainer>

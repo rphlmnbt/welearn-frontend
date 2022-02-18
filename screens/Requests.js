@@ -66,30 +66,28 @@ export default function Requests({navigation}) {
                         style={styles.background}
                         resizeMode="cover" 
                     />
-
-                    <Text style={styles.text1}>Chat</Text>
-                    <Text style={styles.text2}>Requests</Text>
-
-                    <View style={styles.usercontainer}>
-                    <FlatList
-                    data = {userdata}
-                    keyExtractor={item=>item.id}
-                    renderItem={({item}) => (
-                        <TouchableOpacity>
-                        <View style={styles.userdetails}>
-                          <Image
-                          style={styles.images}
-                          source={item.userimage} />
-                          <View style={styles.textsection}>
-                              <View style={styles.usertext}>
-                                 <Text style={styles.name}>{item.username}</Text>
-                                 <Text style={styles.Timerequest}>{item.time}</Text>
-                              </View>
-                              <Text  style={styles.userinfo}>{item.info}</Text>
-                         </View>
-                        </View>
-                        </TouchableOpacity>
-                    )}/>
+                    <View style={styles.usercontainer}>             
+                        <Text style={styles.text1}>Chat</Text>
+                        <Text style={styles.text2}>Requests</Text>
+                        <FlatList
+                        data = {userdata}
+                        keyExtractor={item=>item.id}
+                        renderItem={({item}) => (
+                            <TouchableOpacity>
+                            <View style={styles.userdetails}>
+                            <Image
+                            style={styles.images}
+                            source={item.userimage} />
+                            <View style={styles.textsection}>
+                                <View style={styles.usertext}>
+                                    <Text style={styles.name}>{item.username}</Text>
+                                    <Text style={styles.Timerequest}>{item.time}</Text>
+                                </View>
+                                <Text  style={styles.userinfo}>{item.info}</Text>
+                            </View>
+                            </View>
+                            </TouchableOpacity>
+                        )}/>
                     </View>
                 </View>
                 </View>
@@ -135,20 +133,19 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_400Regular',
         fontSize: 14,
         textAlign: 'center',
-        marginTop: '-14%',
         color: '#ACACAC',  
     },
     
     text2 : {
         fontFamily: 'Poppins_600SemiBold',
-        marginLeft: 37,
         fontSize: 16,
-        marginTop: '8%',
-        color: '#5E5E5E',  
+        color: '#5E5E5E',
+        alignSelf: 'flex-start' 
     },
 
     usercontainer:{
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 20
     },
 
     userdetails:{
@@ -158,8 +155,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingTop: 15,
         paddingBottom: 15,
-        paddingLeft: 20,
-        paddingRight: 20,
     },
 
     images:{
