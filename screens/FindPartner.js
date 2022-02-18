@@ -207,9 +207,10 @@ const styles = StyleSheet.create({
 
     },
     images: {
-      width: 100,
-      margin: 10,
-      marginTop: 20
+      width: 90,
+      height: 90,
+      margin: 30,
+      marginTop: 30
     },
 
     user: {

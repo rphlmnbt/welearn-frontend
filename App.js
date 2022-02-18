@@ -34,7 +34,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={Header}
-        initialRouteName="UserReservations"
+        initialRouteName="LoginHome"
       >
         <Stack.Screen 
           name="LoginHome" 
