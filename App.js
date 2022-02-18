@@ -24,6 +24,7 @@ import FindPartner from './screens/FindPartner'
 import FindStudyRoom from './screens/FindStudyRoom';
 import PickStudyRoom from './screens/PickStudyRoom';
 import Requests from './screens/Requests';
+import Details from './screens/Details';
 import UserReservations from './screens/UserReservations';
 
 
@@ -134,6 +135,13 @@ function App() {
           headerLeft: () => <BackBlack />}}
         />
         <Stack.Screen 
+          name="Details" 
+          component={Details} 
+          options = {{headerTitle: () => null,
+            headerRight: () => <SecondaryLogo />,
+            headerLeft: () => <BackWhite />}}
+        />
+        <Stack.Screen
           name="UserReservations" 
           component={UserReservations} 
           options = {{headerTitle: () => null,
