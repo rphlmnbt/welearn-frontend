@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, FlatList } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import Background from '../assets/images/requests-bg.svg'
-import { FlatList } from 'react-native-gesture-handler';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -15,19 +14,34 @@ import {
       {
       id: '1',
       username: 'Malagungdili',
-      userimage: require('../assets/images/next.png'),
+      userimage: require('../assets/images/user-1.png'),
       time: '08:33 PM',
       info: 'Course, Year Level',
       },
       
       {
       id: '2',
-      username: 'Malagungdili',
-      userimage: require('../assets/images/next.png'),
-      time: '08:33 PM',
+      username: 'Makayabongdili',
+      userimage: require('../assets/images/user-2.png'),
+      time: '08:00 PM',
       info: 'Course, Year Level',
       },
 
+      {
+        id: '3',
+        username: 'Masantingdili',
+        userimage: require('../assets/images/user-3.png'),
+        time: '10:00 PM',
+        info: 'Course, Year Level',
+      },
+
+      {
+        id: '4',
+        username: 'Biasangdili',
+        userimage: require('../assets/images/user-4.png'),
+        time: '10:30 PM',
+        info: 'Course, Year Level',
+      },
 
   ];
 
@@ -56,29 +70,26 @@ export default function Requests({navigation}) {
                     <Text style={styles.text1}>Chat</Text>
                     <Text style={styles.text2}>Requests</Text>
 
+                    <View style={styles.usercontainer}>
                     <FlatList
                     data = {userdata}
                     keyExtractor={item=>item.id}
-                    style={styles.usercontainer}
                     renderItem={({item}) => (
-                        <View>
-                            <Text>{item.username}</Text>
+                        <View style={styles.userdetails}>
+                          <Image
+                          style={styles.images}
+                          source={item.userimage} />
+                          <View style={styles.textsection}>
+                              <View style={styles.usertext}>
+                                 <Text style={styles.name}>{item.username}</Text>
+                                 <Text style={styles.Timerequest}>{item.time}</Text>
+                              </View>
+                              <Text  style={styles.userinfo}>{item.info}</Text>
+                         </View>
                         </View>
-                    )}  
-                    />
+                    )}/>
+                    </View>
                 </View>
-                {/* <View style={styles.usercontainer}> */}
-                    <FlatList
-                    data = {userdata}
-                    keyExtractor={item=>item.id}
-                    renderItem={({item}) => (
-                        <View>
-                            <Text>{item.username}</Text>
-                        </View>
-                    )}  
-                    />
-                {/* </View> */}
-               
                 </View>
                 
         )
@@ -134,6 +145,59 @@ const styles = StyleSheet.create({
         color: '#5E5E5E',  
     },
 
-    usercontainer: {
+    usercontainer:{
+        alignItems: 'center'
     },
+
+    userdetails:{
+        width: '100%',
+        height: 100,
+        flexDirection: 'row',   
+        justifyContent: 'space-between',
+        paddingTop: 15,
+        paddingBottom: 15,
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
+
+    images:{
+        width: 60,
+        height: 60,
+
+    },
+
+    textsection:{
+        flexDirection: 'column',   
+        justifyContent: 'center',
+        padding: 15,
+        paddingLeft: 0,
+        marginLeft: 10,
+        width: 300,
+    },
+
+    usertext:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 5,
+    },
+
+    name:{
+        fontSize: 14,
+        fontFamily: 'Poppins_600SemiBold',
+    },
+
+    Timerequest:{
+        color: '#ACACAC',
+        fontSize: 12,
+        fontFamily: 'Poppins_400Regular',
+        paddingRight: 25,
+    },
+
+    userinfo:{
+        fontSize: 14,
+        color: '#ACACAC',
+        
+    }
+    
+
 })
