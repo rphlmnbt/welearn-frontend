@@ -91,7 +91,7 @@ import {
                 </Text>
                 <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
                 <View style={styles.btnContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('PickStudyRoom')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
                             <Image
                             style={styles.images}
                             source={require('../assets/images/check-button.png')} />
