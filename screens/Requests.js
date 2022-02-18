@@ -73,7 +73,7 @@ export default function Requests({navigation}) {
                         data = {userdata}
                         keyExtractor={item=>item.id}
                         renderItem={({item}) => (
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigation.navigate('Statistics')}>
                             <View style={styles.userdetails}>
                             <Image
                             style={styles.images}
