@@ -4,7 +4,6 @@ import Background from '../assets/images/find-bg.svg'
 import AvatarImg from '../assets/images/avatar.png'
 import AppLoading from 'expo-app-loading';
 import * as Progress from 'react-native-progress';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
