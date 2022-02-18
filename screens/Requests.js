@@ -75,6 +75,7 @@ export default function Requests({navigation}) {
                     data = {userdata}
                     keyExtractor={item=>item.id}
                     renderItem={({item}) => (
+                        <TouchableOpacity>
                         <View style={styles.userdetails}>
                           <Image
                           style={styles.images}
@@ -87,6 +88,7 @@ export default function Requests({navigation}) {
                               <Text  style={styles.userinfo}>{item.info}</Text>
                          </View>
                         </View>
+                        </TouchableOpacity>
                     )}/>
                     </View>
                 </View>
