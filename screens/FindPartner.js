@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image,  } from 'react-native';
 import Background from '../assets/images/find-bg.svg'
 import AvatarImg from '../assets/images/avatar.png'
@@ -18,6 +18,16 @@ import {
   } from '@expo-google-fonts/poppins'
 
   export default function FindPartner({navigation}) {
+    const categories = [
+        "Time Management",
+        "Study Environment",
+        "Exam Preparation",
+        "Note Taking",
+        "Reading Skills",
+        "Writing Skills",
+        "Math Skills"
+    ]
+
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -53,30 +63,51 @@ import {
                     Study Habits
                 </Text>
                 <Text style={styles.text4}>
-                   lorem ipsum
+                    Time Management
                 </Text>
                 <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
                 <Text style={styles.text4}>
-                   lorem ipsum
+                    Study Environment
+                </Text>
+                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
+                <Text style={styles.text4}>
+                    Exam Preparation
                 </Text>
                 <Progress.Bar progress={0.2} width={null} color='#EF4765'/>
                 <Text style={styles.text4}>
-                   lorem ipsum
+                    Note Taking
                 </Text>
                 <Progress.Bar progress={0.3} width={null} color='#EF4765'/>
                 <Text style={styles.text4}>
-                   lorem ipsum
+                    Reading Skills
                 </Text>
                 <Progress.Bar progress={0.4} width={null} color='#EF4765'/>
                 <Text style={styles.text4}>
-                   lorem ipsum
+                    Writing Skills
                 </Text>
                 <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
+                <Text style={styles.text4}>
+                    Math Skills
+                </Text>
+                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
+                <View style={styles.btnContainer}>
+                    <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
+                            <Image
+                            style={styles.images}
+                            source={require('../assets/images/check-button.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('')}>
+                            <Image
+                            style={styles.images}
+                            source={require('../assets/images/next.png')} />
+                    </TouchableOpacity>
+                </View>
             </View>
-            <View style={styles.menucontainer}>
+           
+            {/* <View style={styles.menucontainer}>
                   <View style={styles.row}>
                     <View style={styles.column}>
-                      <TouchableOpacity onPress={() => navigation.navigate('')}>
+                      <TouchableOpacity onPress={() => navigation.navigate('PickStudyRoom')}>
                         <Image
                           style={styles.images}
                           source={require('../assets/images/check-button.png')} />
@@ -90,7 +121,7 @@ import {
                       </TouchableOpacity>
                     </View>
                     </View>
-                    </View>
+                    </View> */}
 
               
        </View>
@@ -102,6 +133,11 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    btnContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
     container: { 
         flexDirection: 'column', 
         alignItems: 'center', 
@@ -171,10 +207,9 @@ const styles = StyleSheet.create({
 
     },
     images: {
-      width: '80%',
-      marginTop: '100%',
-      marginLeft: 16,
-      top: 50,
+      width: 100,
+      margin: 10,
+      marginTop: 20
     },
 
     user: {

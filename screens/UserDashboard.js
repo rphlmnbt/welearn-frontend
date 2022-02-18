@@ -46,7 +46,7 @@ import {
                       </TouchableOpacity>
                     </View>
                     <View style={styles.column}>
-                      <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
+                      <TouchableOpacity onPress={() => navigation.navigate('UserReservations')}>
                         <Image
                           style={styles.images}
                           source={require('../assets/images/table.png')} />
@@ -60,7 +60,7 @@ import {
                       </TouchableOpacity>
                     </View>
                     <View style={styles.column}>
-                      <TouchableOpacity style={styles.press}>
+                      <TouchableOpacity onPress={() => navigation.navigate('LoginHome')}>
                         <Image
                           style={styles.images}
                           source={require('../assets/images/logout.png')} />
