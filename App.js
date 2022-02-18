@@ -24,7 +24,7 @@ import FindPartner from './screens/FindPartner'
 import FindStudyRoom from './screens/FindStudyRoom';
 import PickStudyRoom from './screens/PickStudyRoom';
 import Requests from './screens/Requests';
-import Statistics from './screens/Statistics';
+import Details from './screens/Details';
 import UserReservations from './screens/UserReservations';
 
 
@@ -135,11 +135,13 @@ function App() {
           headerLeft: () => <BackBlack />}}
         />
         <Stack.Screen 
-          name="Statistics" 
-          component={Statistics} 
+          name="Details" 
+          component={Details} 
           options = {{headerTitle: () => null,
             headerRight: () => <SecondaryLogo />,
             headerLeft: () => <BackWhite />}}
+        />
+        <Stack.Screen
           name="UserReservations" 
           component={UserReservations} 
           options = {{headerTitle: () => null,
