@@ -33,7 +33,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={Header}
-        initialRouteName="SignUpSurvey"
+        initialRouteName="LoginHome"
       >
         <Stack.Screen 
           name="LoginHome" 
