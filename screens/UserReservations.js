@@ -47,7 +47,7 @@ import {
 
 
 
-export default function Requests({navigation}) {
+export default function UserReservations({navigation}) {
    
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -66,28 +66,30 @@ export default function Requests({navigation}) {
                         style={styles.background}
                         resizeMode="cover" 
                     />
-                    <View style={styles.usercontainer}>             
-                        <Text style={styles.text1}>Chat</Text>
-                        <Text style={styles.text2}>Requests</Text>
-                        <FlatList
-                        data = {userdata}
-                        keyExtractor={item=>item.id}
-                        renderItem={({item}) => (
-                            <TouchableOpacity>
-                            <View style={styles.userdetails}>
-                            <Image
-                            style={styles.images}
-                            source={item.userimage} />
-                            <View style={styles.textsection}>
-                                <View style={styles.usertext}>
-                                    <Text style={styles.name}>{item.username}</Text>
-                                    <Text style={styles.Timerequest}>{item.time}</Text>
-                                </View>
-                                <Text  style={styles.userinfo}>{item.info}</Text>
-                            </View>
-                            </View>
-                            </TouchableOpacity>
-                        )}/>
+
+                    <Text style={styles.text1}>Chat</Text>
+                    <Text style={styles.text2}>Requests</Text>
+
+                    <View style={styles.usercontainer}>
+                    <FlatList
+                    data = {userdata}
+                    keyExtractor={item=>item.id}
+                    renderItem={({item}) => (
+                        <TouchableOpacity>
+                        <View style={styles.userdetails}>
+                          <Image
+                          style={styles.images}
+                          source={item.userimage} />
+                          <View style={styles.textsection}>
+                              <View style={styles.usertext}>
+                                 <Text style={styles.name}>{item.username}</Text>
+                                 <Text style={styles.Timerequest}>{item.time}</Text>
+                              </View>
+                              <Text  style={styles.userinfo}>{item.info}</Text>
+                         </View>
+                        </View>
+                        </TouchableOpacity>
+                    )}/>
                     </View>
                 </View>
                 </View>
@@ -109,7 +111,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingTop: 100
     },
-
     background: {
         width: '100%',
         height: undefined,
@@ -128,26 +129,23 @@ const styles = StyleSheet.create({
         bottom: 0,
         
     },
-
     text1 : {
         fontFamily: 'Poppins_400Regular',
         fontSize: 14,
         textAlign: 'center',
+        marginTop: '-14%',
         color: '#ACACAC',  
     },
-    
     text2 : {
         fontFamily: 'Poppins_600SemiBold',
+        marginLeft: 37,
         fontSize: 16,
-        color: '#5E5E5E',
-        alignSelf: 'flex-start' 
+        marginTop: '8%',
+        color: '#5E5E5E',  
     },
-
     usercontainer:{
-        alignItems: 'center',
-        padding: 20
+        alignItems: 'center'
     },
-
     userdetails:{
         width: '100%',
         height: 100,
@@ -155,14 +153,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingTop: 15,
         paddingBottom: 15,
+        paddingLeft: 20,
+        paddingRight: 20,
     },
-
     images:{
         width: 60,
         height: 60,
 
     },
-
     textsection:{
         flexDirection: 'column',   
         justifyContent: 'center',
@@ -171,30 +169,24 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         width: 300,
     },
-
     usertext:{
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 5,
     },
-
     name:{
         fontSize: 14,
         fontFamily: 'Poppins_600SemiBold',
     },
-
     Timerequest:{
         color: '#ACACAC',
         fontSize: 12,
         fontFamily: 'Poppins_400Regular',
         paddingRight: 25,
     },
-
     userinfo:{
         fontSize: 14,
         color: '#ACACAC',
         
     }
-    
-
 })

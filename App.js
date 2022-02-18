@@ -24,6 +24,7 @@ import FindPartner from './screens/FindPartner'
 import FindStudyRoom from './screens/FindStudyRoom';
 import PickStudyRoom from './screens/PickStudyRoom';
 import Requests from './screens/Requests';
+import UserReservations from './screens/UserReservations';
 
 
 const Stack = createNativeStackNavigator();
@@ -33,7 +34,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={Header}
-        initialRouteName="LoginHome"
+        initialRouteName="UserReservations"
       >
         <Stack.Screen 
           name="LoginHome" 
@@ -116,19 +117,25 @@ function App() {
             headerRight: () => <SecondaryLogo />,
             headerLeft: () => <BackWhite />}}
         />
-         <Stack.Screen 
+        <Stack.Screen 
           name="FindStudyRoom" 
           component={FindStudyRoom} 
           options = {{headerTitle: () => null}}
         />
-         <Stack.Screen 
+        <Stack.Screen 
           name="PickStudyRoom" 
           component={PickStudyRoom} 
           options = {{headerTitle: () => null}}
         />
-          <Stack.Screen 
+        <Stack.Screen 
           name="Requests" 
           component={Requests} 
+          options = {{headerTitle: () => null,
+          headerLeft: () => <BackBlack />}}
+        />
+        <Stack.Screen 
+          name="UserReservations" 
+          component={UserReservations} 
           options = {{headerTitle: () => null,
           headerLeft: () => <BackBlack />}}
         />
