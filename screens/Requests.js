@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import Background from '../assets/images/requests-bg.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
+import { FlatList } from 'react-native-gesture-handler';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -10,6 +10,28 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+
+  const userdata = [
+      {
+      id: '1',
+      username: 'Malagungdili',
+      userimage: require('../assets/images/next.png'),
+      time: '08:33 PM',
+      info: 'Course, Year Level',
+      },
+      
+      {
+      id: '2',
+      username: 'Malagungdili',
+      userimage: require('../assets/images/next.png'),
+      time: '08:33 PM',
+      info: 'Course, Year Level',
+      },
+
+
+  ];
+
+
 
 export default function Requests({navigation}) {
    
@@ -30,7 +52,32 @@ export default function Requests({navigation}) {
                         style={styles.background}
                         resizeMode="cover" 
                     />
+
+                    <Text style={styles.text1}>Chat</Text>
+                    <Text style={styles.text2}>Requests</Text>
+
+                    <FlatList
+                    data = {userdata}
+                    keyExtractor={item=>item.id}
+                    style={styles.usercontainer}
+                    renderItem={({item}) => (
+                        <View>
+                            <Text>{item.username}</Text>
+                        </View>
+                    )}  
+                    />
                 </View>
+                {/* <View style={styles.usercontainer}> */}
+                    <FlatList
+                    data = {userdata}
+                    keyExtractor={item=>item.id}
+                    renderItem={({item}) => (
+                        <View>
+                            <Text>{item.username}</Text>
+                        </View>
+                    )}  
+                    />
+                {/* </View> */}
                
                 </View>
                 
@@ -71,4 +118,22 @@ const styles = StyleSheet.create({
         
     },
 
+    text1 : {
+        fontFamily: 'Poppins_400Regular',
+        fontSize: 14,
+        textAlign: 'center',
+        marginTop: '-14%',
+        color: '#ACACAC',  
+    },
+    
+    text2 : {
+        fontFamily: 'Poppins_600SemiBold',
+        marginLeft: 37,
+        fontSize: 16,
+        marginTop: '8%',
+        color: '#5E5E5E',  
+    },
+
+    usercontainer: {
+    },
 })
