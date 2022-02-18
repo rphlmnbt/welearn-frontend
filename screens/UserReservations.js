@@ -11,37 +11,34 @@ import {
   } from '@expo-google-fonts/poppins'
 
   const userdata = [
-      {
-      id: '1',
-      username: 'Malagungdili',
-      userimage: require('../assets/images/user-1.png'),
-      time: '08:33 PM',
-      info: 'Course, Year Level',
-      },
-      
-      {
-      id: '2',
-      username: 'Makayabongdili',
-      userimage: require('../assets/images/user-2.png'),
-      time: '08:00 PM',
-      info: 'Course, Year Level',
-      },
-
-      {
+    {
+        id: '1',
+        roomNumber: 'Study Room 1',
+        image: require('../assets/images/room.png'),
+        time: '3:00 PM - 4:00 PM',
+        info: 'SFJ Library',
+    },
+    {
+        id: '2',
+        roomNumber: 'Study Room 2',
+        image: require('../assets/images/room.png'),
+        time: '4:00 PM - 5:00 PM',
+        info: 'SFJ Library',
+    },
+    {
         id: '3',
-        username: 'Masantingdili',
-        userimage: require('../assets/images/user-3.png'),
-        time: '10:00 PM',
-        info: 'Course, Year Level',
-      },
-
-      {
+        roomNumber: 'Study Room 3',
+        image: require('../assets/images/room.png'),
+        time: '5:00 PM - 6:00 PM',
+        info: 'SFJ Library',
+    },
+    {
         id: '4',
-        username: 'Biasangdili',
-        userimage: require('../assets/images/user-4.png'),
-        time: '10:30 PM',
-        info: 'Course, Year Level',
-      },
+        roomNumber: 'Study Room 4',
+        image: require('../assets/images/room.png'),
+        time: '6:00 PM - 7:00 PM',
+        info: 'SFJ Library',
+    }
 
   ];
 
@@ -66,30 +63,27 @@ export default function UserReservations({navigation}) {
                         style={styles.background}
                         resizeMode="cover" 
                     />
-
-                    <Text style={styles.text1}>Chat</Text>
-                    <Text style={styles.text2}>Requests</Text>
-
-                    <View style={styles.usercontainer}>
-                    <FlatList
-                    data = {userdata}
-                    keyExtractor={item=>item.id}
-                    renderItem={({item}) => (
-                        <TouchableOpacity>
-                        <View style={styles.userdetails}>
-                          <Image
-                          style={styles.images}
-                          source={item.userimage} />
-                          <View style={styles.textsection}>
-                              <View style={styles.usertext}>
-                                 <Text style={styles.name}>{item.username}</Text>
-                                 <Text style={styles.Timerequest}>{item.time}</Text>
-                              </View>
-                              <Text  style={styles.userinfo}>{item.info}</Text>
-                         </View>
-                        </View>
-                        </TouchableOpacity>
-                    )}/>
+                    <View style={styles.usercontainer}>             
+                        <Text style={styles.text2}>Study Room Reservations</Text>
+                        <FlatList
+                        data = {userdata}
+                        keyExtractor={item=>item.id}
+                        renderItem={({item}) => (
+                            <TouchableOpacity>
+                            <View style={styles.userdetails}>
+                            <Image
+                            style={styles.images}
+                            source={item.image} />
+                            <View style={styles.textsection}>
+                                <View style={styles.usertext}>
+                                    <Text style={styles.name}>{item.roomNumber}</Text>
+                                    <Text style={styles.Timerequest}>{item.time}</Text>
+                                </View>
+                                <Text  style={styles.userinfo}>{item.info}</Text>
+                            </View>
+                            </View>
+                            </TouchableOpacity>
+                        )}/>
                     </View>
                 </View>
                 </View>
@@ -111,6 +105,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingTop: 100
     },
+
     background: {
         width: '100%',
         height: undefined,
@@ -129,23 +124,26 @@ const styles = StyleSheet.create({
         bottom: 0,
         
     },
+
     text1 : {
         fontFamily: 'Poppins_400Regular',
         fontSize: 14,
         textAlign: 'center',
-        marginTop: '-14%',
         color: '#ACACAC',  
     },
+    
     text2 : {
         fontFamily: 'Poppins_600SemiBold',
-        marginLeft: 37,
         fontSize: 16,
-        marginTop: '8%',
-        color: '#5E5E5E',  
+        color: '#5E5E5E',
+        alignSelf: 'flex-start' 
     },
+
     usercontainer:{
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 20
     },
+
     userdetails:{
         width: '100%',
         height: 100,
@@ -153,14 +151,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingTop: 15,
         paddingBottom: 15,
-        paddingLeft: 20,
-        paddingRight: 20,
     },
+
     images:{
         width: 60,
         height: 60,
 
     },
+
     textsection:{
         flexDirection: 'column',   
         justifyContent: 'center',
@@ -169,24 +167,30 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         width: 300,
     },
+
     usertext:{
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 5,
     },
+
     name:{
         fontSize: 14,
         fontFamily: 'Poppins_600SemiBold',
     },
+
     Timerequest:{
         color: '#ACACAC',
         fontSize: 12,
         fontFamily: 'Poppins_400Regular',
         paddingRight: 25,
     },
+
     userinfo:{
         fontSize: 14,
         color: '#ACACAC',
         
     }
+    
+
 })
