@@ -172,9 +172,9 @@ const styles = StyleSheet.create({
     },
     images: {
       width: '80%',
-      marginTop: '50%',
-      position: 'absolute',
-      marginLeft: 16
+      marginTop: '200%',
+      marginLeft: 16,
+      
     },
 
     user: {
