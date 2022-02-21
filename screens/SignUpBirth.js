@@ -7,6 +7,7 @@ import Background from '../assets/images/login-mobile-bg.svg'
 import LogoImg from '../assets/images/wl-logo2.png'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useSelector, useDispatch } from 'react-redux'
+import { Formik } from 'formik';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -15,14 +16,18 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import RadioButton from '../components/RadioButton';
+import { changeBirth } from '../actions/signUpActions';
 
 export default function SignUpBirth({navigation}) {
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
     const [mode, setMode] = useState('date');
+    const [gender, setGender] = useState()
+    const dispatch = useDispatch()
 
-    const firstName = useSelector(state => state.firstName)
-    const lastName = useSelector(state => state.lastName)
+    const onSelect = (childData) =>{
+        setGender(childData)
+    }
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -48,65 +53,81 @@ export default function SignUpBirth({navigation}) {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
-      };
+    };
 
+    const handleSubmit = () => {
+        const values = {
+            gender: gender,
+            date: date
+        }
+        console.log(values)
+        dispatch(changeBirth(values))
+        navigation.navigate('SignUpContract')
+        
+    }
 
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
         return (
-            <View style={styles.container}>
-                 <View style={styles.half}>
-                    <Background
-                        style={styles.background}
-                        resizeMode="cover" 
-                    />
-                </View>
-                <Image
-                    style={styles.splash}
-                    source={LogoImg}
-                    resizeMode="contain" 
-                />
-                <Text style={styles.text2}>
-                        WeLearn {firstName}
-                </Text>
-                <View style={styles.form}>
-                    <View style={styles.formHeader}>
-                        <Text style={styles.text}>
-                            Create a WeLearn Account
-                        </Text>
-                        <Text style={styles.text3}>
-                            Please provide the following information.
-                        </Text>
-                    </View>
-                    <TouchableOpacity
-                        style={styles.datePicker}
-                        onPress={showDatepicker}
-                    >
-                        <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
-                    </TouchableOpacity>
-                    <RadioButton data={data} />
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => navigation.navigate('SignUpContract')}
-                    >
-                        <Text style={styles.buttontext}> Continue</Text>
-                    </TouchableOpacity>
-                    {show && (
-                        <DateTimePicker
-                        testID="dateTimePicker"
-                        value={date}
-                        mode={mode}
-                        display="default"
-                        onChange={onChange}
+            <Formik
+                initialValues={{
+                    birthDate:'',
+                    gender:''}}
+                onSubmit={handleSubmit}
+            >
+                {({ handleChange, handleBlur, handleSubmit,values }) => (
+                    <View style={styles.container}>
+                        <View style={styles.half}>
+                            <Background
+                                style={styles.background}
+                                resizeMode="cover" 
+                            />
+                        </View>
+                        <Image
+                            style={styles.splash}
+                            source={LogoImg}
+                            resizeMode="contain" 
                         />
-                    )}
-                </View>
-                
-                
-            </View>
+                        <Text style={styles.text2}>
+                                WeLearn
+                        </Text>
+                        <View style={styles.form}>
+                            <View style={styles.formHeader}>
+                                <Text style={styles.text}>
+                                    Create a WeLearn Account
+                                </Text>
+                                <Text style={styles.text3}>
+                                    Please provide the following information.
+                                </Text>
+                            </View>
+                            <TouchableOpacity
+                                style={styles.datePicker}
+                                onPress={showDatepicker}
+                            >
+                                <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
+                            </TouchableOpacity>
+                            <RadioButton data={data} onSelect={onSelect}/>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={handleSubmit}
+                            >
+                                <Text style={styles.buttontext}> Continue</Text>
+                            </TouchableOpacity>
+                            {show && (
+                                <DateTimePicker
+                                testID="dateTimePicker"
+                                value={date}
+                                display="default"
+                                onChange={onChange}
+                                />
+                            )}
+                        </View>
+                    </View>     
+                )}
+            </Formik> 
+            
         )
     }
 }
