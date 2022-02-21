@@ -62,7 +62,7 @@ export default function SignUpBirth({navigation}) {
         }
         console.log(values)
         dispatch(changeBirth(values))
-        navigation.navigate('SignUpContract')
+        navigation.navigate('SignUpEmail')
         
     }
 

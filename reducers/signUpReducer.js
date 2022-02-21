@@ -1,10 +1,13 @@
-import { BIRTH_CHANGE, NAME_CHANGE } from "../constants";
+import { BIRTH_CHANGE, NAME_CHANGE, EMAIL_CHANGE, CONTACT_CHANGE } from "../constants";
 
 const initialState = {
     firstName: '',
     lastName: '',
     birthDate: '',
-    gender: ''
+    gender: '',
+    email: '',
+    password: '',
+    contactNumber: ''
 }
 
 const signUpReducer = (state = initialState, action) => {
@@ -18,6 +21,15 @@ const signUpReducer = (state = initialState, action) => {
             return {
                 birthDate:action.payload.birthDate,
                 gender:action.payload.gender
+            }
+        case EMAIL_CHANGE:
+            return {
+                email:action.payload.email,
+                password:action.payload.password
+            }
+        case CONTACT_CHANGE:
+            return {
+                contactNumber:action.payload.contactNumber
             }
         default:
             return state;

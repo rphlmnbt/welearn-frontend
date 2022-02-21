@@ -13,7 +13,6 @@ import BackWhite from './components/BackWhite';
 import BackBlack from './components/BackBlack';
 import SignUpPersonal from './screens/SignUpPersonal';
 import SignUpBirth from './screens/SignUpBirth';
-import SignUpContract from './screens/SignUpContract';
 import SignUpContact from './screens/SignUpContact';
 import SignUpSchool from './screens/SignUpSchool';
 import SignUpCourse from './screens/SignUpCourse';
@@ -28,6 +27,7 @@ import Details from './screens/Details';
 import UserReservations from './screens/UserReservations';
 import store from './store/store';
 import { Provider } from 'react-redux'
+import SignUpEmail from './screens/SignUpEmail';
 
 
 const Stack = createNativeStackNavigator();
@@ -77,8 +77,8 @@ function App() {
             options = {{headerTitle: () => null}}
           />
           <Stack.Screen 
-            name="SignUpContract" 
-            component={SignUpContract} 
+            name="SignUpEmail" 
+            component={SignUpEmail} 
             options = {{headerTitle: () => null}}
           />
           <Stack.Screen 

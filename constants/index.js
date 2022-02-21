@@ -1,3 +1,7 @@
 export const NAME_CHANGE = 'NAME_CHANGE'
 
 export const BIRTH_CHANGE = 'BIRTH_CHANGE'
+
+export const EMAIL_CHANGE = 'EMAIL_CHANGE'
+
+export const CONTACT_CHANGE = 'CONTACT_CHANGE'
