@@ -7,6 +7,7 @@ import CardBG from '../assets/images/card-bg1.png'
 import CardBGWh from '../assets/images/card-bg2.png'
 import LogoImg from '../assets/images/wl-logo2.png'
 import RadioButton from '../components/RadioButton';
+import { questions } from '../assets/questions/questions';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -14,6 +15,8 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import { useDispatch } from 'react-redux';
+import { changeHabits } from '../actions/signUpActions';
 
 export default function SignUpSurvey({navigation}) {
 
@@ -27,16 +30,6 @@ export default function SignUpSurvey({navigation}) {
     const [mathSkills, setMathSkills] = useState(0)
     const [radioValue, setRadioValue] = useState(0)
     const [stats, setStats] = useState([])
-
-    useEffect(() => {
-        console.log("Time Management " + timeManagement)
-        console.log("Study Environment " + studyEnvironment)
-        console.log("Exam Preparation " + examPreparation)
-        console.log("Note Taking " + noteTaking)
-        console.log("Reading Skills " + readingSkills)
-        console.log("Writing Skills " + writingSkills)
-        console.log("Math Skills " + mathSkills)
-    }, [mathSkills])
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -53,56 +46,7 @@ export default function SignUpSurvey({navigation}) {
         { value: 5 }
     ];
 
-    const questions = [
-        "For each semester do you make a master schedule?",
-        "Do you update this schedule weekly/ or daily?",
-        "Do you keep to this schedule?",
-        "Do you set aside some time for exercise and connecting with your friends?",
-        "Do you sleep for six hours at least each night?",
-        "Do you allot time to study for every hour in class at least 2 hours?",
-        "Do you make your assignments and finish it on time?",
-        "Do you attend your classes regularly?",
-        "Do you study at the same time regularly?",
-        "Do you have a special area where you always go to study?",
-        "Is your study area away from noise and any distractions?",
-        "When you study, do you have all your supplies near you?",
-        "Is your study area comfortable?",
-        "Can you study without getting up, waist time or taking snack or watching TV or take phone breaks for at least a half hour? ",
-        "When your friends know you want to study, do they leave you alone?",
-        "Do you use the time between classes to study?",
-        "For each class, do you study every day?",
-        "For major exams, do you start reviewing or examining materials at least 3 days in advance?",
-        "For study, do you belong to a study students' group?",
-        "If there is an extra help lessons or provided by the instructor, do you attend it?",
-        "At exam time, do you know in advanced the sort of tests you will take and be familiar with how to prepare for different types of tests?",
-        "Are you able to anticipate the types of questions that will come on test?",
-        "Can you take your test at the allotted period of time?",
-        "Do you examine the test with the teacher and analyze it to see  where  you  had  problems  if  you  do  not  do  well  on  a test?",
-        "In class, are you able to understand the concepts, take notes and follow up with the instructor at the same time?",
-        "Do you have an effective system of rules concerning note taking?",
-        "After each class, do you review your notes in a preferred way?",
-        "Do you know what are theimportant cues that you have to write them down?",
-        "When you read class materials do you make notes, in addition to highlighting?",
-        "Can you write class notes or notes from texts by your own words?",
-        "For history-type material, can you read and learn at 12-15 pages per hour rate?",
-        "Do youhave the material read before the lectureand maintain the readings for all your classes?",
-        "The material you read, can you understand it without re-reading it for a secondor third time?",
-        "Do you read the chapter headings and outlines first when reading a text?",
-        "Reading for literature, social science, or science classes, for those do you adjusts your reading styles?",
-        "When you are most awake during the time of day, do you do your study-reading?",
-        "Do you control and are comfortable with the rules of English grammar, punctuation, and spelling?",
-        "For writing an assignment, do you have a clear idea of what the instructor wants from you?",
-        "When you want to write a paper, do you first make an outline of it?",
-        "Do you know how to use the library or Internet as a source for you and search your topic if you are assigned a research paper?",
-        "Do you start and complete your research in time if you are asked to without delaying it?",
-        "In writing, are you able to communicate effectively through it?",
-        "When you enroll in math class, do you have a good control of the requirement skills forit?",
-        "Do you finish your homework assignments always and work the problems and solve it before looking at the solutions?",
-        "When you don‟t understand a concept in class, do you participate and ask questions?",
-        "Do you miss two math classes at most per a semester?",
-        "Can you explain the solution of all the problems on a math test to another student who didn‟t know how to solve it?",
-        "Do you have enough time to review for calculation errors and 'stupid' mistakes after taking your tests, like misplaced + or -signs?",
-    ]
+    const dispatch = useDispatch()
 
     const onSelect = (childData) =>{
         setRadioValue(childData)
@@ -119,7 +63,6 @@ export default function SignUpSurvey({navigation}) {
         if (question == 7 || question == 15 || question == 23 || question == 29 || question == 35 || question == 41 || question == 47) {
             const average = arr => arr.reduce((a,b) => a + b, 0) / arr.length;
             const avg = average(stats).toFixed(0)
-            console.log(avg)
             if (question == 7) {
                 setTimeManagement(avg)          
             } else if (question == 15) {
@@ -134,14 +77,34 @@ export default function SignUpSurvey({navigation}) {
                 setWritingSkills(avg)
             } else if (question == 47) {
                 setMathSkills(avg)
-                navigation.navigate('LoginHome') 
+                handleSubmit()
             }
             setStats([])
         }
         if (question != 47) {
             setQuestion(question + 1)
         }
+    }
 
+    const handleSubmit = () => {
+        // console.log("Time Management " + timeManagement)
+        // console.log("Study Environment " + studyEnvironment)
+        // console.log("Exam Preparation " + examPreparation)
+        // console.log("Note Taking " + noteTaking)
+        // console.log("Reading Skills " + readingSkills)
+        // console.log("Writing Skills " + writingSkills)
+        // console.log("Math Skills " + mathSkills)
+        const values = {
+            q1: timeManagement,
+            q2: studyEnvironment,
+            q3: examPreparation,
+            q4: noteTaking,
+            q5: readingSkills,
+            q6: writingSkills,
+            q7: mathSkills
+        }
+        console.log(values)
+        dispatch(changeHabits(values))
     }
 
     if (!fontsLoaded) {
