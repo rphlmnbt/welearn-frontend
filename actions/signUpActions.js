@@ -1,4 +1,4 @@
-import { NAME_CHANGE, BIRTH_CHANGE, EMAIL_CHANGE, CONTACT_CHANGE, SCHOOL_CHANGE, COURSE_CHANGE } from "../constants";
+import { NAME_CHANGE, BIRTH_CHANGE, EMAIL_CHANGE, CONTACT_CHANGE, SCHOOL_CHANGE, COURSE_CHANGE, HABITS_CHANGE } from "../constants";
 
 export const changeName = (values) => ({
     type: NAME_CHANGE,
@@ -27,5 +27,10 @@ export const changeSchool = (values) => ({
 
 export const changeCourse = (values) => ({
     type: COURSE_CHANGE,
+    payload: values
+})
+
+export const changeHabits = (values) => ({
+    type: HABITS_CHANGE,
     payload: values
 })
