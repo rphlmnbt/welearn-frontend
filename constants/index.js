@@ -5,3 +5,5 @@ export const BIRTH_CHANGE = 'BIRTH_CHANGE'
 export const EMAIL_CHANGE = 'EMAIL_CHANGE'
 
 export const CONTACT_CHANGE = 'CONTACT_CHANGE'
+
+export const SCHOOL_CHANGE  = 'SCHOOL_CHANGE'

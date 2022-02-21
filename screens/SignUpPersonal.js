@@ -47,8 +47,8 @@ export default function SignUpPersonal({navigation}) {
         return (
             <Formik
                 initialValues={{
-                    lastName:lastName,
-                    firstName:firstName}}
+                    lastName:'',
+                    firstName:''}}
                 onSubmit={handleSubmit}
             >
                 {({ handleChange, handleBlur, handleSubmit,values }) => (
