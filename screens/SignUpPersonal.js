@@ -22,8 +22,6 @@ export default function SignUpPersonal({navigation}) {
 
     const firstName = useSelector(state => state.firstName)
     const lastName = useSelector(state => state.lastName)
-
-    const dispatch = useDispatch()
    
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -32,14 +30,14 @@ export default function SignUpPersonal({navigation}) {
         Poppins_700Bold,
     });
 
+    const dispatch = useDispatch()
+
     const handleSubmit = values => {
         console.log(values)
         dispatch(changeName(values))
         navigation.navigate('SignUpBirth')
         
     }
-
-    
 
     if (!fontsLoaded) {
         return <AppLoading />;

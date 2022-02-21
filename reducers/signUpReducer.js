@@ -1,4 +1,4 @@
-import { BIRTH_CHANGE, NAME_CHANGE, EMAIL_CHANGE, CONTACT_CHANGE, SCHOOL_CHANGE } from "../constants";
+import { BIRTH_CHANGE, NAME_CHANGE, EMAIL_CHANGE, CONTACT_CHANGE, SCHOOL_CHANGE, COURSE_CHANGE } from "../constants";
 
 const initialState = {
     firstName: '',
@@ -8,7 +8,9 @@ const initialState = {
     email: '',
     password: '',
     contactNumber: '',
-    university: ''
+    university: '',
+    course: '',
+    yearLevel: ''
 }
 
 const signUpReducer = (state = initialState, action) => {
@@ -35,6 +37,11 @@ const signUpReducer = (state = initialState, action) => {
         case SCHOOL_CHANGE:
             return {
                 university:action.payload.university
+            }
+        case COURSE_CHANGE:
+            return {
+                course:action.payload.course,
+                yearLevel:action.payload.yearLevel
             }
         default:
             return state;

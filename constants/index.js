@@ -7,3 +7,5 @@ export const EMAIL_CHANGE = 'EMAIL_CHANGE'
 export const CONTACT_CHANGE = 'CONTACT_CHANGE'
 
 export const SCHOOL_CHANGE  = 'SCHOOL_CHANGE'
+
+export const COURSE_CHANGE = 'COURSE_CHANGE'
