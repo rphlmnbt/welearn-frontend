@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         height: undefined,
         aspectRatio: 428/653,
         position: 'absolute',
-        top: 0
+        bottom: 0
         
     },
     half: {

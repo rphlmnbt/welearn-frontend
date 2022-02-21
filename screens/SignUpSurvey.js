@@ -15,8 +15,9 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import { useDispatch } from 'react-redux';
-import { changeHabits } from '../actions/signUpActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeHabits, signUp } from '../actions/signUpActions';
+import authService from '../services/auth.service';
 
 export default function SignUpSurvey({navigation}) {
 
@@ -30,6 +31,17 @@ export default function SignUpSurvey({navigation}) {
     const [mathSkills, setMathSkills] = useState(0)
     const [radioValue, setRadioValue] = useState(0)
     const [stats, setStats] = useState([])
+    const [finished, setFinished] = useState(false)
+    const firstName = useSelector(state => state.firstName)
+    const lastName = useSelector(state => state.lastName)
+    const birthDate = useSelector(state => state.birthDate)
+    const gender = useSelector(state => state.gender)
+    const email = useSelector(state => state.email)
+    const password = useSelector(state => state.password)
+    const contactNumber = useSelector(state => state.contactNumber)
+    const university = useSelector(state => state.university)
+    const course = useSelector(state => state.course)
+    const yearLevel = useSelector(state => state.yearLevel)
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -51,6 +63,12 @@ export default function SignUpSurvey({navigation}) {
     const onSelect = (childData) =>{
         setRadioValue(childData)
     }
+
+    useEffect(() => {
+        if (finished == true) {
+            handleSubmit()
+        }
+    }, [finished])
 
     const [question, setQuestion] = useState(0)
 
@@ -77,7 +95,7 @@ export default function SignUpSurvey({navigation}) {
                 setWritingSkills(avg)
             } else if (question == 47) {
                 setMathSkills(avg)
-                handleSubmit()
+                setFinished(true)
             }
             setStats([])
         }
@@ -87,13 +105,13 @@ export default function SignUpSurvey({navigation}) {
     }
 
     const handleSubmit = () => {
-        // console.log("Time Management " + timeManagement)
-        // console.log("Study Environment " + studyEnvironment)
-        // console.log("Exam Preparation " + examPreparation)
-        // console.log("Note Taking " + noteTaking)
-        // console.log("Reading Skills " + readingSkills)
-        // console.log("Writing Skills " + writingSkills)
-        // console.log("Math Skills " + mathSkills)
+        console.log("Time Management " + timeManagement)
+        console.log("Study Environment " + studyEnvironment)
+        console.log("Exam Preparation " + examPreparation)
+        console.log("Note Taking " + noteTaking)
+        console.log("Reading Skills " + readingSkills)
+        console.log("Writing Skills " + writingSkills)
+        console.log("Math Skills " + mathSkills)
         const values = {
             q1: timeManagement,
             q2: studyEnvironment,
@@ -103,8 +121,48 @@ export default function SignUpSurvey({navigation}) {
             q6: writingSkills,
             q7: mathSkills
         }
-        console.log(values)
         dispatch(changeHabits(values))
+        signUp()
+        
+    }
+
+    const signUp = () => {
+        console.log(  firstName,
+            lastName,
+            birthDate,
+            gender,
+            email,
+            password,
+            contactNumber,
+            university,
+            course,
+            yearLevel,
+            timeManagement,
+            studyEnvironment,
+            examPreparation,
+            noteTaking,
+            readingSkills,
+            writingSkills,
+            mathSkills)
+        authService.signUp(
+            firstName,
+            lastName,
+            birthDate,
+            gender,
+            email,
+            password,
+            contactNumber,
+            university,
+            course,
+            yearLevel,
+            timeManagement,
+            studyEnvironment,
+            examPreparation,
+            noteTaking,
+            readingSkills,
+            writingSkills,
+            mathSkills
+        ) 
     }
 
     if (!fontsLoaded) {
