@@ -58,14 +58,14 @@ export default function SignUpBirth({navigation}) {
     const handleSubmit = () => {
         const values = {
             gender: gender,
-            date: date
+            birthDate: date
         }
         console.log(values)
         dispatch(changeBirth(values))
         navigation.navigate('SignUpEmail')
         
     }
-
+    const firstName = useSelector(state => state.firstName)
 
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -91,7 +91,7 @@ export default function SignUpBirth({navigation}) {
                             resizeMode="contain" 
                         />
                         <Text style={styles.text2}>
-                                WeLearn
+                                WeLearn{firstName}
                         </Text>
                         <View style={styles.form}>
                             <View style={styles.formHeader}>

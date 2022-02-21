@@ -1,4 +1,5 @@
 import { NAME_CHANGE, BIRTH_CHANGE, EMAIL_CHANGE, CONTACT_CHANGE, SCHOOL_CHANGE, COURSE_CHANGE, HABITS_CHANGE } from "../constants";
+import axios from 'axios'
 
 export const changeName = (values) => ({
     type: NAME_CHANGE,
