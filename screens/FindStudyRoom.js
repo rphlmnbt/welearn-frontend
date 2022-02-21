@@ -124,7 +124,7 @@ import {
                 <View style={styles.buttonstyle}>
                         <TouchableOpacity
                             style={styles.button}
-                            onPress={() => navigation.navigate('PickStudyRoom')}
+                            onPress={() => navigation.navigate('UserDashboard')}
                             >
                             <Text style={styles.buttontext}>Submit</Text>
                         </TouchableOpacity>

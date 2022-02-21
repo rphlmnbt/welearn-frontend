@@ -4,6 +4,7 @@ import Background from '../assets/images/find-bg.svg'
 import AvatarImg from '../assets/images/avatar.png'
 import AppLoading from 'expo-app-loading';
 import * as Progress from 'react-native-progress';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -16,7 +17,7 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 
-  export default function FindPartner({navigation}) {
+  export default function Details({navigation}) {
     const categories = [
         "Time Management",
         "Study Environment",
@@ -98,7 +99,7 @@ import {
                     <TouchableOpacity onPress={() => navigation.navigate('')}>
                             <Image
                             style={styles.images}
-                            source={require('../assets/images/next.png')} />
+                            source={require('../assets/images/remove.png')} />
                     </TouchableOpacity>
                 </View>
             </View>

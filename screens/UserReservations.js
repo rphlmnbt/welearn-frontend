@@ -11,43 +11,40 @@ import {
   } from '@expo-google-fonts/poppins'
 
   const userdata = [
-      {
-      id: '1',
-      username: 'Malagungdili',
-      userimage: require('../assets/images/user-1.png'),
-      time: '08:33 PM',
-      info: 'Course, Year Level',
-      },
-      
-      {
-      id: '2',
-      username: 'Makayabongdili',
-      userimage: require('../assets/images/user-2.png'),
-      time: '08:00 PM',
-      info: 'Course, Year Level',
-      },
-
-      {
+    {
+        id: '1',
+        roomNumber: 'Study Room 1',
+        image: require('../assets/images/room.png'),
+        time: '3:00 PM - 4:00 PM',
+        info: 'SFJ Library',
+    },
+    {
+        id: '2',
+        roomNumber: 'Study Room 2',
+        image: require('../assets/images/room.png'),
+        time: '4:00 PM - 5:00 PM',
+        info: 'SFJ Library',
+    },
+    {
         id: '3',
-        username: 'Masantingdili',
-        userimage: require('../assets/images/user-3.png'),
-        time: '10:00 PM',
-        info: 'Course, Year Level',
-      },
-
-      {
+        roomNumber: 'Study Room 3',
+        image: require('../assets/images/room.png'),
+        time: '5:00 PM - 6:00 PM',
+        info: 'SFJ Library',
+    },
+    {
         id: '4',
-        username: 'Biasangdili',
-        userimage: require('../assets/images/user-4.png'),
-        time: '10:30 PM',
-        info: 'Course, Year Level',
-      },
+        roomNumber: 'Study Room 4',
+        image: require('../assets/images/room.png'),
+        time: '6:00 PM - 7:00 PM',
+        info: 'SFJ Library',
+    }
 
   ];
 
 
 
-export default function Requests({navigation}) {
+export default function UserReservations({navigation}) {
    
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -67,20 +64,19 @@ export default function Requests({navigation}) {
                         resizeMode="cover" 
                     />
                     <View style={styles.usercontainer}>             
-                        <Text style={styles.text1}>Chat</Text>
-                        <Text style={styles.text2}>Requests</Text>
+                        <Text style={styles.text2}>Study Room Reservations</Text>
                         <FlatList
                         data = {userdata}
                         keyExtractor={item=>item.id}
                         renderItem={({item}) => (
-                            <TouchableOpacity onPress={() => navigation.navigate('Details')}>
+                            <TouchableOpacity>
                             <View style={styles.userdetails}>
                             <Image
                             style={styles.images}
-                            source={item.userimage} />
+                            source={item.image} />
                             <View style={styles.textsection}>
                                 <View style={styles.usertext}>
-                                    <Text style={styles.name}>{item.username}</Text>
+                                    <Text style={styles.name}>{item.roomNumber}</Text>
                                     <Text style={styles.Timerequest}>{item.time}</Text>
                                 </View>
                                 <Text  style={styles.userinfo}>{item.info}</Text>
