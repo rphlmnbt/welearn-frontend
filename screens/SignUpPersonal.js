@@ -8,6 +8,8 @@ import LogoImg from '../assets/images/wl-logo2.png'
 import RadioButton from '../components/RadioButton';
 import Header from '../components/Header';
 import { Formik } from 'formik';
+import { useSelector, useDispatch } from 'react-redux'
+import { changeName } from '../actions/signUpActions'
 import { 
     useFonts,
     Poppins_400Regular,
@@ -18,8 +20,10 @@ import {
 
 export default function SignUpPersonal({navigation}) {
 
-    const [firstName, setFirstName] = useState(null)
-    const [lastName, setLastName] = useState(null)
+    const firstName = useSelector(state => state.firstName)
+    const lastName = useSelector(state => state.lastName)
+
+    const dispatch = useDispatch()
    
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -28,10 +32,14 @@ export default function SignUpPersonal({navigation}) {
         Poppins_700Bold,
     });
 
-    const handleSubmit = (values) => {
+    const handleSubmit = values => {
         console.log(values)
+        dispatch(changeName(values))
         navigation.navigate('SignUpBirth')
+        
     }
+
+    
 
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -39,8 +47,8 @@ export default function SignUpPersonal({navigation}) {
         return (
             <Formik
                 initialValues={{
-                    firstName:'',
-                    lastName:''}}
+                    lastName:lastName,
+                    firstName:firstName}}
                 onSubmit={handleSubmit}
             >
                 {({ handleChange, handleBlur, handleSubmit,values }) => (

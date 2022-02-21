@@ -6,6 +6,7 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Background from '../assets/images/login-mobile-bg.svg'
 import LogoImg from '../assets/images/wl-logo2.png'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useSelector, useDispatch } from 'react-redux'
 import { 
     useFonts,
     Poppins_400Regular,
@@ -19,6 +20,9 @@ export default function SignUpBirth({navigation}) {
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
     const [mode, setMode] = useState('date');
+
+    const firstName = useSelector(state => state.firstName)
+    const lastName = useSelector(state => state.lastName)
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -66,7 +70,7 @@ export default function SignUpBirth({navigation}) {
                     resizeMode="contain" 
                 />
                 <Text style={styles.text2}>
-                        WeLearn
+                        WeLearn {firstName}
                 </Text>
                 <View style={styles.form}>
                     <View style={styles.formHeader}>

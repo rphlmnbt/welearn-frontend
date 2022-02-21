@@ -26,129 +26,134 @@ import PickStudyRoom from './screens/PickStudyRoom';
 import Requests from './screens/Requests';
 import Details from './screens/Details';
 import UserReservations from './screens/UserReservations';
+import store from './store/store';
+import { Provider } from 'react-redux'
 
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={Header}
-        initialRouteName="LoginHome"
-      >
-        <Stack.Screen 
-          name="LoginHome" 
-          component={LoginHome} 
-          options = {{headerTitle: () => null}}
-        />
-        <Stack.Screen 
-          name="LoginEmail" 
-          component={LoginEmail} 
-          options = {{headerTitle: () => null,
-            headerRight: () => <SecondaryLogo />,
-            headerLeft: () => <BackWhite />}}
-        />
-        <Stack.Screen 
-          name="LoginMobile" 
-          component={LoginMobile} 
-          options = {{headerTitle: () => null,
-            headerRight: () => <SecondaryLogoBlack />,
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={Header}
+          initialRouteName="LoginHome"
+        >
+          <Stack.Screen 
+            name="LoginHome" 
+            component={LoginHome} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="LoginEmail" 
+            component={LoginEmail} 
+            options = {{headerTitle: () => null,
+              headerRight: () => <SecondaryLogo />,
+              headerLeft: () => <BackWhite />}}
+          />
+          <Stack.Screen 
+            name="LoginMobile" 
+            component={LoginMobile} 
+            options = {{headerTitle: () => null,
+              headerRight: () => <SecondaryLogoBlack />,
+              headerLeft: () => <BackBlack />}}
+          />
+          <Stack.Screen 
+            name="LoginMobilePin" 
+            component={LoginMobilePin} 
+            options = {{headerTitle: () => null,
+              headerRight: () => <SecondaryLogoBlack />,
+              headerLeft: () => <BackBlack />}}
+          />
+          <Stack.Screen 
+            name="SignUpPersonal" 
+            component={SignUpPersonal} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="SignUpBirth" 
+            component={SignUpBirth} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="SignUpContract" 
+            component={SignUpContract} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="SignUpContact" 
+            component={SignUpContact} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="SignUpSchool" 
+            component={SignUpSchool} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="SignUpCourse" 
+            component={SignUpCourse} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="SignUpSurveyIntro" 
+            component={SignUpSurveyIntro} 
+            options = {{headerTitle: () => null,
+              headerRight: () => <SecondaryLogoBlack />,
+              headerLeft: () => <BackBlack />}}
+          />
+          <Stack.Screen 
+            name="SignUpSurvey" 
+            component={SignUpSurvey} 
+            options = {{headerTitle: () => null,
+              headerLeft: () => <BackBlack />}}
+          />
+          <Stack.Screen 
+            name="UserDashboard" 
+            component={UserDashboard} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="FindPartner" 
+            component={FindPartner} 
+            options = {{headerTitle: () => null,
+              headerRight: () => <SecondaryLogo />,
+              headerLeft: () => <BackWhite />}}
+          />
+          <Stack.Screen 
+            name="FindStudyRoom" 
+            component={FindStudyRoom} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="PickStudyRoom" 
+            component={PickStudyRoom} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="Requests" 
+            component={Requests} 
+            options = {{headerTitle: () => null,
             headerLeft: () => <BackBlack />}}
-        />
-         <Stack.Screen 
-          name="LoginMobilePin" 
-          component={LoginMobilePin} 
-          options = {{headerTitle: () => null,
-            headerRight: () => <SecondaryLogoBlack />,
+          />
+          <Stack.Screen 
+            name="Details" 
+            component={Details} 
+            options = {{headerTitle: () => null,
+              headerRight: () => <SecondaryLogo />,
+              headerLeft: () => <BackWhite />}}
+          />
+          <Stack.Screen
+            name="UserReservations" 
+            component={UserReservations} 
+            options = {{headerTitle: () => null,
             headerLeft: () => <BackBlack />}}
-        />
-        <Stack.Screen 
-          name="SignUpPersonal" 
-          component={SignUpPersonal} 
-          options = {{headerTitle: () => null}}
-        />
-        <Stack.Screen 
-          name="SignUpBirth" 
-          component={SignUpBirth} 
-          options = {{headerTitle: () => null}}
-        />
-        <Stack.Screen 
-          name="SignUpContract" 
-          component={SignUpContract} 
-          options = {{headerTitle: () => null}}
-        />
-         <Stack.Screen 
-          name="SignUpContact" 
-          component={SignUpContact} 
-          options = {{headerTitle: () => null}}
-        />
-        <Stack.Screen 
-          name="SignUpSchool" 
-          component={SignUpSchool} 
-          options = {{headerTitle: () => null}}
-        />
-        <Stack.Screen 
-          name="SignUpCourse" 
-          component={SignUpCourse} 
-          options = {{headerTitle: () => null}}
-        />
-        <Stack.Screen 
-          name="SignUpSurveyIntro" 
-          component={SignUpSurveyIntro} 
-          options = {{headerTitle: () => null,
-            headerRight: () => <SecondaryLogoBlack />,
-            headerLeft: () => <BackBlack />}}
-        />
-        <Stack.Screen 
-          name="SignUpSurvey" 
-          component={SignUpSurvey} 
-          options = {{headerTitle: () => null,
-            headerLeft: () => <BackBlack />}}
-        />
-        <Stack.Screen 
-          name="UserDashboard" 
-          component={UserDashboard} 
-          options = {{headerTitle: () => null}}
-        />
-        <Stack.Screen 
-          name="FindPartner" 
-          component={FindPartner} 
-          options = {{headerTitle: () => null,
-            headerRight: () => <SecondaryLogo />,
-            headerLeft: () => <BackWhite />}}
-        />
-        <Stack.Screen 
-          name="FindStudyRoom" 
-          component={FindStudyRoom} 
-          options = {{headerTitle: () => null}}
-        />
-        <Stack.Screen 
-          name="PickStudyRoom" 
-          component={PickStudyRoom} 
-          options = {{headerTitle: () => null}}
-        />
-        <Stack.Screen 
-          name="Requests" 
-          component={Requests} 
-          options = {{headerTitle: () => null,
-          headerLeft: () => <BackBlack />}}
-        />
-        <Stack.Screen 
-          name="Details" 
-          component={Details} 
-          options = {{headerTitle: () => null,
-            headerRight: () => <SecondaryLogo />,
-            headerLeft: () => <BackWhite />}}
-        />
-        <Stack.Screen
-          name="UserReservations" 
-          component={UserReservations} 
-          options = {{headerTitle: () => null,
-          headerLeft: () => <BackBlack />}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
+
   );
 }
 

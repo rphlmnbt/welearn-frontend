@@ -1,0 +1,1 @@
+export const NAME_CHANGE = 'NAME_CHANGE'
