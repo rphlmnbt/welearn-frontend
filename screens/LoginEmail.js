@@ -5,7 +5,7 @@ import Background from '../assets/images/login-email-bg.svg'
 import LoginLogoImg from '../assets/images/wl-logo.png'
 import AppLoading from 'expo-app-loading';
 import { Formik } from 'formik';
-import ModalButton from '../components/ModalButton';
+import ModalButton from '../components/ModalButton.js';
 
 
 import { 
@@ -30,7 +30,7 @@ function LoginEmail({navigation}) {
                 navigation.navigate('UserDashboard')
             }
             else {
-                
+                navigation.navigate('LoginHome')
             }
         })
         .catch(error => {
