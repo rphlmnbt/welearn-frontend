@@ -5,7 +5,6 @@ import Background from '../assets/images/login-email-bg.svg'
 import LoginLogoImg from '../assets/images/wl-logo.png'
 import AppLoading from 'expo-app-loading';
 import { Formik } from 'formik';
-import ModalButton from '../components/ModalButton.js';
 
 
 import { 
@@ -26,6 +25,7 @@ function LoginEmail({navigation}) {
     const handleSubmit = (values) => {
         authService.signIn(values.email, values.password)
         .then(response => {
+            console.log(response)
             if(response.status == 200){
                 navigation.navigate('UserDashboard')
             }
@@ -34,6 +34,8 @@ function LoginEmail({navigation}) {
             }
         })
         .catch(error => {
+            console.log(error)
+            navigation.navigate('LoginHome')
             //TODO: handle the error when implemented
         })
         
@@ -70,7 +72,6 @@ function LoginEmail({navigation}) {
                             placeholder="Email"
                             autoCapitalize="none"
                             style={styles.textinput1}
-                            autoCapitalize="none"
                             onChangeText={handleChange('email')}
                             onBlur={handleBlur('email')}
                         />
@@ -93,7 +94,6 @@ function LoginEmail({navigation}) {
                     </View>
                     <View style={{marginTop: 20}}>
                             <TouchableOpacity
-                                className='ModalButton'
                                 style={styles.button}
                                 onPress={handleSubmit}
                             >

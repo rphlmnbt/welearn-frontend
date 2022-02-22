@@ -28,7 +28,7 @@ import UserReservations from './screens/UserReservations';
 import store from './store/store';
 import { Provider } from 'react-redux'
 import SignUpEmail from './screens/SignUpEmail';
-
+import Settings from './screens/Settings';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,7 +38,7 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={Header}
-          initialRouteName="LoginHome"
+          initialRouteName="Settings"
         >
           <Stack.Screen 
             name="LoginHome" 
@@ -149,6 +149,11 @@ function App() {
             component={UserReservations} 
             options = {{headerTitle: () => null,
             headerLeft: () => <BackBlack />}}
+          />
+          <Stack.Screen
+            name="Settings" 
+            component={Settings} 
+            options = {{headerTitle: () => null}}
           />
         </Stack.Navigator>
       </NavigationContainer>
