@@ -12,15 +12,38 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import { TextInput } from 'react-native-gesture-handler';
+import BottomNav from '../components/BottomNav';
+import * as ImagePicker from 'expo-image-picker'
 
   export default function Settings({navigation}) {
-    const [modalVisible, setModalVisible] = useState(false);
+    const [statusModal, setStatusModal] = useState(false);
+    const [interestModal, setInterestModal] = useState(false);
+    const [image, setImage] = useState(null);
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [1,1],
+          quality: 1,
+        });
+    
+        console.log(result);
+    
+        if (!result.cancelled) {
+          setImage(result.uri);
+        }
+      };
+
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -29,22 +52,38 @@ import {
                  <Modal
                     animationType="slide"
                     transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                    setModalVisible(!modalVisible);
-                    }}
+                    visible={statusModal}
                 >
                     <View style={styles.modalContainer}>
                         <Text style={styles.text4}>Set Status</Text>
-                        <TouchableOpacity style={styles.settingsItem}  onPress={() => setModalVisible(true)}>
+                        <TouchableOpacity style={styles.settingsItem}  onPress={() => setStatusModal(false)}>
                             <FontAwesomeIcon icon={faCircle} size={15} color={'#22C382'} style={{alignSelf: 'center'}}/>
                             <Text style={styles.text5}>Online</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.settingsItem}  onPress={() => setModalVisible(true)}>
+                        <TouchableOpacity style={styles.settingsItem}  onPress={() => setStatusModal(false)}>
                             <FontAwesomeIcon icon={faCircle} size={15} color={'#D43455'} style={{alignSelf: 'center'}}/>
                             <Text style={styles.text5}>Offline</Text>
                         </TouchableOpacity>
+                    </View>
+                </Modal>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={interestModal}
+                >
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.text4}>Set Interests</Text>
+                        <TextInput
+                            placeholder="Interests"
+                            autoCapitalize="none"
+                            style={styles.textinput1}
+                        />
+                         <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => setInterestModal(false)}
+                            >
+                                <Text style={styles.buttontext}> Continue</Text>
+                            </TouchableOpacity>
                     </View>
                 </Modal>
                 <View style={styles.half}>
@@ -63,49 +102,28 @@ import {
                         <Text style={styles.text3}>Interests</Text>
                     </View>              
                 </View>
-               <View style={styles.settingsContainer}>
-                <Text style={styles.text4}>
-                      USER SETTINGS
-                  </Text>
-                    <TouchableOpacity style={styles.settingsItem}  onPress={() => setModalVisible(true)}>
-                        <FontAwesomeIcon icon={faUserCircle} size={30} color={'#ACACAC'}/>
-                        <Text style={styles.text5}>Set User Status</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.settingsItem} onPress={() => navigation.navigate('FindPartner')}>
-                        <FontAwesomeIcon icon={faBook} size={30} color={'#ACACAC'}/>
-                        <Text style={styles.text5}>Set Your Interests</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.settingsItem} onPress={() => navigation.navigate('FindPartner')}>
-                        <FontAwesomeIcon icon={faImage} size={30} color={'#ACACAC'}/>
-                        <Text style={styles.text5}>Change Profile Picture</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.settingsItem} onPress={() => navigation.navigate('FindPartner')}>
-                        <FontAwesomeIcon icon={faSignOutAlt} size={30} color={'#EF4765'}/>
-                        <Text style={styles.text6}>Log Out</Text>
-                    </TouchableOpacity>
-               </View>
-                <View style={styles.menucontainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('FindPartner')}>
-                        <Image
-                        style={styles.images}
-                        source={require('../assets/images/user-plus.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('UserReservations')}>
-                        <Image
-                        style={styles.images}
-                        source={require('../assets/images/table.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('Requests')}>
-                        <Image
-                        style={styles.images}
-                        source={require('../assets/images/people-fill.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('LoginHome')}>
-                        <Image
-                        style={styles.images}
-                        source={require('../assets/images/logout.png')} />
-                    </TouchableOpacity>
-                </View>  
+                <View style={styles.settingsContainer}>
+                    <Text style={styles.text4}>
+                        USER SETTINGS
+                    </Text>
+                        <TouchableOpacity style={styles.settingsItem}  onPress={() => setStatusModal(true)}>
+                            <FontAwesomeIcon icon={faUserCircle} size={30} color={'#ACACAC'}/>
+                            <Text style={styles.text5}>Set User Status</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.settingsItem} onPress={() => setInterestModal(true)}>
+                            <FontAwesomeIcon icon={faBook} size={30} color={'#ACACAC'}/>
+                            <Text style={styles.text5}>Set Your Interests</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.settingsItem} onPress={pickImage}>
+                            <FontAwesomeIcon icon={faImage} size={30} color={'#ACACAC'}/>
+                            <Text style={styles.text5}>Change Profile Picture</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.settingsItem} onPress={() => navigation.navigate('LoginHome')}>
+                            <FontAwesomeIcon icon={faSignOutAlt} size={30} color={'#EF4765'}/>
+                            <Text style={styles.text6}>Log Out</Text>
+                        </TouchableOpacity>
+                </View>
+                <BottomNav/>
             </View>
         );
     }
@@ -131,7 +149,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 20,
-        zIndex:5
+        zIndex:5,
+        alignSelf: 'center'
     },
     buttontext: {
         color: 'white',
@@ -250,5 +269,13 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5
-    }
+    },
+    textinput1:{
+        borderWidth: 1,
+        borderColor: '#ACACAC',
+        borderRadius: 5,
+        padding:8,
+        width: '100%',
+        marginTop: 10
+    },
 });

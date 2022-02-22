@@ -9,6 +9,7 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import BottomNav from '../components/BottomNav';
 
   const userdata = [
     {
@@ -86,6 +87,7 @@ export default function UserReservations({navigation}) {
                         )}/>
                     </View>
                 </View>
+                <BottomNav />
                 </View>
                 
         )

@@ -12,6 +12,7 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import BottomNav from '../components/BottomNav';
 
   export default function UserDashboard({navigation}) {
     let [fontsLoaded] = useFonts({
@@ -74,28 +75,7 @@ import {
                   </Text>
                   <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
                 </View>
-                <View style={styles.menucontainer}>
-                  <TouchableOpacity onPress={() => navigation.navigate('FindPartner')}>
-                    <Image
-                      style={styles.images}
-                      source={require('../assets/images/user-plus.png')} />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => navigation.navigate('UserReservations')}>
-                    <Image
-                      style={styles.images}
-                      source={require('../assets/images/table.png')} />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => navigation.navigate('Requests')}>
-                    <Image
-                      style={styles.images}
-                      source={require('../assets/images/people-fill.png')} />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => navigation.navigate('LoginHome')}>
-                    <Image
-                      style={styles.images}
-                      source={require('../assets/images/logout.png')} />
-                  </TouchableOpacity>
-                </View>  
+                <BottomNav /> 
             </View>
         );
     }
