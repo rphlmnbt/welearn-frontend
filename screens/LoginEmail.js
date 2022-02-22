@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity, Modal} from 'react-native';
 import { Card } from 'react-native-elements'
 import Background from '../assets/images/login-email-bg.svg'
@@ -22,6 +22,8 @@ function LoginEmail({navigation}) {
         Poppins_600SemiBold
     });
 
+    const [openModal, setOpenModal] = useState(false);
+
     const handleSubmit = (values) => {
         authService.signIn(values.email, values.password)
         .then(response => {
@@ -29,14 +31,26 @@ function LoginEmail({navigation}) {
             if(response.status == 200){
                 navigation.navigate('UserDashboard')
             }
-            else {
-                navigation.navigate('LoginHome')
-            }
+            
         })
         .catch(error => {
             console.log(error)
-            navigation.navigate('LoginHome')
-            //TODO: handle the error when implemented
+            return (
+                <TouchableOpacity onPress={() => setOpenModal(true)}>
+                <Modal
+                animationType="slide"
+                transparent={true}
+                visible={openModal}
+            >
+                    <View style={styles.modalview}>
+                        <Text style={styles.text3}>Invalid Credentials. Please try again.</Text>
+                        <TouchableOpacity onPress={() => setOpenModal(false)}>
+                            <Text style={styles.text4}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
+            </TouchableOpacity>
+            )
         })
         
   }
@@ -50,7 +64,7 @@ function LoginEmail({navigation}) {
                 password:''}}
             onSubmit={handleSubmit}
          >
-            {({ handleChange, handleBlur, handleSubmit,values }) =>(
+            {({ handleChange, handleBlur, handleSubmit, values }) =>(
             <View style={styles.container}>
                 <View style={styles.half}>
                     <Background
@@ -211,5 +225,37 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_500Medium',
         color: '#EF4765'
         
-    }
+    },
+
+    text3: {
+        fontFamily: 'Poppins_500Medium',
+        color: '#5E5E5E'
+        
+    },
+
+    modalview: { 
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 5,
+        padding: 20,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+        width: 0,
+        height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+  },
+
+    text4: {
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#5E5E5E',
+        fontSize: 16,
+        alignItems: 'center',
+        
+    },
+
+
 });

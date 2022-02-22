@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL =  'http://192.168.100.111:8080/api/auth'
+const API_URL =  'http://192.168.68.103:8080/api/auth'
 
 
 const signUp = (
