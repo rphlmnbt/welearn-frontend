@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image 
 import AppLoading from 'expo-app-loading';
 import Background from '../assets/images/login-mobile-bg.svg'
 import LogoImg from '../assets/images/wl-logo2.png'
+import { Formik } from 'formik';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -10,6 +11,8 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import { changeContact } from '../actions/signUpActions';
+import { useDispatch } from 'react-redux';
 
 export default function SignUpContact({navigation}) {
    
@@ -20,51 +23,73 @@ export default function SignUpContact({navigation}) {
         Poppins_700Bold,
     });
 
+    const dispatch = useDispatch()
+
+    const handleSubmit = values => {
+        console.log(values)
+        dispatch(changeContact(values))
+        navigation.navigate('LoginMobilePin')
+        
+    }
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
         return (
-            <View style={styles.container}>
-                 <View style={styles.half}>
-                    <Background
-                        style={styles.background}
-                        resizeMode="cover" 
-                    />
-                </View>
-                <Image
-                    style={styles.splash}
-                    source={LogoImg}
-                    resizeMode="contain" 
-                />
-                <Text style={styles.text2}>
-                        WeLearn
-                </Text>
-                <View style={styles.form}>
-                    <View style={styles.formHeader}>
-                        <Text style={styles.text}>
-                            Create a WeLearn Account
-                        </Text>
-                        <Text style={styles.text3}>
-                            Please provide the following information.
-                        </Text>
+            <Formik
+                initialValues={{
+                    contactNumber: ''}}
+                onSubmit={handleSubmit}
+            >
+                {({ handleChange, handleBlur, handleSubmit,values }) => (
+                     <View style={styles.container}>
+                     <View style={styles.half}>
+                        <Background
+                            style={styles.background}
+                            resizeMode="cover" 
+                        />
                     </View>
-                    <TextInput
-                            placeholder="Mobile Number"
-                            autoCapitalize="none"
-                            style={styles.mobileInput}
-                            autoCapitalize="none"
-                            keyboardType="numeric"
+                    <Image
+                        style={styles.splash}
+                        source={LogoImg}
+                        resizeMode="contain" 
                     />
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => navigation.navigate('SignUpSchool')}
-                    >
-                        <Text style={styles.buttontext}> Continue</Text>
-                    </TouchableOpacity>
+                    <Text style={styles.text2}>
+                            WeLearn
+                    </Text>
+                    <View style={styles.form}>
+                        <View style={styles.formHeader}>
+                            <Text style={styles.text}>
+                                Create a WeLearn Account
+                            </Text>
+                            <Text style={styles.text3}>
+                                Please provide the following information.
+                            </Text>
+                        </View>
+                        <TextInput
+                                placeholder="Mobile Number"
+                                autoCapitalize="none"
+                                style={styles.mobileInput}
+                                autoCapitalize="none"
+                                keyboardType="numeric"
+                                onChangeText={handleChange('contactNumber')}
+                                onBlur={handleBlur('contactNumber')}
+                                value={values.contactNumber}
+                        />
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={handleSubmit}
+                        >
+                            <Text style={styles.buttontext}> Continue</Text>
+                        </TouchableOpacity>
+                    </View>
+                    
+                    
                 </View>
-                
-                
-            </View>
+                    
+                )}
+            </Formik> 
+           
         )
     }
 }

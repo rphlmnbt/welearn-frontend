@@ -18,6 +18,12 @@ export default function RadioButton({ data, onSelect }) {
     Poppins_600SemiBold,
     Poppins_700Bold,
 });
+
+const onTrigger = (value) => {
+  setUserOption(value)
+  onSelect(value)
+}
+
 if (!fontsLoaded) {
     return <AppLoading />;
 } else {
@@ -27,7 +33,7 @@ if (!fontsLoaded) {
           return (
             <TouchableOpacity 
               key={item.value}
-              onPress={() => setUserOption(item.value)}
+              onPress={() => onTrigger(item.value)}
               style={item.value === userOption ? styles.selected : styles.unselected}
             >
               <Text style={item.value === userOption ? styles.selectedButtonText : styles.unselectedButtonText}> {item.value}</Text>
