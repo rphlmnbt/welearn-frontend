@@ -2,8 +2,6 @@ import React from 'react';
 import { StyleSheet, View, Text, Dimensions  } from 'react-native';
 import Background from '../assets/images/profile-bg.svg'
 import AppLoading from 'expo-app-loading';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
 import { 
     useFonts,
@@ -14,6 +12,7 @@ import {
   } from '@expo-google-fonts/poppins'
 import BottomNav from '../components/BottomNav';
 import Stats from '../components/Stats';
+import UserInfo from '../components/UserInfo';
 
   export default function UserDashboard({navigation}) {
     let [fontsLoaded] = useFonts({
@@ -39,16 +38,7 @@ import Stats from '../components/Stats';
                         resizeMode="cover" 
                     />
                 </View>
-                <View style={styles.header}>
-                    <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
-                    
-                    <View style={styles.infoContainer}>
-                        <Text style={styles.text2}>{firstName} {lastName}</Text>
-                        <Text style={styles.text3}>{course}</Text>
-                        <Text style={styles.text3}>{yearLevel}</Text>
-                        <Text style={styles.text3}>{interests}</Text>
-                    </View>              
-                </View>
+            <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interests={interests} />
                 <Stats stats={stats} />
                 <BottomNav /> 
             </View>
@@ -56,28 +46,7 @@ import Stats from '../components/Stats';
     }
 }
 
-const vw = Dimensions.get('window').width;
-const vh = Dimensions.get('window').height;
-
 const styles = StyleSheet.create({
-    button: {
-        backgroundColor: '#EF4765',
-        width: '50%',
-        height: 40,
-        borderRadius: 5,
-        shadowRadius: 5,
-        shadowOffset: {width:2, height:2},
-        shadowOpacity: 0.2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
-        zIndex:5
-    },
-    buttontext: {
-        color: 'white',
-        fontFamily: 'Poppins_600SemiBold',
-        letterSpacing: 0.3
-    },
     container: { 
         flexDirection: 'column', 
         alignItems: 'center', 
@@ -99,77 +68,5 @@ const styles = StyleSheet.create({
         aspectRatio: 428/287,
         position: 'absolute',
         top: '-25%'
-    },
-    text1 : {
-        color: 'white',
-        fontFamily: 'Poppins_500Medium',
-        fontSize: 18,
-        margin: 1,
-        marginTop: '15%',
-        textAlign: 'center',
-        marginBottom: 20
-    },
-    text2 : {
-        marginTop: 5,
-        fontFamily: 'Poppins_600SemiBold',
-        color: '#5E5E5E',
-        fontSize: 18,
-        
-    },
-    text3: {
-        fontFamily: 'Poppins_400Regular',
-        color: '#777777',
-        fontSize: 12
-        
-    },
-    text4 : {
-        fontFamily: 'Poppins_600SemiBold',
-        color: '#5E5E5E',
-        fontSize: 12,
-        marginBottom: 2,
-        marginTop: 5
-    },
-    infoContainer: {
-        paddingLeft: 10
-    },  
-    header:{
-        flexDirection: 'row',
-        alignSelf: 'flex-start',
-        marginTop: '45%',
-        paddingHorizontal: 30
-    },
-    menucontainer: {
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        position: 'absolute',
-        bottom: 0,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        borderTopColor: '#ACACAC',
-        borderTopWidth: 1,
-    },
-    images: {
-        width: 45,
-        height: 45,
-        margin: 10
-    },
-    modalContainer: {
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginTop: '40%',
-        margin: 20,
-        backgroundColor: "white",
-        borderRadius: 20,
-        padding: 35,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5
     }
 });
