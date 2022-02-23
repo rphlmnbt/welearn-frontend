@@ -4,6 +4,8 @@ import { Card } from 'react-native-elements'
 import Background from '../assets/images/login-email-bg.svg'
 import LoginLogoImg from '../assets/images/wl-logo.png'
 import AppLoading from 'expo-app-loading';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../actions/userActions';
 import { Formik } from 'formik';
 
 
@@ -21,36 +23,23 @@ function LoginEmail({navigation}) {
         Poppins_500Medium,
         Poppins_600SemiBold
     });
-
+    const dispatch = useDispatch()
     const [openModal, setOpenModal] = useState(false);
 
     const handleSubmit = (values) => {
         authService.signIn(values.email, values.password)
         .then(response => {
-            console.log(response)
             if(response.status == 200){
+                console.log(response.data.uuid_user)
+                dispatch(logIn(response.data.uuid_user))
                 navigation.navigate('UserDashboard')
+                
             }
             
         })
         .catch(error => {
             console.log(error)
-            return (
-                <TouchableOpacity onPress={() => setOpenModal(true)}>
-                <Modal
-                animationType="slide"
-                transparent={true}
-                visible={openModal}
-            >
-                    <View style={styles.modalview}>
-                        <Text style={styles.text3}>Invalid Credentials. Please try again.</Text>
-                        <TouchableOpacity onPress={() => setOpenModal(false)}>
-                            <Text style={styles.text4}>OK</Text>
-                        </TouchableOpacity>
-                    </View>
-                </Modal>
-            </TouchableOpacity>
-            )
+            setOpenModal(true)
         })
         
   }
@@ -58,14 +47,27 @@ function LoginEmail({navigation}) {
         return <AppLoading />;
     } else {
         return (
+            
             <Formik
             initialValues={{
                 email:'',
                 password:''}}
             onSubmit={handleSubmit}
          >
-            {({ handleChange, handleBlur, handleSubmit, values }) =>(
+            {({ handleChange, handleBlur, handleSubmit, values }) =>( 
             <View style={styles.container}>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={openModal}
+                >
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.text4}>Invalid Credentials. Please try again.</Text>
+                        <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                            <Text style={styles.buttontext}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
                 <View style={styles.half}>
                     <Background
                         style={styles.background}
@@ -176,7 +178,20 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center'
     },
-
+    button2: {
+        backgroundColor: '#EF4765',
+        width: '40%',
+        height: 45,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
+        marginTop: 40
+    },
     button: {
         backgroundColor: '#EF4765',
         width: '100%',
@@ -233,21 +248,24 @@ const styles = StyleSheet.create({
         
     },
 
-    modalview: { 
+    modalContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        marginTop: '40%',
         margin: 20,
-        backgroundColor: "white",
+        backgroundColor: "#F2F2F2",
         borderRadius: 5,
         padding: 20,
-        alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
-        width: 0,
-        height: 2
+            width: 0,
+            height: 2
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5
-  },
+    },
 
     text4: {
         fontFamily: 'Poppins_600SemiBold',

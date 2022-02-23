@@ -5,6 +5,7 @@ import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import * as Progress from 'react-native-progress';
+import { useSelector } from 'react-redux';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -21,6 +22,7 @@ import BottomNav from '../components/BottomNav';
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
+    const uuid_user = useSelector(state => state.user.uuid_user)
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -36,7 +38,7 @@ import BottomNav from '../components/BottomNav';
                     <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
                     
                     <View style={styles.infoContainer}>
-                        <Text style={styles.text2}>Name</Text>
+                        <Text style={styles.text2}>{uuid_user}</Text>
                         <Text style={styles.text3}>Course</Text>
                         <Text style={styles.text3}>Year</Text>
                         <Text style={styles.text3}>Interests</Text>
