@@ -11,6 +11,7 @@ const initialState = {
     course: '',
     year_level: '',
     interest: '',
+    activeStatus: '',
     stats: [
         0,
         0,
