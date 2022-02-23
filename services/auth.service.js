@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL =  'http://192.168.100.111:8080/api/auth'
+const API_URL =  'http://192.168.68.103:8080/api/auth'
 
 
 const signUp = (
@@ -56,10 +56,18 @@ const signIn = (
     })
 }
 
+const signInMobile = (
+    contact_number) => {
+    return axios.post(API_URL + '/signinMobile', {
+        contact_number
+    })
+}
+
 
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   signUp,
-  signIn
+  signIn,
+  signInMobile
 };

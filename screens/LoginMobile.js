@@ -1,7 +1,12 @@
-import * as React from 'react';
-import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity, Modal} from 'react-native';
 import Background from '../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
+import { Formik } from 'formik';
+import { logIn } from '../actions/userActions';
+import authService from '../services/auth.service';
+import { useDispatch } from 'react-redux';
+
 import { 
     useFonts,
     Poppins_400Regular,
@@ -17,11 +22,51 @@ function LoginMobile({ navigation }) {
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
+
+    const dispatch = useDispatch()
+    const [openModal, setOpenModal] = useState(false);
+
+    const handleSubmit = (values) => {
+        authService.signInMobile(values.contact_number)
+        .then(response => {
+            if(response.status == 200){
+                console.log(response.data.user)
+                dispatch(logIn(response.data.user))
+                navigation.navigate('UserDashboard')
+                
+            }
+            
+        })
+        .catch(error => {
+            setOpenModal(true)
+        })
+        
+  }
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
         return (
+            <Formik
+            initialValues={{
+                contact_number:'',
+                }}
+            onSubmit={handleSubmit}
+         >
+            {({ handleChange, handleBlur, handleSubmit, values }) =>( 
             <View style={styles.container}>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={openModal}
+            >
+                <View style={styles.modalContainer}>
+                    <Text style={styles.text3}>Invalid Credentials. Please try again.</Text>
+                    <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                        <Text style={styles.buttontext}>OK</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
                 <View style={styles.half}>
                     <Background
                         style={styles.background}
@@ -42,20 +87,25 @@ function LoginMobile({ navigation }) {
                             style={styles.mobileInput}
                             autoCapitalize="none"
                             keyboardType="numeric"
+                            onChangeText={handleChange('contact_number')}
+                            onBlur={handleBlur('contact_number')}
                         />
                     </View>
                     <View>
                             <TouchableOpacity
                                 style={styles.button}
-                                onPress={() => navigation.navigate('UserDashboard')}
+                                onPress={handleSubmit}
                             >
                                 <Text style={styles.buttontext}> Continue</Text>
                             </TouchableOpacity>
                     </View>
             </View>
             </View>
-        );
-        }
+        )
+    }
+    </Formik> 
+        )   
+    } 
 }
 
 export default LoginMobile
@@ -135,8 +185,49 @@ const styles = StyleSheet.create({
     text2: {
         fontFamily: 'Poppins_400Regular',
         color: '#505062',
-        fontSize: 12
+        fontSize: 12   
+    },
+
+    modalContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        marginTop: '40%',
+        margin: 20,
+        backgroundColor: "#F2F2F2",
+        borderRadius: 5,
+        padding: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+
+    text3: {
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#5E5E5E',
+        fontSize: 16,
+        alignItems: 'center',
         
-    }
+    },
+
+    button2: {
+        backgroundColor: '#EF4765',
+        width: '40%',
+        height: 45,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
+        marginTop: 40
+    },
 });
 
