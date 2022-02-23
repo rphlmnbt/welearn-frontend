@@ -17,41 +17,48 @@ const initialState = {
     q4:0,
     q5:0,
     q6:0,
-    q7:0,
+    q7:0
 }
 
 const signUpReducer = (state = initialState, action) => {
     switch(action.type) {
         case NAME_CHANGE:
             return {
+                ...state,
                 firstName:action.payload.firstName,
                 lastName:action.payload.lastName
             };
         case BIRTH_CHANGE:
             return {
+                ...state,
                 birthDate:action.payload.birthDate,
                 gender:action.payload.gender
             }
         case EMAIL_CHANGE:
             return {
+                ...state,
                 email:action.payload.email,
                 password:action.payload.password
             }
         case CONTACT_CHANGE:
             return {
+                ...state,
                 contactNumber:action.payload.contactNumber
             }
         case SCHOOL_CHANGE:
             return {
+                ...state,
                 university:action.payload.university
             }
         case COURSE_CHANGE:
             return {
+                ...state,
                 course:action.payload.course,
                 yearLevel:action.payload.yearLevel
             }
         case HABITS_CHANGE:
             return {
+                ...state,
                 q1:action.payload.q1,
                 q2:action.payload.q2,
                 q3:action.payload.q3,

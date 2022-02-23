@@ -16,6 +16,7 @@
     "@react-native-community/slider": "^4.1.12",
     "@react-native-picker/picker": "^2.2.1",
     "@react-navigation/native-stack": "^6.2.5",
+    "axios": "^0.26.0",
     "expo": "~43.0.2",
     "expo-app-loading": "~1.2.1",
     "expo-asset": "~8.4.3",
@@ -47,7 +48,8 @@
     "react-native-web": "0.17.1",
     "react-redux": "^7.2.6",
     "redux": "^4.1.2",
-    "redux-thunk": "^2.4.1"
+    "redux-thunk": "^2.4.1",
+    "expo-image-picker": "~11.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

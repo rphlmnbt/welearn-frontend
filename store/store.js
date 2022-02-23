@@ -1,10 +1,8 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk'
-import signUpReducer from '../reducers/signUpReducer';
+import rootReducer from '../reducers';
 
-const rootReducer = combineReducers(
-    { signUpReducer }
-);
-const store = createStore(signUpReducer, applyMiddleware(thunk))
+
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 export default store;
