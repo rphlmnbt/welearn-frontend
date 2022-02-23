@@ -30,15 +30,14 @@ function LoginEmail({navigation}) {
         authService.signIn(values.email, values.password)
         .then(response => {
             if(response.status == 200){
-                console.log(response.data.uuid_user)
-                dispatch(logIn(response.data.uuid_user))
+                console.log(response.data.user)
+                dispatch(logIn(response.data.user))
                 navigation.navigate('UserDashboard')
                 
             }
             
         })
         .catch(error => {
-            console.log(error)
             setOpenModal(true)
         })
         

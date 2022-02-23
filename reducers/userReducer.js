@@ -1,7 +1,7 @@
 import { LOGIN } from "../constants";
 
 const initialState = {
-    uuid_user: ''
+    user: ''
 }
 
 const userReducer = (state = initialState, action) => {
@@ -9,7 +9,7 @@ const userReducer = (state = initialState, action) => {
         case LOGIN:
             return {
                 ...state,
-                uuid_user:action.payload
+                user:action.payload
             };
         default:
             return state;

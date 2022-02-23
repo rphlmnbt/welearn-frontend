@@ -22,7 +22,11 @@ import BottomNav from '../components/BottomNav';
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
-    const uuid_user = useSelector(state => state.user.uuid_user)
+    const firstName = useSelector(state => state.user.user.first_name)
+    const lastName = useSelector(state => state.user.user.last_name)
+    const course = useSelector(state => state.user.user.course)
+    const yearLevel = useSelector(state => state.user.user.year_level)
+    const interests = useSelector(state => state.user.user.interests)
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -38,10 +42,10 @@ import BottomNav from '../components/BottomNav';
                     <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
                     
                     <View style={styles.infoContainer}>
-                        <Text style={styles.text2}>{uuid_user}</Text>
-                        <Text style={styles.text3}>Course</Text>
-                        <Text style={styles.text3}>Year</Text>
-                        <Text style={styles.text3}>Interests</Text>
+                        <Text style={styles.text2}>{firstName} {lastName}</Text>
+                        <Text style={styles.text3}>{course}</Text>
+                        <Text style={styles.text3}>{yearLevel}</Text>
+                        <Text style={styles.text3}>{interests}</Text>
                     </View>              
                 </View>
                 <View style={styles.statsContainer}>
@@ -144,7 +148,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         fontFamily: 'Poppins_600SemiBold',
         color: '#5E5E5E',
-        fontSize: 20,
+        fontSize: 18,
         
     },
     text3: {
@@ -166,7 +170,7 @@ const styles = StyleSheet.create({
     header:{
         flexDirection: 'row',
         alignSelf: 'flex-start',
-        marginTop: '40%',
+        marginTop: '45%',
         paddingHorizontal: 30
     },
     menucontainer: {
