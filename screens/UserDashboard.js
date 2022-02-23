@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Modal  } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, Dimensions  } from 'react-native';
 import Background from '../assets/images/profile-bg.svg'
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import * as Progress from 'react-native-progress';
 import { useSelector } from 'react-redux';
 import { 
     useFonts,
@@ -14,6 +13,7 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import BottomNav from '../components/BottomNav';
+import Stats from '../components/Stats';
 
   export default function UserDashboard({navigation}) {
     let [fontsLoaded] = useFonts({
@@ -27,6 +27,7 @@ import BottomNav from '../components/BottomNav';
     const course = useSelector(state => state.user.user.course)
     const yearLevel = useSelector(state => state.user.user.year_level)
     const interests = useSelector(state => state.user.user.interests)
+    const stats = useSelector(state => state.user.user.stats)
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -48,39 +49,7 @@ import BottomNav from '../components/BottomNav';
                         <Text style={styles.text3}>{interests}</Text>
                     </View>              
                 </View>
-                <View style={styles.statsContainer}>
-                  <Text style={styles.text3}>
-                      Study Habits
-                  </Text>
-                  <Text style={styles.text4}>
-                      Time Management
-                  </Text>
-                  <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
-                  <Text style={styles.text4}>
-                      Study Environment
-                  </Text>
-                  <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
-                  <Text style={styles.text4}>
-                      Exam Preparation
-                  </Text>
-                  <Progress.Bar progress={0.2} width={null} color='#EF4765'/>
-                  <Text style={styles.text4}>
-                      Note Taking
-                  </Text>
-                  <Progress.Bar progress={0.3} width={null} color='#EF4765'/>
-                  <Text style={styles.text4}>
-                      Reading Skills
-                  </Text>
-                  <Progress.Bar progress={0.4} width={null} color='#EF4765'/>
-                  <Text style={styles.text4}>
-                      Writing Skills
-                  </Text>
-                  <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
-                  <Text style={styles.text4}>
-                      Math Skills
-                  </Text>
-                  <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
-                </View>
+                <Stats stats={stats} />
                 <BottomNav /> 
             </View>
         );
@@ -108,10 +77,6 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'Poppins_600SemiBold',
         letterSpacing: 0.3
-    },
-    statsContainer : {
-        width: '100%',
-        padding: 30
     },
     container: { 
         flexDirection: 'column', 
