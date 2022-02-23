@@ -32,16 +32,16 @@ export default function SignUpSurvey({navigation}) {
     const [radioValue, setRadioValue] = useState(0)
     const [stats, setStats] = useState([])
     const [finished, setFinished] = useState(false)
-    const firstName = useSelector(state => state.firstName)
-    const lastName = useSelector(state => state.lastName)
-    const birthDate = useSelector(state => state.birthDate)
-    const gender = useSelector(state => state.gender)
-    const email = useSelector(state => state.email)
-    const password = useSelector(state => state.password)
-    const contactNumber = useSelector(state => state.contactNumber)
-    const university = useSelector(state => state.university)
-    const course = useSelector(state => state.course)
-    const yearLevel = useSelector(state => state.yearLevel)
+    const firstName = useSelector(state => state.signUp.firstName)
+    const lastName = useSelector(state => state.signUp.lastName)
+    const birthDate = useSelector(state => state.signUp.birthDate)
+    const gender = useSelector(state => state.signUp.gender)
+    const email = useSelector(state => state.signUp.email)
+    const password = useSelector(state => state.signUp.password)
+    const contactNumber = useSelector(state => state.signUp.contactNumber)
+    const university = useSelector(state => state.signUp.university)
+    const course = useSelector(state => state.signUp.course)
+    const yearLevel = useSelector(state => state.signUp.yearLevel)
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -162,7 +162,8 @@ export default function SignUpSurvey({navigation}) {
             readingSkills,
             writingSkills,
             mathSkills
-        ) 
+        )
+        navigation.navigate('LoginHome')
     }
 
     if (!fontsLoaded) {
