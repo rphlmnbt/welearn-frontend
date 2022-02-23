@@ -13,8 +13,10 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import { TextInput } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 import BottomNav from '../components/BottomNav';
 import * as ImagePicker from 'expo-image-picker'
+import UserInfo from '../components/UserInfo';
 
   export default function Settings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
@@ -41,8 +43,13 @@ import * as ImagePicker from 'expo-image-picker'
         if (!result.cancelled) {
           setImage(result.uri);
         }
-      };
+    };
 
+    const firstName = useSelector(state => state.user.user.first_name)
+    const lastName = useSelector(state => state.user.user.last_name)
+    const course = useSelector(state => state.user.user.course)
+    const yearLevel = useSelector(state => state.user.user.year_level)
+    const interests = useSelector(state => state.user.user.interests)
 
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -92,16 +99,7 @@ import * as ImagePicker from 'expo-image-picker'
                         resizeMode="cover" 
                     />
                 </View>
-                <View style={styles.header}>
-                    <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
-                    
-                    <View style={styles.infoContainer}>
-                        <Text style={styles.text2}>Name</Text>
-                        <Text style={styles.text3}>Course</Text>
-                        <Text style={styles.text3}>Year</Text>
-                        <Text style={styles.text3}>Interests</Text>
-                    </View>              
-                </View>
+                <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interests={interests} />
                 <View style={styles.settingsContainer}>
                     <Text style={styles.text4}>
                         USER SETTINGS
