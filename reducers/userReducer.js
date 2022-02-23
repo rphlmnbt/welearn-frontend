@@ -20,7 +20,7 @@ const initialState = {
             0,
             0
         ],
-    }
+    }   
 
 const userReducer = (state = initialState, action) => {
     switch(action.type) {
