@@ -6,16 +6,24 @@ const AUTH_URL =  API_URL + '/auth'
 const updateInterest = (
     uuid_user,
     interest) => {
-    return axios.post(`${API_URL}/update/${uuid_user}`, {
+    return axios.put(AUTH_URL + `/update/${uuid_user}`, {
         interest
+    }).then(response => {
+        console.log(response)
+    }).catch(error => {
+        console.log(error)
     })
 }
 
 const updateStatus = (
     uuid_user,
     activeStatus) => {
-    return axios.post(`${API_URL}/update/${uuid_user}`, {
+    return axios.put(AUTH_URL + `/update/${uuid_user}`, {
         activeStatus
+    }).then(response => {
+        console.log(response)
+    }).catch(error => {
+        console.log(error)
     })
 }
 

@@ -19,12 +19,15 @@ import * as ImagePicker from 'expo-image-picker'
 import UserInfo from '../components/UserInfo';
 import { setStatus } from '../actions/userActions';
 import { setInterest } from '../actions/userActions';
- 
+import userServices from '../services/user.services';
 
   export default function Settings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
     const [interestModal, setInterestModal] = useState(false);
     const [image, setImage] = useState(null);
+    const[text, setText] = useState('');
+    const dispatch = useDispatch()
+
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -32,22 +35,21 @@ import { setInterest } from '../actions/userActions';
         Poppins_700Bold,
     });
 
-
-    const dispatch = useDispatch()
-    const OpenStatus = () =>  {
+    const setActive = () =>  {
         setStatusModal(false)
-        dispatch(setStatus('Online'))
+        dispatch(setStatus(true))
     }
 
-    const CloseStatus = () =>  {
+    const setInactive = () =>  {
         setStatusModal(false)
         console.log
-        dispatch(setStatus('Offline'))
+        dispatch(setStatus(false))
     }
 
-    const[text, setText] = useState('');
-    const CloseInterest = () =>  {
+    
+    const changeInterest = () =>  {
         setInterestModal(false)
+        userServices.updateInterest(uuid_user, text)
         dispatch(setInterest(text))
         }
 
@@ -67,7 +69,7 @@ import { setInterest } from '../actions/userActions';
           setImage(result.uri);
         }
     };
-
+    const uuid_user = useSelector(state => state.user.uuid_user)
     const firstName = useSelector(state => state.user.first_name)
     const lastName = useSelector(state => state.user.last_name)
     const course = useSelector(state => state.user.course)
@@ -88,11 +90,11 @@ import { setInterest } from '../actions/userActions';
                 >
                     <View style={styles.modalContainer}>
                         <Text style={styles.text4}>Set Status</Text>
-                        <TouchableOpacity style={styles.settingsItem}  onPress={OpenStatus}>
+                        <TouchableOpacity style={styles.settingsItem}  onPress={setActive}>
                             <FontAwesomeIcon icon={faCircle} size={15} color={'#22C382'} style={{alignSelf: 'center'}}/>
                             <Text style={styles.text5}>Online</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.settingsItem}  onPress={CloseStatus}>
+                        <TouchableOpacity style={styles.settingsItem}  onPress={setInactive}>
                             <FontAwesomeIcon icon={faCircle} size={15} color={'#D43455'} style={{alignSelf: 'center'}}/>
                             <Text style={styles.text5}>Offline</Text>
                         </TouchableOpacity>
@@ -113,7 +115,7 @@ import { setInterest } from '../actions/userActions';
                         />
                          <TouchableOpacity
                                 style={styles.button}
-                                onPress={CloseInterest}
+                                onPress={changeInterest}
                             >
                                 <Text style={styles.buttontext}> Continue</Text>
                             </TouchableOpacity>
