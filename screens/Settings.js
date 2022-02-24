@@ -18,6 +18,7 @@ import BottomNav from '../components/BottomNav';
 import * as ImagePicker from 'expo-image-picker'
 import UserInfo from '../components/UserInfo';
 import { setStatus } from '../actions/userActions';
+import { setInterest } from '../actions/userActions';
 
   export default function Settings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
@@ -34,13 +35,20 @@ import { setStatus } from '../actions/userActions';
     const dispatch = useDispatch()
     const OpenStatus = () =>  {
         setStatusModal(false)
-        dispatch(setStatus('true'))
+        dispatch(setStatus('Online'))
     }
 
     const CloseStatus = () =>  {
         setStatusModal(false)
-        dispatch(setStatus('false'))
+        dispatch(setStatus('Offline'))
     }
+
+    const[text, setText] = useState('');
+    const CloseInterest = () =>  {
+        setInterestModal(false)
+        dispatch(setInterest(text))
+        }
+
     
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -99,10 +107,11 @@ import { setStatus } from '../actions/userActions';
                             placeholder="Interests"
                             autoCapitalize="none"
                             style={styles.textinput1}
+                            onChangeText={(input) => setText(input)}
                         />
                          <TouchableOpacity
                                 style={styles.button}
-                                onPress={() => setInterestModal(false)}
+                                onPress={CloseInterest}
                             >
                                 <Text style={styles.buttontext}> Continue</Text>
                             </TouchableOpacity>
@@ -123,7 +132,7 @@ import { setStatus } from '../actions/userActions';
                             <FontAwesomeIcon icon={faUserCircle} size={30} color={'#ACACAC'}/>
                             <Text style={styles.text5}>Set User Status</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.settingsItem} onPress={() => setInterestModal(true)}>
+                        <TouchableOpacity style={styles.settingsItem} onPress= {()=> setInterestModal(true)}>
                             <FontAwesomeIcon icon={faBook} size={30} color={'#ACACAC'}/>
                             <Text style={styles.text5}>Set Your Interests</Text>
                         </TouchableOpacity>

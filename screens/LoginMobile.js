@@ -38,6 +38,7 @@ function LoginMobile({ navigation }) {
             
         })
         .catch(error => {
+            console.log(error)
             setOpenModal(true)
         })
         

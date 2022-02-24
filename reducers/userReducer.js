@@ -38,7 +38,7 @@ const userReducer = (state = initialState, action) => {
                 course:action.payload.course,
                 year_level:action.payload.year_level,
                 interest:action.payload.interest,
-                activeStatus:action.payload.activeStatus.toString(),
+                activeStatus:action.payload.activeStatus,
                 stats:action.payload.stats
             };
          case SET_INTEREST:
