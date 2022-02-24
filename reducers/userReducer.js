@@ -31,19 +31,26 @@ const userReducer = (state = initialState, action) => {
                 uuid_user: action.payload.uuid_user,
                 email: action.payload.email,
                 first_name:action.payload.first_name,
-                last_name:action.payload.last_name
-                //ITUOLOY MO
+                last_name:action.payload.last_name,
+                gender:action.payload.gender,
+                contact_number:action.payload.contact_number,
+                university:action.payload.university,
+                course:action.payload.course,
+                year_level:action.payload.year_level,
+                interest:action.payload.interest,
+                activeStatus:action.payload.activeStatus,
+                stats:action.payload.stats
             };
          case SET_INTEREST:
             return {
                 ...state,
-                interest:action.payload.interest
+                interest:action.payload
             };
 
         case SET_STATUS:
             return {
                     ...state,
-                    activeStatus:action.payload.activeStatus
+                    activeStatus:action.payload
                 };
         default:
             return state;
