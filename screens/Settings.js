@@ -19,6 +19,7 @@ import * as ImagePicker from 'expo-image-picker'
 import UserInfo from '../components/UserInfo';
 import { setStatus } from '../actions/userActions';
 import { setInterest } from '../actions/userActions';
+ 
 
   export default function Settings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
@@ -40,6 +41,7 @@ import { setInterest } from '../actions/userActions';
 
     const CloseStatus = () =>  {
         setStatusModal(false)
+        console.log
         dispatch(setStatus('Offline'))
     }
 

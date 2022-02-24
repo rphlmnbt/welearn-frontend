@@ -12,7 +12,7 @@ export default function UserInfo(props) {
                 <Text style={styles.infoText}>{props.course}</Text>
                 <Text style={styles.infoText}>{props.yearLevel}</Text>
                 <Text style={styles.infoText}>{props.interest}</Text>
-                <Text style={styles.infoText}>{props.activeStatus}</Text>
+                <Text style={styles.infoText}>{props.activeStatus.toString()}</Text>
             </View>              
         </View>
     )
