@@ -11,7 +11,8 @@ export default function UserInfo(props) {
                 <Text style={styles.nameText}>{props.firstName} {props.lastName}</Text>
                 <Text style={styles.infoText}>{props.course}</Text>
                 <Text style={styles.infoText}>{props.yearLevel}</Text>
-                <Text style={styles.infoText}>{props.interests}</Text>
+                <Text style={styles.infoText}>{props.interest}</Text>
+                <Text style={styles.infoText}>{props.activeStatus}</Text>
             </View>              
         </View>
     )
