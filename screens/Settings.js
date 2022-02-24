@@ -13,10 +13,11 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import { TextInput } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import BottomNav from '../components/BottomNav';
 import * as ImagePicker from 'expo-image-picker'
 import UserInfo from '../components/UserInfo';
+import { setStatus } from '../actions/userActions';
 
   export default function Settings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
@@ -29,6 +30,18 @@ import UserInfo from '../components/UserInfo';
         Poppins_700Bold,
     });
 
+
+    const dispatch = useDispatch()
+    const OpenStatus = () =>  {
+        setStatusModal(false)
+        dispatch(setStatus(true))
+    }
+
+    const CloseStatus = () =>  {
+        setStatusModal(false)
+        dispatch(setStatus(false))
+    }
+    
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -45,29 +58,31 @@ import UserInfo from '../components/UserInfo';
         }
     };
 
-    const firstName = useSelector(state => state.user.user.first_name)
-    const lastName = useSelector(state => state.user.user.last_name)
-    const course = useSelector(state => state.user.user.course)
-    const yearLevel = useSelector(state => state.user.user.year_level)
-    const interests = useSelector(state => state.user.user.interests)
+    const firstName = useSelector(state => state.user.first_name)
+    const lastName = useSelector(state => state.user.last_name)
+    const course = useSelector(state => state.user.course)
+    const yearLevel = useSelector(state => state.user.year_level)
+    const interests = useSelector(state => state.user.interests)
+    const activeStatus = useSelector(state => state.user.activeStatus)
 
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
         return (
             <View style={styles.container}>
-                 <Modal
+                 <Modal 
                     animationType="slide"
                     transparent={true}
                     visible={statusModal}
+                    
                 >
                     <View style={styles.modalContainer}>
                         <Text style={styles.text4}>Set Status</Text>
-                        <TouchableOpacity style={styles.settingsItem}  onPress={() => setStatusModal(false)}>
+                        <TouchableOpacity style={styles.settingsItem}  onPress={OpenStatus}>
                             <FontAwesomeIcon icon={faCircle} size={15} color={'#22C382'} style={{alignSelf: 'center'}}/>
                             <Text style={styles.text5}>Online</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.settingsItem}  onPress={() => setStatusModal(false)}>
+                        <TouchableOpacity style={styles.settingsItem}  onPress={CloseStatus}>
                             <FontAwesomeIcon icon={faCircle} size={15} color={'#D43455'} style={{alignSelf: 'center'}}/>
                             <Text style={styles.text5}>Offline</Text>
                         </TouchableOpacity>
@@ -99,7 +114,7 @@ import UserInfo from '../components/UserInfo';
                         resizeMode="cover" 
                     />
                 </View>
-                <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interests={interests} />
+                <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interests={interests} activeStatus={activeStatus}/>
                 <View style={styles.settingsContainer}>
                     <Text style={styles.text4}>
                         USER SETTINGS

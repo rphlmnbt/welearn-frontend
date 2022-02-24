@@ -1,4 +1,4 @@
-import { LOGIN, SET_INTEREST } from "../constants";
+import { LOGIN, SET_INTEREST, SET_STATUS } from "../constants";
 
 const initialState = {
     uuid_user: '',
@@ -39,6 +39,12 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 interest:action.payload.interest
             };
+
+        case SET_STATUS:
+            return {
+                    ...state,
+                    activeStatus:action.payload.activeStatus
+                };
         default:
             return state;
     }

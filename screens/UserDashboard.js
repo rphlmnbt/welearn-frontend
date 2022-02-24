@@ -21,12 +21,12 @@ import UserInfo from '../components/UserInfo';
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
-    const firstName = useSelector(state => state.user.user.first_name)
-    const lastName = useSelector(state => state.user.user.last_name)
-    const course = useSelector(state => state.user.user.course)
-    const yearLevel = useSelector(state => state.user.user.year_level)
-    const interests = useSelector(state => state.user.user.interests)
-    const stats = useSelector(state => state.user.user.stats)
+    const firstName = useSelector(state => state.user.first_name)
+    const lastName = useSelector(state => state.user.last_name)
+    const course = useSelector(state => state.user.course)
+    const yearLevel = useSelector(state => state.user.year_level)
+    const interests = useSelector(state => state.user.interests)
+    const stats = useSelector(state => state.user.stats)
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
