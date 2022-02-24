@@ -19,7 +19,7 @@ import * as ImagePicker from 'expo-image-picker'
 import UserInfo from '../components/UserInfo';
 import { setStatus } from '../actions/userActions';
 import { setInterest } from '../actions/userActions';
-import userServices from '../services/user.services';
+import userService from '../services/user.service';
 
   export default function Settings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
@@ -37,19 +37,20 @@ import userServices from '../services/user.services';
 
     const setActive = () =>  {
         setStatusModal(false)
+        userService.updateStatus(uuid_user, true)
         dispatch(setStatus(true))
     }
 
     const setInactive = () =>  {
         setStatusModal(false)
-        console.log
+        userService.updateStatus(uuid_user, false)
         dispatch(setStatus(false))
     }
 
     
     const changeInterest = () =>  {
         setInterestModal(false)
-        userServices.updateInterest(uuid_user, text)
+        userService.updateInterest(uuid_user, text)
         dispatch(setInterest(text))
         }
 
@@ -75,7 +76,7 @@ import userServices from '../services/user.services';
     const course = useSelector(state => state.user.course)
     const yearLevel = useSelector(state => state.user.year_level)
     const interest = useSelector(state => state.user.interest)
-    const activeStatus = useSelector(state => state.user.activeStatus)
+    const isActive = useSelector(state => state.user.isActive)
 
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -127,7 +128,7 @@ import userServices from '../services/user.services';
                         resizeMode="cover" 
                     />
                 </View>
-                <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} activeStatus={activeStatus}/>
+                <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive}/>
                 <View style={styles.settingsContainer}>
                     <Text style={styles.text4}>
                         USER SETTINGS

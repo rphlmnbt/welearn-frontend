@@ -17,11 +17,11 @@ const updateInterest = (
 
 const updateStatus = (
     uuid_user,
-    activeStatus) => {
+    isActive) => {
     return axios.put(AUTH_URL + `/update/${uuid_user}`, {
-        activeStatus
+        isActive
     }).then(response => {
-        console.log(response)
+        console.log(response.data)
     }).catch(error => {
         console.log(error)
     })

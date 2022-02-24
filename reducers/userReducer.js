@@ -11,7 +11,7 @@ const initialState = {
     course: '',
     year_level: '',
     interest: '',
-    activeStatus: '',
+    isActive: '',
     stats: [
         0,
         0,
@@ -38,7 +38,7 @@ const userReducer = (state = initialState, action) => {
                 course:action.payload.course,
                 year_level:action.payload.year_level,
                 interest:action.payload.interest,
-                activeStatus:action.payload.activeStatus,
+                isActive:action.payload.isActive,
                 stats:action.payload.stats
             };
          case SET_INTEREST:
@@ -50,7 +50,7 @@ const userReducer = (state = initialState, action) => {
         case SET_STATUS:
             return {
                 ...state,
-                activeStatus:action.payload
+                isActive:action.payload
             };
         default:
             return state;
