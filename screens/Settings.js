@@ -34,12 +34,12 @@ import { setStatus } from '../actions/userActions';
     const dispatch = useDispatch()
     const OpenStatus = () =>  {
         setStatusModal(false)
-        dispatch(setStatus(true))
+        dispatch(setStatus('true'))
     }
 
     const CloseStatus = () =>  {
         setStatusModal(false)
-        dispatch(setStatus(false))
+        dispatch(setStatus('false'))
     }
     
     const pickImage = async () => {
@@ -62,7 +62,7 @@ import { setStatus } from '../actions/userActions';
     const lastName = useSelector(state => state.user.last_name)
     const course = useSelector(state => state.user.course)
     const yearLevel = useSelector(state => state.user.year_level)
-    const interests = useSelector(state => state.user.interests)
+    const interest = useSelector(state => state.user.interest)
     const activeStatus = useSelector(state => state.user.activeStatus)
 
     if (!fontsLoaded) {
@@ -114,7 +114,7 @@ import { setStatus } from '../actions/userActions';
                         resizeMode="cover" 
                     />
                 </View>
-                <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interests={interests} activeStatus={activeStatus}/>
+                <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} activeStatus={activeStatus}/>
                 <View style={styles.settingsContainer}>
                     <Text style={styles.text4}>
                         USER SETTINGS

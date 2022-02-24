@@ -25,8 +25,9 @@ import UserInfo from '../components/UserInfo';
     const lastName = useSelector(state => state.user.last_name)
     const course = useSelector(state => state.user.course)
     const yearLevel = useSelector(state => state.user.year_level)
-    const interests = useSelector(state => state.user.interests)
+    const interest = useSelector(state => state.user.interest)
     const stats = useSelector(state => state.user.stats)
+    const activeStatus = useSelector(state => state.user.activeStatus)
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -38,7 +39,7 @@ import UserInfo from '../components/UserInfo';
                         resizeMode="cover" 
                     />
                 </View>
-            <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interests={interests} />
+            <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} activeStatus={activeStatus} />
                 <Stats stats={stats} />
                 <BottomNav /> 
             </View>
