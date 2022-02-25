@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Modal  } from 'react-native';
 import Background from '../assets/images/profile-bg.svg'
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle, faBook, faImage, faSignOutAlt, faCircle } from '@fortawesome/free-solid-svg-icons';
-import * as Progress from 'react-native-progress';
+import imageService from '../services/image.service';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -20,6 +20,7 @@ import UserInfo from '../components/UserInfo';
 import { setStatus } from '../actions/userActions';
 import { setInterest } from '../actions/userActions';
 import userService from '../services/user.service';
+import axios from 'axios';
 
   export default function Settings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
@@ -27,6 +28,20 @@ import userService from '../services/user.service';
     const [image, setImage] = useState(null);
     const[text, setText] = useState('');
     const dispatch = useDispatch()
+
+    const uuid_user = useSelector(state => state.user.uuid_user)
+    const firstName = useSelector(state => state.user.first_name)
+    const lastName = useSelector(state => state.user.last_name)
+    const course = useSelector(state => state.user.course)
+    const yearLevel = useSelector(state => state.user.year_level)
+    const interest = useSelector(state => state.user.interest)
+    const isActive = useSelector(state => state.user.isActive)
+
+    useEffect(() => {
+        if (image != null) {
+            imageService.uploadImage(image, uuid_user)
+        }
+    }, [image])
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -56,28 +71,25 @@ import userService from '../services/user.service';
 
     
     const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
+        await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
           aspect: [1,1],
           quality: 1,
-        });
-    
-        console.log(result);
-    
-        if (!result.cancelled) {
-          setImage(result.uri);
-        }
+        }).then((response => {
+            setImage({
+                uri: response.uri,
+                name: uuid_user + '.jpg',
+                type: 'image/jpg',
+              }) 
+        }))    
     };
-    const uuid_user = useSelector(state => state.user.uuid_user)
-    const firstName = useSelector(state => state.user.first_name)
-    const lastName = useSelector(state => state.user.last_name)
-    const course = useSelector(state => state.user.course)
-    const yearLevel = useSelector(state => state.user.year_level)
-    const interest = useSelector(state => state.user.interest)
-    const isActive = useSelector(state => state.user.isActive)
 
+
+    
+
+    
+   
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
