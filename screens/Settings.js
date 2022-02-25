@@ -40,6 +40,7 @@ import axios from 'axios';
     useEffect(() => {
         if (image != null) {
             imageService.uploadImage(image, uuid_user)
+            userService.uploadImage(uuid_user, image.name)
         }
     }, [image])
 
