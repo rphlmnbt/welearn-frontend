@@ -29,6 +29,8 @@ import store from './store/store';
 import { Provider } from 'react-redux'
 import SignUpEmail from './screens/SignUpEmail';
 import Settings from './screens/Settings';
+import ImageUpload from './screens/ImageUpload';
+import Interests from './screens/Interests';
 
 const Stack = createNativeStackNavigator();
 
@@ -153,6 +155,17 @@ function App() {
           <Stack.Screen
             name="Settings" 
             component={Settings} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="ImageUpload" 
+            component={ImageUpload} 
+            options = {{headerTitle: () => null}}
+          />
+
+           <Stack.Screen 
+            name="Interests" 
+            component={Interests} 
             options = {{headerTitle: () => null}}
           />
         </Stack.Navigator>
