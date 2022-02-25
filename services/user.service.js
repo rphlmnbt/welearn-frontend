@@ -27,11 +27,25 @@ const updateStatus = (
     })
 }
 
+const uploadImage = (
+    uuid_user,
+    src) => {
+    return axios.put(AUTH_URL + `/update/${uuid_user}`, {
+        src
+    }).then(response => {
+        console.log(response.data)
+    }).catch(error => {
+        console.log(error)
+    })
+}
+
+
 
 
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   updateInterest,
-  updateStatus
+  updateStatus,
+  uploadImage
 };

@@ -1,4 +1,4 @@
-import { LOGIN, SET_INTEREST, SET_STATUS } from "../constants";
+import { LOGIN, SET_INTEREST, SET_STATUS, UPLOAD_IMAGE } from "../constants";
 
 const initialState = {
     uuid_user: '',
@@ -11,6 +11,7 @@ const initialState = {
     course: '',
     year_level: '',
     interest: '',
+    image: '',
     isActive: '',
     stats: [
         0,
@@ -51,6 +52,11 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isActive:action.payload
+            };
+        case UPLOAD_IMAGE:
+            return {
+                ...state,
+                image:action.payload
             };
         default:
             return state;
