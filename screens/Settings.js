@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Modal  } from 'react-native';
 import Background from '../assets/images/profile-bg.svg'
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle, faBook, faImage, faSignOutAlt, faCircle } from '@fortawesome/free-solid-svg-icons';
-import * as Progress from 'react-native-progress';
+import imageService from '../services/image.service';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -13,15 +13,50 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import { TextInput } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import BottomNav from '../components/BottomNav';
 import * as ImagePicker from 'expo-image-picker'
 import UserInfo from '../components/UserInfo';
+import { setStatus } from '../actions/userActions';
+import { setInterest } from '../actions/userActions';
+import userService from '../services/user.service';
+import axios from 'axios';
 
   export default function Settings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
     const [interestModal, setInterestModal] = useState(false);
     const [image, setImage] = useState(null);
+    const [text, setText] = useState('');
+    const [profilePic, setProfilePic] = useState(null)
+    const dispatch = useDispatch()
+
+    const uuid_user = useSelector(state => state.user.uuid_user)
+    const firstName = useSelector(state => state.user.first_name)
+    const lastName = useSelector(state => state.user.last_name)
+    const course = useSelector(state => state.user.course)
+    const yearLevel = useSelector(state => state.user.year_level)
+    const interest = useSelector(state => state.user.interest)
+    const isActive = useSelector(state => state.user.isActive)
+    
+
+    useEffect(() => {
+        imageService.getImage(uuid_user)
+        .then(response => {
+            console.log(response.request._url)
+            setProfilePic(response.request._url)
+        }).catch(error => {
+            console.log(error)
+        })
+        if (image != null) {
+            imageService.uploadImage(image, uuid_user)
+            userService.uploadImage(uuid_user, image.name)
+        }
+        return () => {
+            // cancel the subscription
+            setImage(null);
+        };
+    }, [image])
+
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -29,45 +64,60 @@ import UserInfo from '../components/UserInfo';
         Poppins_700Bold,
     });
 
+    const setActive = () =>  {
+        setStatusModal(false)
+        userService.updateStatus(uuid_user, true)
+        dispatch(setStatus(true))
+    }
+
+    const setInactive = () =>  {
+        setStatusModal(false)
+        userService.updateStatus(uuid_user, false)
+        dispatch(setStatus(false))
+    }
+
+    
+    const changeInterest = () =>  {
+        setInterestModal(false)
+        userService.updateInterest(uuid_user, text)
+        dispatch(setInterest(text))
+        }
+
+    
     const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
+        await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
           aspect: [1,1],
           quality: 1,
-        });
-    
-        console.log(result);
-    
-        if (!result.cancelled) {
-          setImage(result.uri);
-        }
-    };
-
-    const firstName = useSelector(state => state.user.user.first_name)
-    const lastName = useSelector(state => state.user.user.last_name)
-    const course = useSelector(state => state.user.user.course)
-    const yearLevel = useSelector(state => state.user.user.year_level)
-    const interests = useSelector(state => state.user.user.interests)
-
+        }).then((response => {
+            console.log(response)
+            setImage({
+                uri: response.uri,
+                name: uuid_user + '.jpg',
+                type: 'image/jpg',
+              }) 
+        }))    
+    };    
+   
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
         return (
             <View style={styles.container}>
-                 <Modal
+                 <Modal 
                     animationType="slide"
                     transparent={true}
                     visible={statusModal}
+                    
                 >
                     <View style={styles.modalContainer}>
                         <Text style={styles.text4}>Set Status</Text>
-                        <TouchableOpacity style={styles.settingsItem}  onPress={() => setStatusModal(false)}>
+                        <TouchableOpacity style={styles.settingsItem}  onPress={setActive}>
                             <FontAwesomeIcon icon={faCircle} size={15} color={'#22C382'} style={{alignSelf: 'center'}}/>
                             <Text style={styles.text5}>Online</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.settingsItem}  onPress={() => setStatusModal(false)}>
+                        <TouchableOpacity style={styles.settingsItem}  onPress={setInactive}>
                             <FontAwesomeIcon icon={faCircle} size={15} color={'#D43455'} style={{alignSelf: 'center'}}/>
                             <Text style={styles.text5}>Offline</Text>
                         </TouchableOpacity>
@@ -84,10 +134,11 @@ import UserInfo from '../components/UserInfo';
                             placeholder="Interests"
                             autoCapitalize="none"
                             style={styles.textinput1}
+                            onChangeText={(input) => setText(input)}
                         />
                          <TouchableOpacity
                                 style={styles.button}
-                                onPress={() => setInterestModal(false)}
+                                onPress={changeInterest}
                             >
                                 <Text style={styles.buttontext}> Continue</Text>
                             </TouchableOpacity>
@@ -99,7 +150,13 @@ import UserInfo from '../components/UserInfo';
                         resizeMode="cover" 
                     />
                 </View>
-                <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interests={interests} />
+                <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive}/>
+                <Image
+                    style={styles.logo}
+                    source={{
+                        uri: profilePic
+                    }}
+                />
                 <View style={styles.settingsContainer}>
                     <Text style={styles.text4}>
                         USER SETTINGS
@@ -108,7 +165,7 @@ import UserInfo from '../components/UserInfo';
                             <FontAwesomeIcon icon={faUserCircle} size={30} color={'#ACACAC'}/>
                             <Text style={styles.text5}>Set User Status</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.settingsItem} onPress={() => setInterestModal(true)}>
+                        <TouchableOpacity style={styles.settingsItem} onPress= {()=> setInterestModal(true)}>
                             <FontAwesomeIcon icon={faBook} size={30} color={'#ACACAC'}/>
                             <Text style={styles.text5}>Set Your Interests</Text>
                         </TouchableOpacity>
@@ -131,6 +188,10 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    logo: {
+        width: 66,
+        height: 58,
+      },
     settingsItem: {
         display: 'flex',
         flexDirection: 'row',
