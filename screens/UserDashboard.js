@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, View, Text, Dimensions  } from 'react-native';
 import Background from '../assets/images/profile-bg.svg'
 import AppLoading from 'expo-app-loading';
@@ -13,6 +13,7 @@ import {
 import BottomNav from '../components/BottomNav';
 import Stats from '../components/Stats';
 import UserInfo from '../components/UserInfo';
+import imageService from '../services/image.service';
 
   export default function UserDashboard({navigation}) {
     let [fontsLoaded] = useFonts({
@@ -21,6 +22,8 @@ import UserInfo from '../components/UserInfo';
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
+    
+    const uuid_user = useSelector(state => state.user.uuid_user)
     const firstName = useSelector(state => state.user.first_name)
     const lastName = useSelector(state => state.user.last_name)
     const course = useSelector(state => state.user.course)
@@ -28,6 +31,8 @@ import UserInfo from '../components/UserInfo';
     const interest = useSelector(state => state.user.interest)
     const stats = useSelector(state => state.user.stats)
     const isActive = useSelector(state => state.user.isActive)
+    const profilePic = useSelector(state => state.user.image)
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -39,7 +44,7 @@ import UserInfo from '../components/UserInfo';
                         resizeMode="cover" 
                     />
                 </View>
-            <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive} />
+            <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive} />
                 <Stats stats={stats} />
                 <BottomNav /> 
             </View>

@@ -18,6 +18,13 @@ const uploadImage = async (image, uuid_user) => {
   });
 }
 
+const getImage = (
+  uuid_user) => {
+  return axios.get(IMG_URL + `/${uuid_user}`
+  )
+}
+
 export default {
-    uploadImage
+    uploadImage,
+    getImage
 };

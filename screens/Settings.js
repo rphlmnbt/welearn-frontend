@@ -21,12 +21,13 @@ import { setStatus } from '../actions/userActions';
 import { setInterest } from '../actions/userActions';
 import userService from '../services/user.service';
 import axios from 'axios';
+import { uploadImage } from '../actions/userActions';
 
   export default function Settings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
     const [interestModal, setInterestModal] = useState(false);
     const [image, setImage] = useState(null);
-    const[text, setText] = useState('');
+    const [text, setText] = useState('');
     const dispatch = useDispatch()
 
     const uuid_user = useSelector(state => state.user.uuid_user)
@@ -36,12 +37,18 @@ import axios from 'axios';
     const yearLevel = useSelector(state => state.user.year_level)
     const interest = useSelector(state => state.user.interest)
     const isActive = useSelector(state => state.user.isActive)
+    const profilePic = useSelector(state => state.user.image)
+    
 
     useEffect(() => {
         if (image != null) {
             imageService.uploadImage(image, uuid_user)
             userService.uploadImage(uuid_user, image.name)
         }
+        return () => {
+            // cancel the subscription
+            setImage(null);
+        };
     }, [image])
 
     let [fontsLoaded] = useFonts({
@@ -68,7 +75,7 @@ import axios from 'axios';
         setInterestModal(false)
         userService.updateInterest(uuid_user, text)
         dispatch(setInterest(text))
-        }
+    }
 
     
     const pickImage = async () => {
@@ -78,18 +85,15 @@ import axios from 'axios';
           aspect: [1,1],
           quality: 1,
         }).then((response => {
+            console.log(response)
             setImage({
                 uri: response.uri,
                 name: uuid_user + '.jpg',
                 type: 'image/jpg',
               }) 
+            dispatch(uploadImage(response.uri))
         }))    
-    };
-
-
-    
-
-    
+    };    
    
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -141,7 +145,7 @@ import axios from 'axios';
                         resizeMode="cover" 
                     />
                 </View>
-                <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive}/>
+                <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive}/>
                 <View style={styles.settingsContainer}>
                     <Text style={styles.text4}>
                         USER SETTINGS
