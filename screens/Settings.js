@@ -26,7 +26,8 @@ import axios from 'axios';
     const [statusModal, setStatusModal] = useState(false);
     const [interestModal, setInterestModal] = useState(false);
     const [image, setImage] = useState(null);
-    const[text, setText] = useState('');
+    const [text, setText] = useState('');
+    const [profilePic, setProfilePic] = useState(null)
     const dispatch = useDispatch()
 
     const uuid_user = useSelector(state => state.user.uuid_user)
@@ -36,12 +37,24 @@ import axios from 'axios';
     const yearLevel = useSelector(state => state.user.year_level)
     const interest = useSelector(state => state.user.interest)
     const isActive = useSelector(state => state.user.isActive)
+    
 
     useEffect(() => {
+        imageService.getImage(uuid_user)
+        .then(response => {
+            console.log(response.request._url)
+            setProfilePic(response.request._url)
+        }).catch(error => {
+            console.log(error)
+        })
         if (image != null) {
             imageService.uploadImage(image, uuid_user)
             userService.uploadImage(uuid_user, image.name)
         }
+        return () => {
+            // cancel the subscription
+            setImage(null);
+        };
     }, [image])
 
     let [fontsLoaded] = useFonts({
@@ -78,18 +91,14 @@ import axios from 'axios';
           aspect: [1,1],
           quality: 1,
         }).then((response => {
+            console.log(response)
             setImage({
                 uri: response.uri,
                 name: uuid_user + '.jpg',
                 type: 'image/jpg',
               }) 
         }))    
-    };
-
-
-    
-
-    
+    };    
    
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -142,6 +151,12 @@ import axios from 'axios';
                     />
                 </View>
                 <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive}/>
+                <Image
+                    style={styles.logo}
+                    source={{
+                        uri: profilePic
+                    }}
+                />
                 <View style={styles.settingsContainer}>
                     <Text style={styles.text4}>
                         USER SETTINGS
@@ -173,6 +188,10 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    logo: {
+        width: 66,
+        height: 58,
+      },
     settingsItem: {
         display: 'flex',
         flexDirection: 'row',
