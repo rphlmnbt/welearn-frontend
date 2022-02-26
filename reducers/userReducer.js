@@ -39,6 +39,7 @@ const userReducer = (state = initialState, action) => {
                 course:action.payload.course,
                 year_level:action.payload.year_level,
                 interest:action.payload.interest,
+                image: 'http://192.168.100.111:8080/api/image/' + action.payload.uuid_user,
                 isActive:action.payload.isActive,
                 stats:action.payload.stats
             };

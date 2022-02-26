@@ -1,14 +1,22 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 export default function UserInfo(props) {
 
-
-
     return (
         <View style={styles.header}>
-            <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
+            {props.profilePic != null &&
+                <Image
+                    style={styles.image}
+                    source={{
+                        uri: props.profilePic + '?' + new Date()
+                    }}
+                />
+            }
+            {props.profilePic == null &&
+                <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
+            }
             <View style={styles.infoContainer}>
                 <Text style={styles.nameText}>{props.firstName} {props.lastName}</Text>
                 <Text style={styles.infoText}>{props.course}</Text>
@@ -56,5 +64,11 @@ const styles = StyleSheet.create({
     },
     statusContainer: {
         flexDirection: 'row'
+    },
+    image : {
+        height: 100,
+        width: 100,
+        borderRadius: 50,
+        marginTop: 10
     }
 })

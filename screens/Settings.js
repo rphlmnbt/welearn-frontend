@@ -21,13 +21,13 @@ import { setStatus } from '../actions/userActions';
 import { setInterest } from '../actions/userActions';
 import userService from '../services/user.service';
 import axios from 'axios';
+import { uploadImage } from '../actions/userActions';
 
   export default function Settings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
     const [interestModal, setInterestModal] = useState(false);
     const [image, setImage] = useState(null);
     const [text, setText] = useState('');
-    const [profilePic, setProfilePic] = useState(null)
     const dispatch = useDispatch()
 
     const uuid_user = useSelector(state => state.user.uuid_user)
@@ -37,16 +37,10 @@ import axios from 'axios';
     const yearLevel = useSelector(state => state.user.year_level)
     const interest = useSelector(state => state.user.interest)
     const isActive = useSelector(state => state.user.isActive)
+    const profilePic = useSelector(state => state.user.image)
     
 
     useEffect(() => {
-        imageService.getImage(uuid_user)
-        .then(response => {
-            console.log(response.request._url)
-            setProfilePic(response.request._url)
-        }).catch(error => {
-            console.log(error)
-        })
         if (image != null) {
             imageService.uploadImage(image, uuid_user)
             userService.uploadImage(uuid_user, image.name)
@@ -81,7 +75,7 @@ import axios from 'axios';
         setInterestModal(false)
         userService.updateInterest(uuid_user, text)
         dispatch(setInterest(text))
-        }
+    }
 
     
     const pickImage = async () => {
@@ -97,6 +91,7 @@ import axios from 'axios';
                 name: uuid_user + '.jpg',
                 type: 'image/jpg',
               }) 
+            dispatch(uploadImage(response.uri))
         }))    
     };    
    
@@ -150,13 +145,7 @@ import axios from 'axios';
                         resizeMode="cover" 
                     />
                 </View>
-                <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive}/>
-                <Image
-                    style={styles.logo}
-                    source={{
-                        uri: profilePic
-                    }}
-                />
+                <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive}/>
                 <View style={styles.settingsContainer}>
                     <Text style={styles.text4}>
                         USER SETTINGS
@@ -188,10 +177,6 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
-    logo: {
-        width: 66,
-        height: 58,
-      },
     settingsItem: {
         display: 'flex',
         flexDirection: 'row',
