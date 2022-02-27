@@ -27,6 +27,10 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
     switch(action.type) {
         case LOGIN:
+            const profilePic = null
+            if (action.payload.src != null) {
+                profilePic = 'http://192.168.100.111:8080/api/image/' + action.payload.uuid_user
+            }
             return {
                 ...state,
                 uuid_user: action.payload.uuid_user,
@@ -39,7 +43,7 @@ const userReducer = (state = initialState, action) => {
                 course:action.payload.course,
                 year_level:action.payload.year_level,
                 interest:action.payload.interest,
-                image: 'http://192.168.100.111:8080/api/image/' + action.payload.uuid_user,
+                image: profilePic,
                 isActive:action.payload.isActive,
                 stats:action.payload.stats
             };

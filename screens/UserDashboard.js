@@ -33,6 +33,8 @@ import imageService from '../services/image.service';
     const isActive = useSelector(state => state.user.isActive)
     const profilePic = useSelector(state => state.user.image)
 
+    console.log(profilePic)
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {

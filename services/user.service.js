@@ -2,6 +2,7 @@ import axios from 'axios'
 import {API_URL} from '@env'
 
 const AUTH_URL =  API_URL + '/auth'
+const SURVEY_URL = API_URL + '/survey'
 
 const updateInterest = (
     uuid_user,
@@ -22,6 +23,13 @@ const updateStatus = (
         isActive
     }).then(response => {
         console.log(response.data)
+        axios.put(SURVEY_URL + `/update/${uuid_user}`, {
+            isActive
+        }).then(response => {
+            console.log(response)
+        }).catch(error => {
+            console.log(error)
+        })     
     }).catch(error => {
         console.log(error)
     })
