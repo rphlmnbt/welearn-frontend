@@ -21,19 +21,10 @@ import BottomNav from '../components/BottomNav';
 import UserInfo from '../components/UserInfo';
 import Stats from '../components/Stats';
   export default function FindPartner({navigation}) {
-
+    const dispatch = useDispatch()
     const IMG_URL = API_URL +'/image/'
     const [studyPartners, setStudyPartners] = useState(null)
     const [num, setNum] = useState(0)
-    const categories = [
-        "Time Management",
-        "Study Environment",
-        "Exam Preparation",
-        "Note Taking",
-        "Reading Skills",
-        "Writing Skills",
-        "Math Skills"
-    ]
     const initPartner = {
         firstName: '',
         lastName: '',
@@ -61,13 +52,22 @@ import Stats from '../components/Stats';
         Poppins_700Bold,
     });
 
+    const firstName = useSelector(state => state.partner.first_name)
+    const lastName = useSelector(state => state.partner.last_name)
+    const course = useSelector(state => state.partner.course)
+    const yearLevel = useSelector(state => state.partner.year_level)
+    const interest = useSelector(state => state.partner.interest)
+    const profilePic = useSelector(state => state.partner.image)
+    const stats = useSelector(state => state.partner.stats)
+
     useEffect(() => {
         userService.loadStudyPartners(uuid_user)
         .then(response => {
             //console.log(response.data)
             setStudyPartners(response.data)
             setResultSize(response.data.length)
-            setCurrentPartner(response.data[num])
+            //setCurrentPartner(response.data[num])
+            dispatch(setPartner(response.data[num]))
         })
     }, [])
 
@@ -77,6 +77,7 @@ import Stats from '../components/Stats';
             setNum(0)
         } else {
             setCurrentPartner(studyPartners[num+1])
+            dispatch(setPartner(studyPartners[num+1]))
             setNum(num+1)
         }
     }
@@ -94,10 +95,11 @@ import Stats from '../components/Stats';
             </View>
             <View style={styles.userdetails}>
                 <View style={{marginTop: '5%'}}>
-                    <UserInfo firstName={currentPartner.first_name} lastName={currentPartner.last_name} course={currentPartner.course} yearLevel={currentPartner.year_level} isActive={true} interest={currentPartner.interest}/>
+                    <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={true} />
+                    {/* <UserInfo firstName={currentPartner.first_name} lastName={currentPartner.last_name} course={currentPartner.course} yearLevel={currentPartner.year_level} isActive={true} interest={currentPartner.interest}/> */}
                 </View>
                 
-                <Stats stats={currentPartner.stats} />
+                <Stats stats={stats} />
                 <View style={styles.btnContainer}>
                     <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
                             <Image
