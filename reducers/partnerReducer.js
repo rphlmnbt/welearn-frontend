@@ -1,7 +1,8 @@
-import { SET_PARTNER, STATUS, INTEREST } from "../constants";
+import { SET_PARTNER, STATUS, INTEREST, PARTNER_RELOAD, SET_STUDYPARTNERS, SET_COUNT, SET_SIZE } from "../constants";
 import {API_URL} from '@env'
 
 const initialState = {
+    studyPartners: '',
     uuid_user: '',
     email: '',
     first_name: '',
@@ -22,6 +23,9 @@ const initialState = {
         0,
         0
     ],
+    reload: true,
+    count: 0,
+    resultSize: 0
 }
 
 const IMG_URL = API_URL +'/image/'
@@ -58,6 +62,26 @@ const partnerReducer = (state = initialState, action) => {
             return {
                 ...state,
                 activeStatus:action.payload
+            };
+        case PARTNER_RELOAD:
+            return {
+                ...state,
+                reload:action.payload
+            };
+        case SET_STUDYPARTNERS:
+            return {
+                ...state,
+                studyPartners:action.payload
+            };
+        case SET_COUNT:
+            return {
+                ...state,
+                count:action.payload
+            };
+        case SET_SIZE:
+            return {
+                ...state,
+                resultSize:action.payload
             };
         default:
             return state;

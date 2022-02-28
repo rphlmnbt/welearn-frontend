@@ -17,4 +17,7 @@ export const UPLOAD_IMAGE = 'UPLOAD_IMAGE'
 export const SET_PARTNER = 'SET_PARTNER'
 export const INTEREST = 'INTEREST'
 export const STATUS = 'STATUS'
-
+export const PARTNER_RELOAD = 'PARTNER_RELOAD'
+export const SET_STUDYPARTNERS = 'SET_STUDYPARTNERS'
+export const SET_COUNT = 'SET_COUNT'
+export const SET_SIZE = 'SET_SIZE'

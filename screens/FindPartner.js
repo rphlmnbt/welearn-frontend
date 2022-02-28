@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import userService from '../services/user.service';
 import { useSelector, useDispatch } from 'react-redux';
-import { setPartner } from '../actions/partnerActions';
+import { setPartner, setReload, setStudyPartners, setSize, setCount } from '../actions/partnerActions';
 import {API_URL} from '@env'
 import { 
     useFonts,
@@ -22,27 +22,7 @@ import UserInfo from '../components/UserInfo';
 import Stats from '../components/Stats';
   export default function FindPartner({navigation}) {
     const dispatch = useDispatch()
-    const IMG_URL = API_URL +'/image/'
-    const [studyPartners, setStudyPartners] = useState(null)
-    const [num, setNum] = useState(0)
-    const initPartner = {
-        firstName: '',
-        lastName: '',
-        course: '',
-        yearLevel: '',
-        interest: '',
-        stats: [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-        ]
-    }
-    const [currentPartner, setCurrentPartner] = useState(initPartner)
-    const [resultSize, setResultSize] = useState(0)
+
     const uuid_user = useSelector(state => state.user.uuid_user)
 
     let [fontsLoaded] = useFonts({
@@ -59,26 +39,30 @@ import Stats from '../components/Stats';
     const interest = useSelector(state => state.partner.interest)
     const profilePic = useSelector(state => state.partner.image)
     const stats = useSelector(state => state.partner.stats)
+    const reload = useSelector(state => state.partner.reload)
+    const studyPartners = useSelector(state => state.partner.studyPartners)
+    const resultSize = useSelector(state => state.partner.resultSize)
+    const count = useSelector(state => state.partner.count)
 
     useEffect(() => {
-        userService.loadStudyPartners(uuid_user)
-        .then(response => {
-            //console.log(response.data)
-            setStudyPartners(response.data)
-            setResultSize(response.data.length)
-            //setCurrentPartner(response.data[num])
-            dispatch(setPartner(response.data[num]))
-        })
+        if(reload) {
+            userService.loadStudyPartners(uuid_user)
+            .then(response => {
+                dispatch(setStudyPartners(response.data))
+                dispatch(setSize(response.data.length))
+                dispatch(setPartner(response.data[count]))
+                dispatch(setReload(false))
+            })
+        }
     }, [])
 
     const nextPartner = () => {
-        if (num == resultSize-1) {
-            setCurrentPartner(studyPartners[0])
-            setNum(0)
+        if (count == resultSize-1) {
+            dispatch(setPartner(studyPartners[0]))
+            dispatch(setCount(0))
         } else {
-            setCurrentPartner(studyPartners[num+1])
-            dispatch(setPartner(studyPartners[num+1]))
-            setNum(num+1)
+            dispatch(setPartner(studyPartners[count+1]))
+            dispatch(setCount(count+1))
         }
     }
 
@@ -96,7 +80,6 @@ import Stats from '../components/Stats';
             <View style={styles.userdetails}>
                 <View style={{marginTop: '5%'}}>
                     <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={true} />
-                    {/* <UserInfo firstName={currentPartner.first_name} lastName={currentPartner.last_name} course={currentPartner.course} yearLevel={currentPartner.year_level} isActive={true} interest={currentPartner.interest}/> */}
                 </View>
                 
                 <Stats stats={stats} />
