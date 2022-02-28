@@ -11,7 +11,10 @@ export const HABITS_CHANGE = 'HABITS_CHANGE'
 export const LOGIN = 'LOGIN'
 export const SET_INTEREST = 'SET_INTEREST'
 export const SET_STATUS = 'SET_STATUS'
-export const FIND = 'FIND'
+export const UPLOAD_IMAGE = 'UPLOAD_IMAGE'
+
+//Partner Reducer
+export const SET_PARTNER = 'SET_PARTNER'
 export const INTEREST = 'INTEREST'
 export const STATUS = 'STATUS'
-export const UPLOAD_IMAGE = 'UPLOAD_IMAGE'
+

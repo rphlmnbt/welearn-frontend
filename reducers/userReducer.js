@@ -1,4 +1,5 @@
 import { LOGIN, SET_INTEREST, SET_STATUS, UPLOAD_IMAGE } from "../constants";
+import {API_URL} from '@env'
 
 const initialState = {
     uuid_user: '',
@@ -24,12 +25,14 @@ const initialState = {
     ],
 }
 
+const IMG_URL = API_URL +'/image/'
+
 const userReducer = (state = initialState, action) => {
     switch(action.type) {
         case LOGIN:
-            const profilePic = null
+            var profilePic = null
             if (action.payload.src != null) {
-                profilePic = 'http://192.168.100.111:8080/api/image/' + action.payload.uuid_user
+                profilePic = IMG_URL + action.payload.uuid_user
             }
             return {
                 ...state,

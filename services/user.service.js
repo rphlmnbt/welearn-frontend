@@ -3,7 +3,7 @@ import {API_URL} from '@env'
 
 const AUTH_URL =  API_URL + '/auth'
 const SURVEY_URL = API_URL + '/survey'
-
+const ML_URL = API_URL + '/ml'
 const updateInterest = (
     uuid_user,
     interest) => {
@@ -23,7 +23,7 @@ const updateStatus = (
         isActive
     }).then(response => {
         console.log(response.data)
-        axios.put(SURVEY_URL + `/update/${uuid_user}`, {
+        axios.put(SURVEY_URL + `/${uuid_user}`, {
             isActive
         }).then(response => {
             console.log(response)
@@ -47,6 +47,10 @@ const uploadImage = (
     })
 }
 
+const loadStudyPartners = (
+    uuid_user) =>{
+        return axios.get(ML_URL + `/studyPartners/${uuid_user}`)
+    }
 
 
 
@@ -55,5 +59,6 @@ const uploadImage = (
 export default {
   updateInterest,
   updateStatus,
-  uploadImage
+  uploadImage,
+  loadStudyPartners
 };

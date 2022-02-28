@@ -1,7 +1,7 @@
-import { FIND, INTEREST, STATUS } from "../constants";
+import { SET_PARTNER, INTEREST, STATUS } from "../constants";
 
-export const find = (values) => ({
-    type: FIND,
+export const setPartner = (values) => ({
+    type: SET_PARTNER,
     payload: values
 })
 

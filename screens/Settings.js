@@ -145,7 +145,9 @@ import { uploadImage } from '../actions/userActions';
                         resizeMode="cover" 
                     />
                 </View>
-                <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive}/>
+                <View style={{marginTop: '45%'}}>
+                    <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive} />
+                </View>
                 <View style={styles.settingsContainer}>
                     <Text style={styles.text4}>
                         USER SETTINGS

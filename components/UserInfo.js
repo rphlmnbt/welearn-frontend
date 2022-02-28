@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
     header:{
         flexDirection: 'row',
         alignSelf: 'flex-start',
-        marginTop: '45%',
         paddingHorizontal: 30
     },
     infoContainer: {

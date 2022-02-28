@@ -1,4 +1,5 @@
-import { FIND, STATUS, INTEREST } from "../constants";
+import { SET_PARTNER, STATUS, INTEREST } from "../constants";
+import {API_URL} from '@env'
 
 const initialState = {
     uuid_user: '',
@@ -11,7 +12,7 @@ const initialState = {
     course: '',
     year_level: '',
     interest: '',
-    activeStatus: '',
+    image: '',
     stats: [
         0,
         0,
@@ -23,9 +24,15 @@ const initialState = {
     ],
 }
 
-const userReducer = (state = initialState, action) => {
+const IMG_URL = API_URL +'/image/'
+
+const partnerReducer = (state = initialState, action) => {
     switch(action.type) {
-        case FIND:
+        case SET_PARTNER:
+            var profilePic = null
+            if (action.payload.src != null) {
+                profilePic = IMG_URL + action.payload.uuid_user
+            }
             return {
                 ...state,
                 uuid_user: action.payload.uuid_user,
@@ -38,22 +45,24 @@ const userReducer = (state = initialState, action) => {
                 course:action.payload.course,
                 year_level:action.payload.year_level,
                 interest:action.payload.interest,
-                activeStatus:action.payload.activeStatus,
+                image: profilePic,
                 stats:action.payload.stats
             };
-            case INTEREST:
-                return {
-                    ...state,
-                    interest:action.payload
-                };
-    
-            case STATUS:
-                return {
-                    ...state,
-                    activeStatus:action.payload
-                };
-            default:
-                return state;
-        }
+        case INTEREST:
+            return {
+                ...state,
+                interest:action.payload
+            };
+
+        case STATUS:
+            return {
+                ...state,
+                activeStatus:action.payload
+            };
+        default:
+            return state;
     }
+}
+
+export default partnerReducer
     

@@ -6,8 +6,10 @@ import AppLoading from 'expo-app-loading';
 import * as Progress from 'react-native-progress';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-
-
+import userService from '../services/user.service';
+import { useSelector, useDispatch } from 'react-redux';
+import { setPartner } from '../actions/partnerActions';
+import {API_URL} from '@env'
 import { 
     useFonts,
     Poppins_400Regular,
@@ -16,8 +18,13 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import BottomNav from '../components/BottomNav';
-
+import UserInfo from '../components/UserInfo';
+import Stats from '../components/Stats';
   export default function FindPartner({navigation}) {
+
+    const IMG_URL = API_URL +'/image/'
+    const [studyPartners, setStudyPartners] = useState(null)
+    const [num, setNum] = useState(0)
     const categories = [
         "Time Management",
         "Study Environment",
@@ -27,6 +34,25 @@ import BottomNav from '../components/BottomNav';
         "Writing Skills",
         "Math Skills"
     ]
+    const initPartner = {
+        firstName: '',
+        lastName: '',
+        course: '',
+        yearLevel: '',
+        interest: '',
+        stats: [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+    const [currentPartner, setCurrentPartner] = useState(initPartner)
+    const [resultSize, setResultSize] = useState(0)
+    const uuid_user = useSelector(state => state.user.uuid_user)
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -34,7 +60,28 @@ import BottomNav from '../components/BottomNav';
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
-    if (!fontsLoaded) {
+
+    useEffect(() => {
+        userService.loadStudyPartners(uuid_user)
+        .then(response => {
+            //console.log(response.data)
+            setStudyPartners(response.data)
+            setResultSize(response.data.length)
+            setCurrentPartner(response.data[num])
+        })
+    }, [])
+
+    const nextPartner = () => {
+        if (num == resultSize-1) {
+            setCurrentPartner(studyPartners[0])
+            setNum(0)
+        } else {
+            setCurrentPartner(studyPartners[num+1])
+            setNum(num+1)
+        }
+    }
+
+    if (!fontsLoaded && studyPartners === null) {
         return <AppLoading />;
     } else {
         return (
@@ -45,64 +92,26 @@ import BottomNav from '../components/BottomNav';
                    resizeMode="cover" 
                />
             </View>
-            {/* <Image
-                source={AvatarImg}
-                style={styles.images}
-            /> */}
             <View style={styles.userdetails}>
-                <View style={styles.user}>
-                <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
+                <View style={{marginTop: '5%'}}>
+                    <UserInfo firstName={currentPartner.first_name} lastName={currentPartner.last_name} course={currentPartner.course} yearLevel={currentPartner.year_level} isActive={true} interest={currentPartner.interest}/>
                 </View>
-                <Text style={styles.text1}>
-                   Name, Year Level, Course
-                </Text>
-                <Text style={styles.text2}>
-                    This student is looking to study this topic: Calculus
-                </Text>
-                <Text style={styles.text3}>
-                    Study Habits
-                </Text>
-                <Text style={styles.text4}>
-                    Time Management
-                </Text>
-                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Study Environment
-                </Text>
-                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Exam Preparation
-                </Text>
-                <Progress.Bar progress={0.2} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Note Taking
-                </Text>
-                <Progress.Bar progress={0.3} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Reading Skills
-                </Text>
-                <Progress.Bar progress={0.4} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Writing Skills
-                </Text>
-                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Math Skills
-                </Text>
-                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
+                
+                <Stats stats={currentPartner.stats} />
                 <View style={styles.btnContainer}>
                     <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
                             <Image
                             style={styles.images}
                             source={require('../assets/images/check-button.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('')}>
+                    <TouchableOpacity onPress={nextPartner}>
                             <Image
                             style={styles.images}
                             source={require('../assets/images/next.png')} />
                     </TouchableOpacity>
                 </View>
             </View>
+            
            <BottomNav/>   
        </View>
         );
@@ -146,10 +155,16 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '83%',
         padding: 25,
+        paddingBottom: 50,
         position: 'absolute',
         bottom: 0,
         borderTopRightRadius: 30,
         borderTopLeftRadius: 30,
+        marginTop: 0,
+        paddingTop: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start'
     },
     text1 : {
         fontFamily: 'Poppins_600SemiBold',
