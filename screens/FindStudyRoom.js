@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image,  } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, TextInput  } from 'react-native';
 import Background from '../assets/images/find-bg.svg'
 import AppLoading from 'expo-app-loading';
 import Room from '../assets/images/room.png'
@@ -39,7 +39,6 @@ import {
       };
 
 
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -56,14 +55,28 @@ import {
                    style={styles.background}
                    resizeMode="cover" 
                />
-               <Text style={styles.text1}>Hello, Student!</Text>
-               <Text style={styles.text2}>Pick your discussion Room</Text>
+               
             </View>
-            <Image
-                source={Room}
-                style={styles.images}
-            />
+            <View style={styles.header}>
+                <Text style={styles.text1}>Hello, Student!</Text>
+                <Text style={styles.text2}>Pick your discussion Room</Text>
+                <Image
+                    source={Room}
+                    style={styles.images}
+                />
+            </View>
+            
             <View style={styles.userdetails}>
+                <Text style={styles.text3}>
+                   Session Name
+                </Text>
+                <TextInput
+                    placeholder="Session Name"
+                    autoCapitalize="none"
+                    style={styles.textinput1}
+                    autoCapitalize="none"
+
+                />
                 <Text style={styles.text3}>
                    Study Room Number
                 </Text>
@@ -80,7 +93,7 @@ import {
                     <Picker.Item label="4" value="fourth"/>
                     </Picker> 
                 </View>
-                <Text style={styles.text4}>
+                <Text style={styles.text3}>
                    Date
                 </Text>
                 <TouchableOpacity
@@ -98,7 +111,7 @@ import {
                         onChange={onChange}
                         />
                     )}
-                <Text style={styles.text4}>
+                <Text style={styles.text3}>
                    Time
                 </Text>
                 <View style={styles.picker}>
@@ -167,7 +180,7 @@ const styles = StyleSheet.create({
     userdetails: {
         backgroundColor: 'white',
         width: '100%',
-        height: '60%',
+        height: '65%',
         padding: 25,
         position: 'absolute',
         bottom: 0,
@@ -178,24 +191,23 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_400Regular',
         color: 'white',
         fontSize: 14,
-        marginLeft: 30,
         marginBottom: 5,
-        marginTop: '-27%'
+       
         
     },
 
     text2 : {
         fontFamily: 'Poppins_600SemiBold',
         color: 'white',
-        marginLeft: 30,
-        fontSize: 16
+        fontSize: 16,
+        marginBottom: 10
         
 
     },
     text3 : {
         fontFamily: 'Poppins_600SemiBold',
         color: '#5E5E5E',
-        fontSize: 18,
+        fontSize: 16,
         marginBottom: 0
         
     },
@@ -209,16 +221,24 @@ const styles = StyleSheet.create({
         
     },
     header:{
-      alignItems: 'center',
-      marginTop: '30%'
+      alignItems: 'flex-start',
+      justifyContent: 'flex-end',
+      paddingHorizontal: 30,
+      paddingVertical: 0,
+      margin: 0,
+      height: "35%",
+      width: "100%"
+
 
     },
     images: {
-      width: '41%',
-      marginTop: '35%',
-      borderRadius: 30,
+      width: "45%",
+      height: undefined,
+      aspectRatio: 1,
+      alignSelf: 'center',
+      borderRadius: 10,
       borderWidth: 1,
-      height: '20%'
+      marginBottom: 10
     },
 
     picker:{
@@ -227,8 +247,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 0,
         width: '100%',
-        marginTop: 15,
-        height: 48
+        marginVertical: 5,
+        height: 42
     },
     button: {
         backgroundColor: '#FE4D71',
@@ -258,14 +278,23 @@ const styles = StyleSheet.create({
         borderColor: '#ACACAC',
         borderRadius: 5,
         width: '100%',
-        height: 45,
-        marginTop: 15,
+        height: 42,
+        marginVertical: 5,
         justifyContent: 'center',
         padding:8,
     },
     pickerText: {
         color: '#ACACAC',
-        fontFamily: 'Poppins_600SemiBold',
+        fontFamily: 'Poppins_400Regular',
         letterSpacing: 0.3
+    },
+    textinput1:{
+        borderWidth: 1,
+        borderColor: '#ACACAC',
+        borderRadius: 5,
+        padding:8,
+        width: '100%',
+        marginVertical: 5,
+        height: 42
     },
 });
