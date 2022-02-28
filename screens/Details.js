@@ -4,6 +4,7 @@ import Background from '../assets/images/find-bg.svg'
 import AvatarImg from '../assets/images/avatar.png'
 import AppLoading from 'expo-app-loading';
 import * as Progress from 'react-native-progress';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,9 +16,8 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import BottomNav from '../components/BottomNav';
 
-  export default function FindPartner({navigation}) {
+  export default function Details({navigation}) {
     const categories = [
         "Time Management",
         "Study Environment",
@@ -99,11 +99,31 @@ import BottomNav from '../components/BottomNav';
                     <TouchableOpacity onPress={() => navigation.navigate('')}>
                             <Image
                             style={styles.images}
-                            source={require('../assets/images/next.png')} />
+                            source={require('../assets/images/remove.png')} />
                     </TouchableOpacity>
                 </View>
             </View>
-           <BottomNav/>   
+           
+            {/* <View style={styles.menucontainer}>
+                  <View style={styles.row}>
+                    <View style={styles.column}>
+                      <TouchableOpacity onPress={() => navigation.navigate('PickStudyRoom')}>
+                        <Image
+                          style={styles.images}
+                          source={require('../assets/images/check-button.png')} />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.column}>
+                      <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
+                        <Image
+                          style={styles.images}
+                          source={require('../assets/images/next.png')} />
+                      </TouchableOpacity>
+                    </View>
+                    </View>
+                    </View> */}
+
+              
        </View>
         );
     }
@@ -187,10 +207,10 @@ const styles = StyleSheet.create({
 
     },
     images: {
-      width: 80,
-      height: 80,
+      width: 90,
+      height: 90,
       margin: 30,
-      marginTop: 20
+      marginTop: 30
     },
 
     user: {
