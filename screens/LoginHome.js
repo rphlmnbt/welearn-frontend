@@ -10,6 +10,8 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import { proc } from 'react-native-reanimated';
+import {API_URL} from '@env'
 
 function LoginHome({ navigation }) {
     let [fontsLoaded] = useFonts({
@@ -47,7 +49,7 @@ function LoginHome({ navigation }) {
                 <View style={{marginTop: 20}}>
                     <TouchableOpacity
                         style={styles.button1}
-                        onPress={() => navigation.navigate('LoginMobile')}
+                        onPress={() =>navigation.navigate('LoginMobile')}
                     >
                         <Text style={styles.buttonText1}> Continue With Phone</Text>
                     </TouchableOpacity>

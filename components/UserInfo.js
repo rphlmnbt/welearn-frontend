@@ -1,18 +1,39 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-
+import { faUserCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 export default function UserInfo(props) {
+
     return (
         <View style={styles.header}>
-            <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
+            {props.profilePic != null &&
+                <Image
+                    style={styles.image}
+                    source={{
+                        uri: props.profilePic + '?' + new Date()
+                    }}
+                />
+            }
+            {props.profilePic == null &&
+                <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
+            }
             <View style={styles.infoContainer}>
                 <Text style={styles.nameText}>{props.firstName} {props.lastName}</Text>
                 <Text style={styles.infoText}>{props.course}</Text>
                 <Text style={styles.infoText}>{props.yearLevel}</Text>
                 <Text style={styles.infoText}>{props.interest}</Text>
-                <Text style={styles.infoText}>{props.activeStatus}</Text>
+                {props.isActive &&
+                    <View style={styles.statusContainer}>
+                        <FontAwesomeIcon icon={faCircle} size={10} color={'#22C382'} style={{marginTop: 4}}/>
+                        <Text style={styles.infoText}> Online</Text>
+                    </View>
+                }
+                {!props.isActive &&
+                    <View style={styles.statusContainer}>
+                        <FontAwesomeIcon icon={faCircle} size={10} color={'#D43455'} style={{marginTop: 4}}/>
+                        <Text style={styles.infoText}> Offline</Text>
+                    </View>
+                }
             </View>              
         </View>
     )
@@ -41,4 +62,13 @@ const styles = StyleSheet.create({
         fontSize: 12
         
     },
+    statusContainer: {
+        flexDirection: 'row'
+    },
+    image : {
+        height: 100,
+        width: 100,
+        borderRadius: 50,
+        marginTop: 10
+    }
 })

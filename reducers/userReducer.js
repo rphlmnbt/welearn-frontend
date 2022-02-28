@@ -1,4 +1,4 @@
-import { LOGIN, SET_INTEREST, SET_STATUS } from "../constants";
+import { LOGIN, SET_INTEREST, SET_STATUS, UPLOAD_IMAGE } from "../constants";
 
 const initialState = {
     uuid_user: '',
@@ -11,7 +11,8 @@ const initialState = {
     course: '',
     year_level: '',
     interest: '',
-    activeStatus: '',
+    image: '',
+    isActive: '',
     stats: [
         0,
         0,
@@ -26,6 +27,10 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
     switch(action.type) {
         case LOGIN:
+            const profilePic = null
+            if (action.payload.src != null) {
+                profilePic = 'http://192.168.100.111:8080/api/image/' + action.payload.uuid_user
+            }
             return {
                 ...state,
                 uuid_user: action.payload.uuid_user,
@@ -38,7 +43,8 @@ const userReducer = (state = initialState, action) => {
                 course:action.payload.course,
                 year_level:action.payload.year_level,
                 interest:action.payload.interest,
-                activeStatus:action.payload.activeStatus,
+                image: profilePic,
+                isActive:action.payload.isActive,
                 stats:action.payload.stats
             };
          case SET_INTEREST:
@@ -50,7 +56,12 @@ const userReducer = (state = initialState, action) => {
         case SET_STATUS:
             return {
                 ...state,
-                activeStatus:action.payload
+                isActive:action.payload
+            };
+        case UPLOAD_IMAGE:
+            return {
+                ...state,
+                image:action.payload
             };
         default:
             return state;

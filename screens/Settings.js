@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Modal  } from 'react-native';
 import Background from '../assets/images/profile-bg.svg'
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle, faBook, faImage, faSignOutAlt, faCircle } from '@fortawesome/free-solid-svg-icons';
-import * as Progress from 'react-native-progress';
+import imageService from '../services/image.service';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -19,11 +19,38 @@ import * as ImagePicker from 'expo-image-picker'
 import UserInfo from '../components/UserInfo';
 import { setStatus } from '../actions/userActions';
 import { setInterest } from '../actions/userActions';
+import userService from '../services/user.service';
+import axios from 'axios';
+import { uploadImage } from '../actions/userActions';
 
   export default function Settings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
     const [interestModal, setInterestModal] = useState(false);
     const [image, setImage] = useState(null);
+    const [text, setText] = useState('');
+    const dispatch = useDispatch()
+
+    const uuid_user = useSelector(state => state.user.uuid_user)
+    const firstName = useSelector(state => state.user.first_name)
+    const lastName = useSelector(state => state.user.last_name)
+    const course = useSelector(state => state.user.course)
+    const yearLevel = useSelector(state => state.user.year_level)
+    const interest = useSelector(state => state.user.interest)
+    const isActive = useSelector(state => state.user.isActive)
+    const profilePic = useSelector(state => state.user.image)
+    
+
+    useEffect(() => {
+        if (image != null) {
+            imageService.uploadImage(image, uuid_user)
+            userService.uploadImage(uuid_user, image.name)
+        }
+        return () => {
+            // cancel the subscription
+            setImage(null);
+        };
+    }, [image])
+
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -31,48 +58,43 @@ import { setInterest } from '../actions/userActions';
         Poppins_700Bold,
     });
 
-
-    const dispatch = useDispatch()
-    const OpenStatus = () =>  {
+    const setActive = () =>  {
         setStatusModal(false)
-        dispatch(setStatus('Online'))
+        userService.updateStatus(uuid_user, true)
+        dispatch(setStatus(true))
     }
 
-    const CloseStatus = () =>  {
+    const setInactive = () =>  {
         setStatusModal(false)
-        dispatch(setStatus('Offline'))
+        userService.updateStatus(uuid_user, false)
+        dispatch(setStatus(false))
     }
 
-    const[text, setText] = useState('');
-    const CloseInterest = () =>  {
+    
+    const changeInterest = () =>  {
         setInterestModal(false)
+        userService.updateInterest(uuid_user, text)
         dispatch(setInterest(text))
-        }
+    }
 
     
     const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
+        await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
           aspect: [1,1],
           quality: 1,
-        });
-    
-        console.log(result);
-    
-        if (!result.cancelled) {
-          setImage(result.uri);
-        }
-    };
-
-    const firstName = useSelector(state => state.user.first_name)
-    const lastName = useSelector(state => state.user.last_name)
-    const course = useSelector(state => state.user.course)
-    const yearLevel = useSelector(state => state.user.year_level)
-    const interest = useSelector(state => state.user.interest)
-    const activeStatus = useSelector(state => state.user.activeStatus)
-
+        }).then((response => {
+            console.log(response)
+            setImage({
+                uri: response.uri,
+                name: uuid_user + '.jpg',
+                type: 'image/jpg',
+              }) 
+            dispatch(uploadImage(response.uri))
+        }))    
+    };    
+   
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -86,11 +108,11 @@ import { setInterest } from '../actions/userActions';
                 >
                     <View style={styles.modalContainer}>
                         <Text style={styles.text4}>Set Status</Text>
-                        <TouchableOpacity style={styles.settingsItem}  onPress={OpenStatus}>
+                        <TouchableOpacity style={styles.settingsItem}  onPress={setActive}>
                             <FontAwesomeIcon icon={faCircle} size={15} color={'#22C382'} style={{alignSelf: 'center'}}/>
                             <Text style={styles.text5}>Online</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.settingsItem}  onPress={CloseStatus}>
+                        <TouchableOpacity style={styles.settingsItem}  onPress={setInactive}>
                             <FontAwesomeIcon icon={faCircle} size={15} color={'#D43455'} style={{alignSelf: 'center'}}/>
                             <Text style={styles.text5}>Offline</Text>
                         </TouchableOpacity>
@@ -111,7 +133,7 @@ import { setInterest } from '../actions/userActions';
                         />
                          <TouchableOpacity
                                 style={styles.button}
-                                onPress={CloseInterest}
+                                onPress={changeInterest}
                             >
                                 <Text style={styles.buttontext}> Continue</Text>
                             </TouchableOpacity>
@@ -123,7 +145,7 @@ import { setInterest } from '../actions/userActions';
                         resizeMode="cover" 
                     />
                 </View>
-                <UserInfo firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} activeStatus={activeStatus}/>
+                <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive}/>
                 <View style={styles.settingsContainer}>
                     <Text style={styles.text4}>
                         USER SETTINGS
