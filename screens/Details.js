@@ -7,8 +7,8 @@ import * as Progress from 'react-native-progress';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-
-
+import userService from '../services/user.service';
+import {API_URL} from '@env'
 import { 
     useFonts,
     Poppins_400Regular,
@@ -16,17 +16,31 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import BottomNav from '../components/BottomNav';
+import UserInfo from '../components/UserInfo';
+import Stats from '../components/Stats';
+import Loading from '../components/Loading';
 
-  export default function Details({navigation}) {
-    const categories = [
-        "Time Management",
-        "Study Environment",
-        "Exam Preparation",
-        "Note Taking",
-        "Reading Skills",
-        "Writing Skills",
-        "Math Skills"
-    ]
+  export default function Details({route, navigation}) {
+    const IMG_URL = API_URL +'/image/'
+    const [isLoading, setLoading] = useState(true);
+    const [user, setUser] = useState(null)
+    const [profilePic, setProfilePic] = useState(null)
+    const { uuid_user } = route.params;
+
+    useEffect(() => {
+        userService.findOneUser(uuid_user)
+        .then(response => {
+            console.log(response.data)
+            setUser(response.data)
+            if(response.data.user_detail.src != null) {
+                setProfilePic(IMG_URL + response.data.uuid_user)
+            } else {
+                setProfilePic(null)
+            }
+            setLoading(false)
+        })
+     }, [])
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -34,8 +48,8 @@ import {
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
-    if (!fontsLoaded) {
-        return <AppLoading />;
+    if (!fontsLoaded || isLoading) {
+        return <Loading />
     } else {
         return (
         <View style={styles.container}>
@@ -45,86 +59,26 @@ import {
                    resizeMode="cover" 
                />
             </View>
-            {/* <Image
-                source={AvatarImg}
-                style={styles.images}
-            /> */}
             <View style={styles.userdetails}>
-                <View style={styles.user}>
-                <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
+                <View style={{marginTop: '5%'}}>
+                    <UserInfo profilePic={profilePic} firstName={user.user_detail.first_name} lastName={user.user_detail.last_name} course={user.user_detail.course} yearLevel={user.user_detail.year_level} interest={user.user_detail.interest} isActive={user.isActive} />
                 </View>
-                <Text style={styles.text1}>
-                   Name, Year Level, Course
-                </Text>
-                <Text style={styles.text2}>
-                    This student is looking to study this topic: Calculus
-                </Text>
-                <Text style={styles.text3}>
-                    Study Habits
-                </Text>
-                <Text style={styles.text4}>
-                    Time Management
-                </Text>
-                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Study Environment
-                </Text>
-                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Exam Preparation
-                </Text>
-                <Progress.Bar progress={0.2} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Note Taking
-                </Text>
-                <Progress.Bar progress={0.3} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Reading Skills
-                </Text>
-                <Progress.Bar progress={0.4} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Writing Skills
-                </Text>
-                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Math Skills
-                </Text>
-                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
+                
+                <Stats stats={[user.survey.q1,user.survey.q2,user.survey.q3,user.survey.q4,user.survey.q5,user.survey.q6,user.survey.q7]} />
                 <View style={styles.btnContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('UserDashboard')}>
                             <Image
                             style={styles.images}
                             source={require('../assets/images/check-button.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('UserDashboard')}>
                             <Image
                             style={styles.images}
-                            source={require('../assets/images/remove.png')} />
+                            source={require('../assets/images/next.png')} />
                     </TouchableOpacity>
                 </View>
             </View>
-           
-            {/* <View style={styles.menucontainer}>
-                  <View style={styles.row}>
-                    <View style={styles.column}>
-                      <TouchableOpacity onPress={() => navigation.navigate('PickStudyRoom')}>
-                        <Image
-                          style={styles.images}
-                          source={require('../assets/images/check-button.png')} />
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.column}>
-                      <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
-                        <Image
-                          style={styles.images}
-                          source={require('../assets/images/next.png')} />
-                      </TouchableOpacity>
-                    </View>
-                    </View>
-                    </View> */}
-
-              
-       </View>
+        </View>
         );
     }
 }

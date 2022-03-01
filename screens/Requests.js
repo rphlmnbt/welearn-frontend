@@ -1,7 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, FlatList } from 'react-native';
-import AppLoading from 'expo-app-loading';
 import Background from '../assets/images/requests-bg.svg'
+import invitationService from '../services/invitation.service';
+import { useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import Loading from '../components/Loading';
+import {API_URL} from '@env'
 import { 
     useFonts,
     Poppins_400Regular,
@@ -49,7 +54,10 @@ import BottomNav from '../components/BottomNav';
 
 
 export default function Requests({navigation}) {
-   
+    const IMG_URL = API_URL +'/image/'
+    const [isLoading, setLoading] = useState(true);
+    const [invitations, setInvitations] = useState(null)
+    const uuid_user = useSelector(state => state.user.uuid_user)
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -57,8 +65,20 @@ export default function Requests({navigation}) {
         Poppins_700Bold,
     });
 
-    if (!fontsLoaded) {
-        return <AppLoading />;
+    useEffect(() => {
+        invitationService.getInvitations(uuid_user)
+        .then(response => {
+            console.log(response.data)
+            setInvitations(response.data)
+            setLoading(false)
+        })
+     }, [])
+     useEffect(()=> {
+         console.log(invitations)
+     }, [])
+
+     if (!fontsLoaded || isLoading) {
+        return <Loading />
     } else {
         return (
             <View style={styles.container}>
@@ -68,27 +88,31 @@ export default function Requests({navigation}) {
                         resizeMode="cover" 
                     />
                     <View style={styles.usercontainer}>             
-                        <Text style={styles.text1}>Chat</Text>
-                        <Text style={styles.text2}>Requests</Text>
-                        <FlatList
-                        data = {userdata}
-                        keyExtractor={item=>item.id}
-                        renderItem={({item}) => (
-                            <TouchableOpacity onPress={() => navigation.navigate('Details')}>
+                        <Text style={styles.text2}>Invitations</Text>
+
+                        {invitations.map(element => {
+                            return <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('Details', {uuid_user: element.uuid_user})}>
                             <View style={styles.userdetails}>
-                            <Image
-                            style={styles.images}
-                            source={item.userimage} />
-                            <View style={styles.textsection}>
-                                <View style={styles.usertext}>
-                                    <Text style={styles.name}>{item.username}</Text>
-                                    <Text style={styles.Timerequest}>{item.time}</Text>
+                                { element.creator_src != null &&
+                                    <Image
+                                        style={styles.image}
+                                        source= {{uri:IMG_URL + element.uuid_user + '?' + new Date()}}
+                                    />
+                                }
+                                { element.creator_src == null &&
+                                    <FontAwesomeIcon icon={faUserCircle} size={80} color={'#EF4765'}/>
+                                }
+                                
+                                
+                                <View style={styles.textsection}>
+                                    <Text style={styles.name}>{element.creator_first_name} {element.creator_last_name}</Text>
+                                    <Text style={styles.subinfo}>{element.time}</Text>
+                                    <Text  style={styles.subinfo}>{element.date}</Text>
                                 </View>
-                                <Text  style={styles.userinfo}>{item.info}</Text>
                             </View>
-                            </View>
-                            </TouchableOpacity>
-                        )}/>
+                        </TouchableOpacity>
+                        })}
+                       
                     </View>
                 </View>
                 <BottomNav/>
@@ -154,15 +178,16 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 100,
         flexDirection: 'row',   
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
+        paddingLeft: 30,
         paddingTop: 15,
         paddingBottom: 15,
     },
 
-    images:{
-        width: 60,
-        height: 60,
-
+    image : {
+        height: 80,
+        width: 80,
+        borderRadius: 40
     },
 
     textsection:{
@@ -177,19 +202,21 @@ const styles = StyleSheet.create({
     usertext:{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 5,
+        marginBottom: 2,
     },
 
     name:{
         fontSize: 14,
         fontFamily: 'Poppins_600SemiBold',
+        marginBottom:2
     },
 
-    Timerequest:{
+    subinfo:{
         color: '#ACACAC',
         fontSize: 12,
         fontFamily: 'Poppins_400Regular',
         paddingRight: 25,
+        marginBottom: 2
     },
 
     userinfo:{
