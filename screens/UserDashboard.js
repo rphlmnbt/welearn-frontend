@@ -33,8 +33,6 @@ import imageService from '../services/image.service';
     const isActive = useSelector(state => state.user.isActive)
     const profilePic = useSelector(state => state.user.image)
 
-    console.log(profilePic)
-
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -46,7 +44,9 @@ import imageService from '../services/image.service';
                         resizeMode="cover" 
                     />
                 </View>
-            <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive} />
+                <View style={{marginTop: '45%'}}>
+                    <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive} />
+                </View>
                 <Stats stats={stats} />
                 <BottomNav /> 
             </View>
