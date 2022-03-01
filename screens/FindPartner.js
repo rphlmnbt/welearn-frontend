@@ -1,13 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image,  } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Image,  } from 'react-native';
 import Background from '../assets/images/find-bg.svg'
-import AvatarImg from '../assets/images/avatar.png'
-import AppLoading from 'expo-app-loading';
-import * as Progress from 'react-native-progress';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-
-
+import userService from '../services/user.service';
+import { useSelector, useDispatch } from 'react-redux';
+import { setPartner, setReload, setStudyPartners, setSize, setCount } from '../actions/partnerActions';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -15,17 +11,14 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-
+import BottomNav from '../components/BottomNav';
+import UserInfo from '../components/UserInfo';
+import Stats from '../components/Stats';
+import Loading from '../components/Loading';
   export default function FindPartner({navigation}) {
-    const categories = [
-        "Time Management",
-        "Study Environment",
-        "Exam Preparation",
-        "Note Taking",
-        "Reading Skills",
-        "Writing Skills",
-        "Math Skills"
-    ]
+    const dispatch = useDispatch()
+    const [isLoading, setLoading] = useState(true);
+    const uuid_user = useSelector(state => state.user.uuid_user)
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -33,8 +26,43 @@ import {
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
-    if (!fontsLoaded) {
-        return <AppLoading />;
+
+    const firstName = useSelector(state => state.partner.first_name)
+    const lastName = useSelector(state => state.partner.last_name)
+    const course = useSelector(state => state.partner.course)
+    const yearLevel = useSelector(state => state.partner.year_level)
+    const interest = useSelector(state => state.partner.interest)
+    const profilePic = useSelector(state => state.partner.image)
+    const stats = useSelector(state => state.partner.stats)
+    const reload = useSelector(state => state.partner.reload)
+    const studyPartners = useSelector(state => state.partner.studyPartners)
+    const resultSize = useSelector(state => state.partner.resultSize)
+    const count = useSelector(state => state.partner.count)
+
+    useEffect(() => {
+        if(reload) {
+            userService.loadStudyPartners(uuid_user)
+            .then(response => {
+                dispatch(setStudyPartners(response.data))
+                dispatch(setSize(response.data.length))
+                dispatch(setPartner(response.data[count]))
+                dispatch(setReload(false))
+            })
+        }
+    }, [])
+
+    const nextPartner = () => {
+        if (count == resultSize-1) {
+            dispatch(setPartner(studyPartners[0]))
+            dispatch(setCount(0))
+        } else {
+            dispatch(setPartner(studyPartners[count+1]))
+            dispatch(setCount(count+1))
+        }
+    }
+
+    if (!fontsLoaded || reload) {
+        return <Loading />
     } else {
         return (
         <View style={styles.container}>
@@ -44,85 +72,27 @@ import {
                    resizeMode="cover" 
                />
             </View>
-            {/* <Image
-                source={AvatarImg}
-                style={styles.images}
-            /> */}
             <View style={styles.userdetails}>
-                <View style={styles.user}>
-                <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
+                <View style={{marginTop: '5%'}}>
+                    <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={true} />
                 </View>
-                <Text style={styles.text1}>
-                   Name, Year Level, Course
-                </Text>
-                <Text style={styles.text2}>
-                    This student is looking to study this topic: Calculus
-                </Text>
-                <Text style={styles.text3}>
-                    Study Habits
-                </Text>
-                <Text style={styles.text4}>
-                    Time Management
-                </Text>
-                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Study Environment
-                </Text>
-                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Exam Preparation
-                </Text>
-                <Progress.Bar progress={0.2} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Note Taking
-                </Text>
-                <Progress.Bar progress={0.3} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Reading Skills
-                </Text>
-                <Progress.Bar progress={0.4} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Writing Skills
-                </Text>
-                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
-                <Text style={styles.text4}>
-                    Math Skills
-                </Text>
-                <Progress.Bar progress={0.5} width={null} color='#EF4765'/>
+                
+                <Stats stats={stats} />
                 <View style={styles.btnContainer}>
                     <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
                             <Image
                             style={styles.images}
                             source={require('../assets/images/check-button.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('')}>
+                    <TouchableOpacity onPress={nextPartner}>
                             <Image
                             style={styles.images}
                             source={require('../assets/images/next.png')} />
                     </TouchableOpacity>
                 </View>
             </View>
-           
-            {/* <View style={styles.menucontainer}>
-                  <View style={styles.row}>
-                    <View style={styles.column}>
-                      <TouchableOpacity onPress={() => navigation.navigate('PickStudyRoom')}>
-                        <Image
-                          style={styles.images}
-                          source={require('../assets/images/check-button.png')} />
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.column}>
-                      <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
-                        <Image
-                          style={styles.images}
-                          source={require('../assets/images/next.png')} />
-                      </TouchableOpacity>
-                    </View>
-                    </View>
-                    </View> */}
-
-              
+            
+           <BottomNav/>   
        </View>
         );
     }
@@ -165,10 +135,16 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '83%',
         padding: 25,
+        paddingBottom: 50,
         position: 'absolute',
         bottom: 0,
         borderTopRightRadius: 30,
         borderTopLeftRadius: 30,
+        marginTop: 0,
+        paddingTop: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start'
     },
     text1 : {
         fontFamily: 'Poppins_600SemiBold',
@@ -206,10 +182,10 @@ const styles = StyleSheet.create({
 
     },
     images: {
-      width: 90,
-      height: 90,
+      width: 80,
+      height: 80,
       margin: 30,
-      marginTop: 30
+      marginTop: 20
     },
 
     user: {

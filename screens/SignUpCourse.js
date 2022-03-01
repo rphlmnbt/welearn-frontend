@@ -6,6 +6,7 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Background from '../assets/images/login-mobile-bg.svg'
 import LogoImg from '../assets/images/wl-logo2.png'
 import RadioButton from '../components/RadioButton';
+import { Formik } from 'formik';
 import {Picker} from '@react-native-picker/picker';
 import{
     useFonts,
@@ -14,6 +15,8 @@ import{
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import { useDispatch } from 'react-redux';
+import { changeCourse } from '../actions/signUpActions';
 
 export default function SignUpCourse({navigation}) {
 
@@ -26,64 +29,86 @@ export default function SignUpCourse({navigation}) {
         Poppins_700Bold,
     });
 
+    const dispatch = useDispatch()
+
+    const handleSubmit = values => {
+        console.log(values)
+        dispatch(changeCourse(values))
+        navigation.navigate('SignUpSurveyIntro')
+        
+    }
+
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
         return (
-            <View style={styles.container}>
-                 <View style={styles.half}>
-                    <Background
-                        style={styles.background}
-                        resizeMode="cover" 
-                    />
-                </View>
-                <Image
-                    style={styles.splash}
-                    source={LogoImg}
-                    resizeMode="contain" 
-                />
-                <Text style={styles.text2}>
-                        WeLearn
-                </Text>
-                <View style={styles.form}>
-                    <View style={styles.formHeader}>
-                        <Text style={styles.text}>
-                            Create a WeLearn Account
+            <Formik
+                initialValues={{
+                    course:'',
+                    yearLevel:''
+                }}
+                onSubmit={handleSubmit}
+            >
+                {({ handleChange, handleBlur, handleSubmit,values }) => (
+                    <View style={styles.container}>
+                        <View style={styles.half}>
+                            <Background
+                                style={styles.background}
+                                resizeMode="cover" 
+                            />
+                        </View>
+                        <Image
+                            style={styles.splash}
+                            source={LogoImg}
+                            resizeMode="contain" 
+                        />
+                        <Text style={styles.text2}>
+                                WeLearn
                         </Text>
-                        <Text style={styles.text3}>
-                            Please provide the following information.
-                        </Text>
+                        <View style={styles.form}>
+                            <View style={styles.formHeader}>
+                                <Text style={styles.text}>
+                                    Create a WeLearn Account
+                                </Text>
+                                <Text style={styles.text3}>
+                                    Please provide the following information.
+                                </Text>
+                            </View>
+                            <TextInput
+                                placeholder="Course Program"
+                                autoCapitalize="none"
+                                style={styles.textinput1}
+                                autoCapitalize="none"
+                                onChangeText={handleChange('course')}
+                                onBlur={handleBlur('course')}
+                                value={values.course}
+                            />
+                            <View style={styles.picker}>
+                            <Picker
+                            selectedValue={values.yearLevel}
+                            onValueChange={handleChange('yearLevel')}>
+                            <Picker.Item label="Year Level" value="select" color="#ACACAC" />
+                            <Picker.Item label="First Year" value="1st Year"/>
+                            <Picker.Item label="Second Year" value="2nd Year"/>
+                            <Picker.Item label="Third Year" value="3rd Year"/>
+                            <Picker.Item label="Fourth Year" value="4th Year"/>
+                            </Picker> 
+                            </View>
+                            
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={handleSubmit}
+                            >
+                                <Text style={styles.buttontext}> Continue</Text>
+                            </TouchableOpacity>
+                        </View>
+                        
+                        
                     </View>
-                    <TextInput
-                        placeholder="Course Program"
-                        autoCapitalize="none"
-                        style={styles.textinput1}
-                        autoCapitalize="none"
-                    />
-                    <View style={styles.picker}>
-                    <Picker
-                    selectedValue={selectedYear}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setSelectedYear(itemValue)
-                    }>
-                    <Picker.Item label="Year Level" value="select" color="#ACACAC" />
-                    <Picker.Item label="First Year" value="first"/>
-                    <Picker.Item label="Second Year" value="second"/>
-                    <Picker.Item label="Third Year" value="third"/>
-                    <Picker.Item label="Fourth Year" value="fourth"/>
-                    </Picker> 
-                    </View>
-                   
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => navigation.navigate('SignUpSurveyIntro')}
-                    >
-                        <Text style={styles.buttontext}> Continue</Text>
-                    </TouchableOpacity>
-                </View>
-                
-                
-            </View>
+                )}
+            </Formik>          
+            
         )
     }
 }

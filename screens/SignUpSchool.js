@@ -6,6 +6,7 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Background from '../assets/images/login-mobile-bg.svg'
 import LogoImg from '../assets/images/wl-logo2.png'
 import RadioButton from '../components/RadioButton';
+import { Formik } from 'formik';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -13,6 +14,8 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import { useDispatch } from 'react-redux';
+import { changeSchool } from '../actions/signUpActions';
 
 export default function SignUpSchool({navigation}) {
    
@@ -23,56 +26,69 @@ export default function SignUpSchool({navigation}) {
         Poppins_700Bold,
     });
 
+    const dispatch = useDispatch()
+
+    const handleSubmit = values => {
+        console.log(values)
+        dispatch(changeSchool(values))
+        navigation.navigate('SignUpCourse')
+        
+    }
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
         return (
-            <View style={styles.container}>
-                 <View style={styles.half}>
-                    <Background
-                        style={styles.background}
-                        resizeMode="cover" 
-                    />
-                </View>
-                <Image
-                    style={styles.splash}
-                    source={LogoImg}
-                    resizeMode="contain" 
-                />
-                <Text style={styles.text2}>
-                        WeLearn
-                </Text>
-                <View style={styles.form}>
-                    <View style={styles.formHeader}>
-                        <Text style={styles.text}>
-                            Create a WeLearn Account
+            <Formik
+                initialValues={{
+                    university:''}}
+                onSubmit={handleSubmit}
+            >
+                {({ handleChange, handleBlur, handleSubmit,values }) => (
+                    <View style={styles.container}>
+                        <View style={styles.half}>
+                            <Background
+                                style={styles.background}
+                                resizeMode="cover" 
+                            />
+                        </View>
+                        <Image
+                            style={styles.splash}
+                            source={LogoImg}
+                            resizeMode="contain" 
+                        />
+                        <Text style={styles.text2}>
+                                WeLearn
                         </Text>
-                        <Text style={styles.text3}>
-                            Please provide the following information.
-                        </Text>
-                    </View>
-                    <TextInput
-                        placeholder="University"
-                        autoCapitalize="none"
-                        style={styles.textinput1}
-                        autoCapitalize="none"
-                    />
-                    <TextInput
-                        placeholder="Department"
-                        autoCapitalize="none"
-                        style={styles.textinput1}
-                        autoCapitalize="none"
-                    />
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => navigation.navigate('SignUpCourse')}
-                    >
-                        <Text style={styles.buttontext}> Continue</Text>
-                    </TouchableOpacity>
-                </View>
-                
-                
-            </View>
+                        <View style={styles.form}>
+                            <View style={styles.formHeader}>
+                                <Text style={styles.text}>
+                                    Create a WeLearn Account
+                                </Text>
+                                <Text style={styles.text3}>
+                                    Please provide the following information.
+                                </Text>
+                            </View>
+                            <TextInput
+                                placeholder="University"
+                                autoCapitalize="none"
+                                style={styles.textinput1}
+                                autoCapitalize="none"
+                                onChangeText={handleChange('university')}
+                                onBlur={handleBlur('university')}
+                                value={values.university}
+                            />
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={handleSubmit}
+                            >
+                                <Text style={styles.buttontext}> Continue</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>    
+                )}
+            </Formik>          
+           
         )
     }
 }
