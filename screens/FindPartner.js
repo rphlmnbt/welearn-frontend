@@ -1,15 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image,  } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Image,  } from 'react-native';
 import Background from '../assets/images/find-bg.svg'
-import AvatarImg from '../assets/images/avatar.png'
-import AppLoading from 'expo-app-loading';
-import * as Progress from 'react-native-progress';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import userService from '../services/user.service';
 import { useSelector, useDispatch } from 'react-redux';
 import { setPartner, setReload, setStudyPartners, setSize, setCount } from '../actions/partnerActions';
-import {API_URL} from '@env'
 import { 
     useFonts,
     Poppins_400Regular,
@@ -20,9 +14,10 @@ import {
 import BottomNav from '../components/BottomNav';
 import UserInfo from '../components/UserInfo';
 import Stats from '../components/Stats';
+import Loading from '../components/Loading';
   export default function FindPartner({navigation}) {
     const dispatch = useDispatch()
-
+    const [isLoading, setLoading] = useState(true);
     const uuid_user = useSelector(state => state.user.uuid_user)
 
     let [fontsLoaded] = useFonts({
@@ -66,8 +61,8 @@ import Stats from '../components/Stats';
         }
     }
 
-    if (!fontsLoaded && studyPartners === null) {
-        return <AppLoading />;
+    if (!fontsLoaded || reload) {
+        return <Loading />
     } else {
         return (
         <View style={styles.container}>

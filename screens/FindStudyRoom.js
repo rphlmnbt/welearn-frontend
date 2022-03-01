@@ -1,12 +1,13 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, TextInput  } from 'react-native';
 import Background from '../assets/images/find-bg.svg'
-import AppLoading from 'expo-app-loading';
 import Room from '../assets/images/room.png'
 import {Picker} from '@react-native-picker/picker';
-import {useState} from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import sessionService from '../services/session.service';
+import roomService from '../services/room.service';
+import { useSelector } from 'react-redux';
+
 import { 
     useFonts,
     Poppins_400Regular,
@@ -14,6 +15,8 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import { Formik } from 'formik';
+import Loading from '../components/Loading';
 
   export default function FindStudyRoom({navigation}) {
 
@@ -22,13 +25,24 @@ import {
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
     const [mode, setMode] = useState('date');
+    const [isLoading, setLoading] = useState(true);
+    const [rooms, setRooms] = useState(null)
+    const uuid_user = useSelector(state => state.user.uuid_user)
+
+    useEffect(() => {
+       roomService.getRooms()
+       .then(response => {
+           setRooms(response.data)
+           setLoading(false)
+       })
+    }, [])
 
     const showMode = (currentMode) => {
         setShow(true);
         setMode(currentMode);
     };
     
-      const showDatepicker = () => {
+    const showDatepicker = () => {
         showMode('date');
     };
 
@@ -45,107 +59,124 @@ import {
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
-    if (!fontsLoaded) {
-        return <AppLoading />;
+
+    const handleSubmit = (values) => {
+        sessionService.createSession(values.session_name, date, selectedTime, uuid_user, selectedRoom)
+        .then(response => {
+            navigation.navigate('UserDashboard')
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+    if (!fontsLoaded || isLoading) {
+        return <Loading />
     } else {
         return (
-        <View style={styles.container}>
-            <View style={styles.half}>
-               <Background
-                   style={styles.background}
-                   resizeMode="cover" 
-               />
-               
-            </View>
-            <View style={styles.header}>
-                <Text style={styles.text1}>Hello, Student!</Text>
-                <Text style={styles.text2}>Pick your discussion Room</Text>
-                <Image
-                    source={Room}
-                    style={styles.images}
-                />
-            </View>
-            
-            <View style={styles.userdetails}>
-                <Text style={styles.text3}>
-                   Session Name
-                </Text>
-                <TextInput
-                    placeholder="Session Name"
-                    autoCapitalize="none"
-                    style={styles.textinput1}
-                    autoCapitalize="none"
-
-                />
-                <Text style={styles.text3}>
-                   Study Room Number
-                </Text>
-                <View style={styles.picker}>
-                    <Picker
-                    selectedValue={selectedRoom}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setSelectedRoom(itemValue)
-                    }>
-                    <Picker.Item label="Room Number" value="select" color="#ACACAC" />
-                    <Picker.Item label="1" value="first"/>
-                    <Picker.Item label="2" value="second"/>
-                    <Picker.Item label="3" value="third"/>
-                    <Picker.Item label="4" value="fourth"/>
-                    </Picker> 
-                </View>
-                <Text style={styles.text3}>
-                   Date
-                </Text>
-                <TouchableOpacity
-                        style={styles.datePicker}
-                        onPress={showDatepicker}
-                    >
-                        <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
-                    </TouchableOpacity>
-                    {show && (
-                        <DateTimePicker
-                        testID="dateTimePicker"
-                        value={date}
-                        mode={mode}
-                        display="default"
-                        onChange={onChange}
+            <Formik
+                initialValues={{
+                    session_name:'',
+                }}
+                onSubmit={handleSubmit}
+            >
+            {({ handleChange, handleBlur, handleSubmit, values }) =>( 
+                <View style={styles.container}>
+                    <View style={styles.half}>
+                    <Background
+                        style={styles.background}
+                        resizeMode="cover" 
+                    />
+                    
+                    </View>
+                    <View style={styles.header}>
+                        <Text style={styles.text1}>Hello, Student!</Text>
+                        <Text style={styles.text2}>Pick your discussion Room</Text>
+                        <Image
+                            source={Room}
+                            style={styles.images}
                         />
-                    )}
-                <Text style={styles.text3}>
-                   Time
-                </Text>
-                <View style={styles.picker}>
-                    <Picker
-                    selectedValue={selectedTime}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setSelectedTime(itemValue)
-                    }>
-                    <Picker.Item label="Time" value="select" color="#ACACAC" />
-                    <Picker.Item label="7:00 AM to 8:00 AM" value="Time-1"/>
-                    <Picker.Item label="8:00 AM to 9:00 AM" value="Time-2"/>
-                    <Picker.Item label="9:00 AM to 10:00 AM" value="Time-3"/>
-                    <Picker.Item label="10:00 AM to 11:00 AM" value="Time-4"/>
-                    <Picker.Item label="11:00 AM to 12:00 PM" value="Time-5"/>
-                    <Picker.Item label="12:00 PM to 1:00 PM" value="Time-6"/>
-                    <Picker.Item label="1:00 PM to 2:00 PM" value="Time-7"/>
-                    <Picker.Item label="2:00 PM to 3:00 PM" value="Time-8"/>
-                    <Picker.Item label="3:00 PM to 4:00 PM" value="Time-9"/>
-                    <Picker.Item label="4:00 PM to 5:00 PM" value="Time-10"/>
-                    <Picker.Item label="5:00 PM to 6:00 PM" value="Time-11"/>
-                    </Picker> 
-                </View>
-                <View style={styles.buttonstyle}>
+                    </View>
+                    
+                    <View style={styles.userdetails}>
+                        <Text style={styles.text3}>
+                        Session Name
+                        </Text>
+                        <TextInput
+                            placeholder="Session Name"
+                            autoCapitalize="none"
+                            style={styles.textinput1}
+                            autoCapitalize="none"
+                            onChangeText={handleChange('session_name')}
+                            onBlur={handleBlur('session_name')}
+                        />
+                        <Text style={styles.text3}>
+                        Room Number
+                        </Text>
+                        <View style={styles.picker}>
+                            <Picker
+                            selectedValue={selectedRoom}
+                            onValueChange={(itemValue, itemIndex) =>
+                                setSelectedRoom(itemValue)
+                            }>
+                                <Picker.Item label="Room Number" value="select" color="#ACACAC" />
+                                {rooms.map(element => {
+                                    return <Picker.Item key={element.uuid_room} label={element.room_name} value={element.uuid_room} color="black" />
+                                })}
+                            </Picker> 
+                        </View>
+                        <Text style={styles.text3}>
+                        Date
+                        </Text>
                         <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => navigation.navigate('UserDashboard')}
+                                style={styles.datePicker}
+                                onPress={showDatepicker}
                             >
-                            <Text style={styles.buttontext}>Submit</Text>
-                        </TouchableOpacity>
+                                <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
+                            </TouchableOpacity>
+                            {show && (
+                                <DateTimePicker
+                                testID="dateTimePicker"
+                                value={date}
+                                mode={mode}
+                                display="default"
+                                onChange={onChange}
+                                />
+                            )}
+                        <Text style={styles.text3}>
+                        Time
+                        </Text>
+                        <View style={styles.picker}>
+                            <Picker
+                            selectedValue={selectedTime}
+                            onValueChange={(itemValue, itemIndex) =>
+                                setSelectedTime(itemValue)
+                            }>
+                                <Picker.Item label="Time" value="select" color="#ACACAC" />
+                                <Picker.Item label="7:00 AM to 8:00 AM" value="7:00 AM to 8:00 AM"/>
+                                <Picker.Item label="8:00 AM to 9:00 AM" value="8:00 AM to 9:00 AM"/>
+                                <Picker.Item label="9:00 AM to 10:00 AM" value="9:00 AM to 10:00 AM"/>
+                                <Picker.Item label="10:00 AM to 11:00 AM" value="10:00 AM to 11:00 AM"/>
+                                <Picker.Item label="11:00 AM to 12:00 PM" value="11:00 AM to 12:00 PM"/>
+                                <Picker.Item label="12:00 PM to 1:00 PM" value="12:00 PM to 1:00 PM"/>
+                                <Picker.Item label="1:00 PM to 2:00 PM" value="1:00 PM to 2:00 PM"/>
+                                <Picker.Item label="2:00 PM to 3:00 PM" value="2:00 PM to 3:00 PM"/>
+                                <Picker.Item label="3:00 PM to 4:00 PM" value="3:00 PM to 4:00 PM"/>
+                                <Picker.Item label="4:00 PM to 5:00 PM" value="4:00 PM to 5:00 PM"/>
+                                <Picker.Item label="5:00 PM to 6:00 PM" value="5:00 PM to 6:00 PM"/>
+                                <Picker.Item label="6:00 PM to 7:00 PM" value="6:00 PM to 7:00 PM"/>
+                            </Picker> 
+                        </View>
+                        <View style={styles.buttonstyle}>
+                                <TouchableOpacity
+                                    style={styles.button}
+                                    onPress={handleSubmit}
+                                    >
+                                    <Text style={styles.buttontext}>Submit</Text>
+                                </TouchableOpacity>
+                        </View>
+                    </View>   
                 </View>
-            </View>
-
-              
-       </View>
+            )}
+            </Formik> 
         );
     }
 }
@@ -284,7 +315,7 @@ const styles = StyleSheet.create({
         padding:8,
     },
     pickerText: {
-        color: '#ACACAC',
+        color: 'black',
         fontFamily: 'Poppins_400Regular',
         letterSpacing: 0.3
     },
