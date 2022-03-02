@@ -18,7 +18,7 @@ import {
 import { Formik } from 'formik';
 import Loading from '../components/Loading';
 
-  export default function FindStudyRoom({navigation}) {
+  export default function UserCreateSession({navigation}) {
 
     const [selectedRoom, setSelectedRoom] = useState();
     const [selectedTime, setSelectedTime] = useState();
@@ -63,7 +63,7 @@ import Loading from '../components/Loading';
     const handleSubmit = (values) => {
         sessionService.createSession(values.session_name, date, selectedTime, uuid_user, selectedRoom)
         .then(response => {
-            navigation.navigate('UserDashboard')
+            navigation.navigate('UserChooseSession')
         }).catch(error => {
             console.log(error)
         })

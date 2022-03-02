@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Platform, } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'
-import Background from '../assets/images/requests-bg.svg'
+import Background from '../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
 import { 
     useFonts,
@@ -12,7 +12,7 @@ import {
   } from '@expo-google-fonts/poppins'
 
 
-export default function ImageUpload({navigation}) { 
+export default function SignUpImageUpload({navigation}) { 
     const [image, setImage] = useState(null);
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -53,7 +53,12 @@ export default function ImageUpload({navigation}) {
                         style={styles.button}
                         onPress={pickImage}
                     >
-                    <Text style={styles.buttontext}>Change Profile Image</Text>
+                    <Text style={styles.buttontext}>Choose Profile Image</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.button2}
+                        onPress={() => navigation.navigate('SignUpSurveyIntro')}>
+                    <Text style={styles.buttontext}>Continue</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -82,13 +87,12 @@ const styles = StyleSheet.create({
         aspectRatio: 428/295,
         position: 'absolute',
         bottom: 0,
-        opacity: 0.4,
         
     },
 
     half: {
         width: '100%',
-        height: '115%',
+        height: '100%',
         position: 'relative',
         zIndex: 0,
         elevation: 0,
@@ -106,7 +110,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: '50%'
+        marginBottom: '10%',
         
     },
 
@@ -120,6 +124,17 @@ const styles = StyleSheet.create({
         flex: 1, 
         alignItems: 'center', 
         justifyContent: 'center',
-    }
+    },
+
+    button2: {
+        backgroundColor: '#EF4765',
+        width: '50%',
+        height: 45,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: '50%'
+        
+        
+    },
 
 });

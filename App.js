@@ -2,13 +2,12 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Header from './components/Header';
-import Logo from './components/Logo';
 import SecondaryLogo from './components/SecondaryLogo'
 import LoginHome from './screens/LoginHome';
 import LoginEmail from './screens/LoginEmail';
 import LoginMobile from './screens/LoginMobile'
 import SecondaryLogoBlack from './components/SecondaryLogoBlack';
-import LoginMobilePin from './screens/LoginMobilePin';
+import SignUpMobilePin from './screens/SignUpMobilePin';
 import BackWhite from './components/BackWhite';
 import BackBlack from './components/BackBlack';
 import SignUpPersonal from './screens/SignUpPersonal';
@@ -20,17 +19,18 @@ import SignUpSurveyIntro from './screens/SignUpSurveyIntro';
 import SignUpSurvey from './screens/SignUpSurvey';
 import UserDashboard from './screens/UserDashboard';
 import FindPartner from './screens/FindPartner'
-import FindStudyRoom from './screens/FindStudyRoom';
 import PickStudyRoom from './screens/PickStudyRoom';
-import Requests from './screens/Requests';
+import UserRequests from './screens/UserRequests';
 import Details from './screens/Details';
 import UserReservations from './screens/UserReservations';
 import store from './store/store';
 import { Provider } from 'react-redux'
 import SignUpEmail from './screens/SignUpEmail';
-import Settings from './screens/Settings';
-import ImageUpload from './screens/ImageUpload';
-import Interests from './screens/Interests';
+import UserSettings from './screens/UserSettings';
+import SignUpInterest from './screens/SignUpInterest';
+import SignUpImageUpload from './screens/SignUpImageUpload';
+import UserCreateSession from './screens/UserCreateSession';
+import UserChooseSession from './screens/UserChooseSession';
 
 const Stack = createNativeStackNavigator();
 
@@ -63,7 +63,7 @@ function App() {
           />
           <Stack.Screen 
             name="LoginMobilePin" 
-            component={LoginMobilePin} 
+            component={SignUpMobilePin} 
             options = {{headerTitle: () => null,
               headerRight: () => <SecondaryLogoBlack />,
               headerLeft: () => <BackBlack />}}
@@ -124,8 +124,8 @@ function App() {
               headerLeft: () => <BackWhite />}}
           />
           <Stack.Screen 
-            name="FindStudyRoom" 
-            component={FindStudyRoom} 
+            name="UserCreateSession" 
+            component={UserCreateSession} 
             options = {{headerTitle: () => null}}
           />
           <Stack.Screen 
@@ -135,7 +135,7 @@ function App() {
           />
           <Stack.Screen 
             name="Requests" 
-            component={Requests} 
+            component={UserRequests} 
             options = {{headerTitle: () => null,
             headerLeft: () => <BackBlack />}}
           />
@@ -154,18 +154,23 @@ function App() {
           />
           <Stack.Screen
             name="Settings" 
-            component={Settings} 
+            component={UserSettings} 
             options = {{headerTitle: () => null}}
           />
           <Stack.Screen 
             name="ImageUpload" 
-            component={ImageUpload} 
+            component={SignUpImageUpload} 
             options = {{headerTitle: () => null}}
           />
 
            <Stack.Screen 
             name="Interests" 
-            component={Interests} 
+            component={SignUpInterest} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="UserChooseSession" 
+            component={UserChooseSession} 
             options = {{headerTitle: () => null}}
           />
         </Stack.Navigator>

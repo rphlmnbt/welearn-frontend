@@ -4,6 +4,7 @@ import {API_URL} from '@env'
 const AUTH_URL =  API_URL + '/auth'
 const SURVEY_URL = API_URL + '/survey'
 const ML_URL = API_URL + '/ml'
+const USER_URL = API_URL + '/user'
 const updateInterest = (
     uuid_user,
     interest) => {
@@ -52,6 +53,11 @@ const loadStudyPartners = (
         return axios.get(ML_URL + `/studyPartners/${uuid_user}`)
     }
 
+const findOneUser = (
+    uuid_user) => {
+        return axios.get(USER_URL + `/${uuid_user}`)
+    }
+
 
 
 
@@ -60,5 +66,6 @@ export default {
   updateInterest,
   updateStatus,
   uploadImage,
-  loadStudyPartners
+  loadStudyPartners,
+  findOneUser
 };

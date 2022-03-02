@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Platform, } from 'react-native';
-import Background from '../assets/images/requests-bg.svg'
+import Background from '../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
 import { TextInput } from 'react-native-gesture-handler';
 import { setInterest } from '../actions/userActions';
@@ -14,7 +14,7 @@ import {
   } from '@expo-google-fonts/poppins'
 
 
-export default function Interests({navigation}) { 
+export default function SignUpInterest({navigation}) { 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -27,7 +27,7 @@ export default function Interests({navigation}) {
 
     const Interest = () =>  {
         dispatch(setInterest(text))
-        navigation.navigate('UserDashboard')
+        navigation.navigate('ImageUpload')
         }
     
     if (!fontsLoaded) {
@@ -41,9 +41,8 @@ export default function Interests({navigation}) {
                     resizeMode="cover" 
                 />
                 <View style={styles.form}>
-                    <Text style={styles.text}>Set Interests</Text>
                         <TextInput
-                            placeholder="Interests"
+                            placeholder="Set Interests"
                             autoCapitalize="none"
                             style={styles.textinput}
                             onChangeText={(input) => setText(input)}
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         width: '100%',
         height: '100%',
-        paddingTop: '60%'
+        paddingTop: '70%'
     },
 
     background: {
@@ -80,13 +79,12 @@ const styles = StyleSheet.create({
         aspectRatio: 428/295,
         position: 'absolute',
         bottom: 0,
-        opacity: 0.4,
         
     },
 
     half: {
         width: '100%',
-        height: '115%',
+        height: '100%',
         position: 'relative',
         zIndex: 0,
         elevation: 0,
