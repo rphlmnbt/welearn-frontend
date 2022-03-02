@@ -31,6 +31,7 @@ import SignUpEmail from './screens/SignUpEmail';
 import Settings from './screens/Settings';
 import ImageUpload from './screens/ImageUpload';
 import Interests from './screens/Interests';
+import Sessions from './screens/Sessions';
 
 const Stack = createNativeStackNavigator();
 
@@ -166,6 +167,11 @@ function App() {
            <Stack.Screen 
             name="Interests" 
             component={Interests} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="Sessions" 
+            component={Sessions} 
             options = {{headerTitle: () => null}}
           />
         </Stack.Navigator>

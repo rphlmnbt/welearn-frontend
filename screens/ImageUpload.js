@@ -53,7 +53,12 @@ export default function ImageUpload({navigation}) {
                         style={styles.button}
                         onPress={pickImage}
                     >
-                    <Text style={styles.buttontext}>Change Profile Image</Text>
+                    <Text style={styles.buttontext}>Choose Profile Image</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.button2}
+                        onPress={() => navigation.navigate('SignUpSurveyIntro')}>
+                    <Text style={styles.buttontext}>Continue</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -106,7 +111,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: '50%'
+        marginBottom: '10%',
         
     },
 
@@ -120,6 +125,17 @@ const styles = StyleSheet.create({
         flex: 1, 
         alignItems: 'center', 
         justifyContent: 'center',
-    }
+    },
+
+    button2: {
+        backgroundColor: '#EF4765',
+        width: '50%',
+        height: 45,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: '50%'
+        
+        
+    },
 
 });

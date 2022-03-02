@@ -27,7 +27,7 @@ export default function Interests({navigation}) {
 
     const Interest = () =>  {
         dispatch(setInterest(text))
-        navigation.navigate('UserDashboard')
+        navigation.navigate('ImageUpload')
         }
     
     if (!fontsLoaded) {

@@ -79,7 +79,7 @@ import Loading from '../components/Loading';
                 
                 <Stats stats={stats} />
                 <View style={styles.btnContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Sessions')}>
                             <Image
                             style={styles.images}
                             source={require('../assets/images/check-button.png')} />
