@@ -42,17 +42,6 @@ import Loading from '../components/Loading';
         setMode(currentMode);
     };
     
-    // const showDatepicker = () => {
-    //     showMode('date');
-    // };
-
-    // const onChange = (event, selectedDate) => {
-    //     const currentDate = selectedDate || date;
-    //     setShow(Platform.OS === 'ios');
-    //     setDate(currentDate);
-    //   };
-
-
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -94,7 +83,7 @@ import Loading from '../components/Loading';
                     
                     <View style={styles.userdetails}>
                         <Text style={styles.text3}>
-                        Time
+                        Sessions
                         </Text>
                         <View style={styles.picker}>
                             <Picker
@@ -102,11 +91,12 @@ import Loading from '../components/Loading';
                             onValueChange={(itemValue, itemIndex) =>
                                 SelectedSession(itemValue)
                             }>
-                                <Picker.Item label="Create New Session" value="create" color="#ACACAC" />
+                                <Picker.Item label="Pick your Session" value="create" color="#ACACAC" />
                                 <Picker.Item label="Session 1" value="1"/>
                                 <Picker.Item label="Session 2" value="2"/>
                                 <Picker.Item label="Session 3" value="3"/>
                                 <Picker.Item label="Session 4" value="4"/>
+                                <Picker.Item label="Create New Session" value="create"/>
                             </Picker> 
                         </View>
                         <View style={styles.buttonstyle}>
@@ -153,12 +143,13 @@ const styles = StyleSheet.create({
     userdetails: {
         backgroundColor: 'white',
         width: '100%',
-        height: '65%',
+        height: '55%',
         padding: 25,
         position: 'absolute',
         bottom: 0,
         borderTopRightRadius: 30,
-        borderTopLeftRadius: 30
+        borderTopLeftRadius: 30,
+        
     },
     text1 : {
         fontFamily: 'Poppins_400Regular',
@@ -181,7 +172,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_600SemiBold',
         color: '#5E5E5E',
         fontSize: 16,
-        marginBottom: 0
+        marginBottom: 0,
+        marginTop: '30%',
         
     },
 
@@ -221,7 +213,8 @@ const styles = StyleSheet.create({
         padding: 0,
         width: '100%',
         marginVertical: 5,
-        height: 42
+        height: 42,
+        marginTop: 0
     },
     button: {
         backgroundColor: '#FE4D71',

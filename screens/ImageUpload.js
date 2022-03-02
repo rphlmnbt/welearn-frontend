@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Platform, } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'
-import Background from '../assets/images/requests-bg.svg'
+import Background from '../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
 import { 
     useFonts,
@@ -87,13 +87,12 @@ const styles = StyleSheet.create({
         aspectRatio: 428/295,
         position: 'absolute',
         bottom: 0,
-        opacity: 0.4,
         
     },
 
     half: {
         width: '100%',
-        height: '115%',
+        height: '100%',
         position: 'relative',
         zIndex: 0,
         elevation: 0,
