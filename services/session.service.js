@@ -24,21 +24,16 @@ const createSession = (
     })
 }
 
-// const sendInvitation = (
-//     session_name,
-//     uuid_user
-// ) => {
-//     return axios.post(INV_URL + '/add', {
-//         session_name,
-//         uuid_user
-//     }).then(response => {
-//         console.log(response)
-//     })
-//     .catch(error => {
-//         //TODO: handle the error when implemented
-//     })
-// }
+const getSessions = (
+    uuid_user
+) => {
+    return axios.get(SESSION_URL + `/user/${uuid_user}`)
+}
+
+
 
 export default {
-    createSession
+    createSession,
+    getSessions
+
 }

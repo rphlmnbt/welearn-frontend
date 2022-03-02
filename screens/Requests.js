@@ -16,43 +16,6 @@ import {
   } from '@expo-google-fonts/poppins'
 import BottomNav from '../components/BottomNav';
 
-  const userdata = [
-      {
-      id: '1',
-      username: 'Malagungdili',
-      userimage: require('../assets/images/user-1.png'),
-      time: '08:33 PM',
-      info: 'Course, Year Level',
-      },
-      
-      {
-      id: '2',
-      username: 'Makayabongdili',
-      userimage: require('../assets/images/user-2.png'),
-      time: '08:00 PM',
-      info: 'Course, Year Level',
-      },
-
-      {
-        id: '3',
-        username: 'Masantingdili',
-        userimage: require('../assets/images/user-3.png'),
-        time: '10:00 PM',
-        info: 'Course, Year Level',
-      },
-
-      {
-        id: '4',
-        username: 'Biasangdili',
-        userimage: require('../assets/images/user-4.png'),
-        time: '10:30 PM',
-        info: 'Course, Year Level',
-      },
-
-  ];
-
-
-
 export default function Requests({navigation}) {
     const IMG_URL = API_URL +'/image/'
     const [isLoading, setLoading] = useState(true);
@@ -73,10 +36,7 @@ export default function Requests({navigation}) {
             setLoading(false)
         })
      }, [])
-     useEffect(()=> {
-         console.log(invitations)
-     }, [])
-
+     
      if (!fontsLoaded || isLoading) {
         return <Loading />
     } else {
@@ -91,7 +51,7 @@ export default function Requests({navigation}) {
                         <Text style={styles.text2}>Invitations</Text>
 
                         {invitations.map(element => {
-                            return <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('Details', {uuid_user: element.uuid_user})}>
+                            return <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('Details', {uuid_user: element.uuid_user, uuid_invitation: element.uuid_invitation})}>
                             <View style={styles.userdetails}>
                                 { element.creator_src != null &&
                                     <Image

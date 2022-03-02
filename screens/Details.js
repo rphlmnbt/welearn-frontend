@@ -1,14 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image,  } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Image,  } from 'react-native';
 import Background from '../assets/images/find-bg.svg'
-import AvatarImg from '../assets/images/avatar.png'
-import AppLoading from 'expo-app-loading';
-import * as Progress from 'react-native-progress';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import userService from '../services/user.service';
 import {API_URL} from '@env'
+import { useSelector } from 'react-redux';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -16,10 +11,10 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import BottomNav from '../components/BottomNav';
 import UserInfo from '../components/UserInfo';
 import Stats from '../components/Stats';
 import Loading from '../components/Loading';
+import invitationService from '../services/invitation.service';
 
   export default function Details({route, navigation}) {
     const IMG_URL = API_URL +'/image/'
@@ -27,6 +22,8 @@ import Loading from '../components/Loading';
     const [user, setUser] = useState(null)
     const [profilePic, setProfilePic] = useState(null)
     const { uuid_user } = route.params;
+    const { uuid_invitation } = route.params;
+    const myUuid = useSelector(state => state.user.uuid_user)
 
     useEffect(() => {
         userService.findOneUser(uuid_user)
@@ -40,7 +37,17 @@ import Loading from '../components/Loading';
             }
             setLoading(false)
         })
-     }, [])
+    }, [])
+
+    const acceptInvitation = () => {
+        invitationService.acceptInvitation(uuid_invitation, myUuid)
+        navigation.navigate('UserDashboard')
+    }
+
+    const rejectInvitation = () => {
+        invitationService.rejectInvitation(uuid_invitation, myUuid)
+        navigation.navigate('UserDashboard')
+    }
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -66,12 +73,12 @@ import Loading from '../components/Loading';
                 
                 <Stats stats={[user.survey.q1,user.survey.q2,user.survey.q3,user.survey.q4,user.survey.q5,user.survey.q6,user.survey.q7]} />
                 <View style={styles.btnContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('UserDashboard')}>
+                    <TouchableOpacity onPress={acceptInvitation}>
                             <Image
                             style={styles.images}
                             source={require('../assets/images/check-button.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('UserDashboard')}>
+                    <TouchableOpacity onPress={rejectInvitation}>
                             <Image
                             style={styles.images}
                             source={require('../assets/images/next.png')} />
