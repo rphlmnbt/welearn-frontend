@@ -37,6 +37,7 @@ import Loading from '../components/Loading';
     const reload = useSelector(state => state.partner.reload)
     const studyPartners = useSelector(state => state.partner.studyPartners)
     const resultSize = useSelector(state => state.partner.resultSize)
+    const uuid_partner = useSelector(state => state.partner.uuid_user)
     const count = useSelector(state => state.partner.count)
 
     useEffect(() => {
@@ -79,7 +80,7 @@ import Loading from '../components/Loading';
                 
                 <Stats stats={stats} />
                 <View style={styles.btnContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Sessions')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('UserChooseSession')}>
                             <Image
                             style={styles.images}
                             source={require('../assets/images/check-button.png')} />

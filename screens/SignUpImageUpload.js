@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Platform, } from 'react-native';
+import * as ImagePicker from 'expo-image-picker'
 import Background from '../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
-import { TextInput } from 'react-native-gesture-handler';
-import { setInterest } from '../actions/userActions';
-import { useDispatch } from 'react-redux';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -14,7 +12,8 @@ import {
   } from '@expo-google-fonts/poppins'
 
 
-export default function Interests({navigation}) { 
+export default function SignUpImageUpload({navigation}) { 
+    const [image, setImage] = useState(null);
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -22,14 +21,22 @@ export default function Interests({navigation}) {
         Poppins_700Bold,
     });
 
-    const dispatch = useDispatch()
-    const[text, setText] = useState('');
-
-    const Interest = () =>  {
-        dispatch(setInterest(text))
-        navigation.navigate('ImageUpload')
-        }
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [1,1],
+          quality: 1,
+        });
     
+        console.log(result);
+    
+        if (!result.cancelled) {
+          setImage(result.uri);
+        }
+    };
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -40,19 +47,19 @@ export default function Interests({navigation}) {
                     style={styles.background}
                     resizeMode="cover" 
                 />
-                <View style={styles.form}>
-                        <TextInput
-                            placeholder="Set Interests"
-                            autoCapitalize="none"
-                            style={styles.textinput}
-                            onChangeText={(input) => setText(input)}
-                        />
-                         <TouchableOpacity
-                                style={styles.button}
-                                onPress={Interest}
-                            >
-                                <Text style={styles.buttontext}> Continue</Text>
-                        </TouchableOpacity>
+                <View style={styles.imagecontainer}>
+                    {image && <Image source={{ uri: image }} style={{ width: 350, height: 300, marginBottom: 15}} />}   
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={pickImage}
+                    >
+                    <Text style={styles.buttontext}>Choose Profile Image</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.button2}
+                        onPress={() => navigation.navigate('SignUpSurveyIntro')}>
+                    <Text style={styles.buttontext}>Continue</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
@@ -70,7 +77,8 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         width: '100%',
         height: '100%',
-        paddingTop: '70%'
+        backgroundColor: 'white',
+        paddingTop: 100
     },
 
     background: {
@@ -102,7 +110,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 15
+        marginBottom: '10%',
         
     },
 
@@ -112,29 +120,21 @@ const styles = StyleSheet.create({
         letterSpacing: 0.3
     },
 
-    text : {
-        fontFamily: 'Poppins_600SemiBold',
-        color: '#5E5E5E',
-        fontSize: 18,
-        alignContent: 'center',
-        textAlign: 'center',
-        marginTop: 5
+    imagecontainer:{
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center',
     },
 
-    textinput:{
-        borderWidth: 1,
-        borderColor: '#ACACAC',
-        borderRadius: 5,
-        padding:8,
-        width: '75%',
-        marginTop: 10,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-
-    form: { 
+    button2: {
+        backgroundColor: '#EF4765',
+        width: '50%',
+        height: 45,
         justifyContent: 'center',
         alignItems: 'center',
+        marginBottom: '50%'
+        
+        
     },
 
 });

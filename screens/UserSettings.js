@@ -23,7 +23,7 @@ import userService from '../services/user.service';
 import axios from 'axios';
 import { uploadImage } from '../actions/userActions';
 
-  export default function Settings({navigation}) {
+  export default function UserSettings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
     const [interestModal, setInterestModal] = useState(false);
     const [image, setImage] = useState(null);

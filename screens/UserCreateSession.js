@@ -18,10 +18,10 @@ import {
 import { Formik } from 'formik';
 import Loading from '../components/Loading';
 
-  export default function Sessions({navigation}) {
+  export default function UserCreateSession({navigation}) {
 
     const [selectedRoom, setSelectedRoom] = useState();
-    const [session, SelectedSession] = useState(null);
+    const [selectedTime, setSelectedTime] = useState();
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
     const [mode, setMode] = useState('date');
@@ -42,6 +42,17 @@ import Loading from '../components/Loading';
         setMode(currentMode);
     };
     
+    const showDatepicker = () => {
+        showMode('date');
+    };
+
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+      };
+
+
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -49,21 +60,25 @@ import Loading from '../components/Loading';
         Poppins_700Bold,
     });
 
-    const Submit = () =>{
-        if (session === 'create' )
-        {
-            navigation.navigate('FindStudyRoom')
-        }
-
-        else 
-        {
-            navigation.navigate('Interests')
-        }
+    const handleSubmit = (values) => {
+        sessionService.createSession(values.session_name, date, selectedTime, uuid_user, selectedRoom)
+        .then(response => {
+            navigation.navigate('UserChooseSession')
+        }).catch(error => {
+            console.log(error)
+        })
     }
     if (!fontsLoaded || isLoading) {
         return <Loading />
     } else {
         return (
+            <Formik
+                initialValues={{
+                    session_name:'',
+                }}
+                onSubmit={handleSubmit}
+            >
+            {({ handleChange, handleBlur, handleSubmit, values }) =>( 
                 <View style={styles.container}>
                     <View style={styles.half}>
                     <Background
@@ -83,32 +98,85 @@ import Loading from '../components/Loading';
                     
                     <View style={styles.userdetails}>
                         <Text style={styles.text3}>
-                        Sessions
+                        Session Name
+                        </Text>
+                        <TextInput
+                            placeholder="Session Name"
+                            autoCapitalize="none"
+                            style={styles.textinput1}
+                            autoCapitalize="none"
+                            onChangeText={handleChange('session_name')}
+                            onBlur={handleBlur('session_name')}
+                        />
+                        <Text style={styles.text3}>
+                        Room Number
                         </Text>
                         <View style={styles.picker}>
                             <Picker
-                            selectedValue={session}
+                            selectedValue={selectedRoom}
                             onValueChange={(itemValue, itemIndex) =>
-                                SelectedSession(itemValue)
+                                setSelectedRoom(itemValue)
                             }>
-                                <Picker.Item label="Pick your Session" value="create" color="#ACACAC" />
-                                <Picker.Item label="Session 1" value="1"/>
-                                <Picker.Item label="Session 2" value="2"/>
-                                <Picker.Item label="Session 3" value="3"/>
-                                <Picker.Item label="Session 4" value="4"/>
-                                <Picker.Item label="Create New Session" value="create"/>
+                                <Picker.Item label="Room Number" value="select" color="#ACACAC" />
+                                {rooms.map(element => {
+                                    return <Picker.Item key={element.uuid_room} label={element.room_name} value={element.uuid_room} color="black" />
+                                })}
+                            </Picker> 
+                        </View>
+                        <Text style={styles.text3}>
+                        Date
+                        </Text>
+                        <TouchableOpacity
+                                style={styles.datePicker}
+                                onPress={showDatepicker}
+                            >
+                                <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
+                            </TouchableOpacity>
+                            {show && (
+                                <DateTimePicker
+                                testID="dateTimePicker"
+                                value={date}
+                                mode={mode}
+                                display="default"
+                                onChange={onChange}
+                                />
+                            )}
+                        <Text style={styles.text3}>
+                        Time
+                        </Text>
+                        <View style={styles.picker}>
+                            <Picker
+                            selectedValue={selectedTime}
+                            onValueChange={(itemValue, itemIndex) =>
+                                setSelectedTime(itemValue)
+                            }>
+                                <Picker.Item label="Time" value="select" color="#ACACAC" />
+                                <Picker.Item label="7:00 AM to 8:00 AM" value="7:00 AM to 8:00 AM"/>
+                                <Picker.Item label="8:00 AM to 9:00 AM" value="8:00 AM to 9:00 AM"/>
+                                <Picker.Item label="9:00 AM to 10:00 AM" value="9:00 AM to 10:00 AM"/>
+                                <Picker.Item label="10:00 AM to 11:00 AM" value="10:00 AM to 11:00 AM"/>
+                                <Picker.Item label="11:00 AM to 12:00 PM" value="11:00 AM to 12:00 PM"/>
+                                <Picker.Item label="12:00 PM to 1:00 PM" value="12:00 PM to 1:00 PM"/>
+                                <Picker.Item label="1:00 PM to 2:00 PM" value="1:00 PM to 2:00 PM"/>
+                                <Picker.Item label="2:00 PM to 3:00 PM" value="2:00 PM to 3:00 PM"/>
+                                <Picker.Item label="3:00 PM to 4:00 PM" value="3:00 PM to 4:00 PM"/>
+                                <Picker.Item label="4:00 PM to 5:00 PM" value="4:00 PM to 5:00 PM"/>
+                                <Picker.Item label="5:00 PM to 6:00 PM" value="5:00 PM to 6:00 PM"/>
+                                <Picker.Item label="6:00 PM to 7:00 PM" value="6:00 PM to 7:00 PM"/>
                             </Picker> 
                         </View>
                         <View style={styles.buttonstyle}>
                                 <TouchableOpacity
                                     style={styles.button}
-                                    onPress={Submit}
+                                    onPress={handleSubmit}
                                     >
                                     <Text style={styles.buttontext}>Submit</Text>
                                 </TouchableOpacity>
                         </View>
                     </View>   
                 </View>
+            )}
+            </Formik> 
         );
     }
 }
@@ -143,13 +211,12 @@ const styles = StyleSheet.create({
     userdetails: {
         backgroundColor: 'white',
         width: '100%',
-        height: '55%',
+        height: '65%',
         padding: 25,
         position: 'absolute',
         bottom: 0,
         borderTopRightRadius: 30,
-        borderTopLeftRadius: 30,
-        
+        borderTopLeftRadius: 30
     },
     text1 : {
         fontFamily: 'Poppins_400Regular',
@@ -172,8 +239,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_600SemiBold',
         color: '#5E5E5E',
         fontSize: 16,
-        marginBottom: 0,
-        marginTop: '30%',
+        marginBottom: 0
         
     },
 
@@ -213,8 +279,7 @@ const styles = StyleSheet.create({
         padding: 0,
         width: '100%',
         marginVertical: 5,
-        height: 42,
-        marginTop: 0
+        height: 42
     },
     button: {
         backgroundColor: '#FE4D71',

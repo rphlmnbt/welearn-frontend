@@ -18,7 +18,7 @@ const initialState = {
     q5:0,
     q6:0,
     q7:0,
-    source: '',
+    src: '',
     interest: '',
 }
 
@@ -72,7 +72,7 @@ const signUpReducer = (state = initialState, action) => {
         case IMAGE_CHANGE:
             return{
                 ...state,
-                source:action.payload.source
+                src:action.payload.src
             }
         case INTEREST_CHANGE:
             return{
