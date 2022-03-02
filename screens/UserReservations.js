@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, FlatList } from 'react-native';
-import AppLoading from 'expo-app-loading';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { useSelector } from 'react-redux';
 import Background from '../assets/images/requests-bg.svg'
 import { 
     useFonts,
@@ -10,43 +10,13 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import BottomNav from '../components/BottomNav';
-
-  const userdata = [
-    {
-        id: '1',
-        roomNumber: 'Study Room 1',
-        image: require('../assets/images/room.png'),
-        time: '3:00 PM - 4:00 PM',
-        info: 'SFJ Library',
-    },
-    {
-        id: '2',
-        roomNumber: 'Study Room 2',
-        image: require('../assets/images/room.png'),
-        time: '4:00 PM - 5:00 PM',
-        info: 'SFJ Library',
-    },
-    {
-        id: '3',
-        roomNumber: 'Study Room 3',
-        image: require('../assets/images/room.png'),
-        time: '5:00 PM - 6:00 PM',
-        info: 'SFJ Library',
-    },
-    {
-        id: '4',
-        roomNumber: 'Study Room 4',
-        image: require('../assets/images/room.png'),
-        time: '6:00 PM - 7:00 PM',
-        info: 'SFJ Library',
-    }
-
-  ];
-
-
+import sessionService from '../services/session.service';
+import Loading from '../components/Loading';
 
 export default function UserReservations({navigation}) {
-   
+    const [isLoading, setLoading] = useState(true);
+    const [sessions, setSessions] = useState(null)
+    const uuid_user = useSelector(state => state.user.uuid_user)
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -54,8 +24,17 @@ export default function UserReservations({navigation}) {
         Poppins_700Bold,
     });
 
-    if (!fontsLoaded) {
-        return <AppLoading />;
+    useEffect(() => {
+        sessionService.getSessions(uuid_user)
+        .then(response => {
+            console.log(response.data)
+            setSessions(response.data)
+            setLoading(false)
+        })
+     }, [])
+
+     if (!fontsLoaded || isLoading) {
+        return <Loading />
     } else {
         return (
             <View style={styles.container}>
@@ -66,25 +45,24 @@ export default function UserReservations({navigation}) {
                     />
                     <View style={styles.usercontainer}>             
                         <Text style={styles.text2}>Study Room Reservations</Text>
-                        <FlatList
-                        data = {userdata}
-                        keyExtractor={item=>item.id}
-                        renderItem={({item}) => (
-                            <TouchableOpacity>
-                            <View style={styles.userdetails}>
-                            <Image
-                            style={styles.images}
-                            source={item.image} />
-                            <View style={styles.textsection}>
-                                <View style={styles.usertext}>
-                                    <Text style={styles.name}>{item.roomNumber}</Text>
-                                    <Text style={styles.Timerequest}>{item.time}</Text>
-                                </View>
-                                <Text  style={styles.userinfo}>{item.info}</Text>
-                            </View>
-                            </View>
-                            </TouchableOpacity>
-                        )}/>
+                        {sessions.map(element => {
+                            return  <TouchableOpacity key={element.uuid_session}>
+                                        <View style={styles.userdetails}>
+                                        <Image
+                                            style={styles.images}
+                                            source={require('../assets/images/room.png')} 
+                                        />
+                                        <View style={styles.textsection}>
+                                            <View style={styles.usertext}>
+                                                <Text style={styles.name}>{element.session_name}</Text>
+                                                <Text style={styles.Timerequest}>{element.time}</Text>
+                                            </View>
+                                            <Text  style={styles.userinfo}>{element.room.room_name}</Text>
+                                        </View>
+                                        </View>
+                                    </TouchableOpacity>
+                        })}
+                        
                     </View>
                 </View>
                 <BottomNav />
