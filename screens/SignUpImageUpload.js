@@ -3,6 +3,8 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Platform, 
 import * as ImagePicker from 'expo-image-picker'
 import Background from '../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
+import { changeImage } from '../actions/signUpActions';
+import { Formik } from 'formik';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -21,26 +23,39 @@ export default function SignUpImageUpload({navigation}) {
         Poppins_700Bold,
     });
 
+    const handleSubmit = (values) => {
+        console.log(values)
+        navigation.navigate('SignUpSurveyIntro')     
+    }
+
     const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
+        await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
           aspect: [1,1],
           quality: 1,
-        });
-    
-        console.log(result);
-    
-        if (!result.cancelled) {
-          setImage(result.uri);
-        }
-    };
+        }).then((response => {
+            console.log(response)
+            setImage({
+                uri: response.uri,
+                name: uuid_user + '.jpg',
+                type: 'image/jpg',
+              }) 
+            dispatch(changeImage(response.uri))
+        }))    
+    };    
 
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
     return (
+        <Formik
+            initialValues={{
+                interest:''
+            }}
+            onSubmit={handleSubmit}
+        >
+        {({ handleChange, handleBlur, handleSubmit,values }) => (
         <View style={styles.container}>
             <View style={styles.half}>
                 <Background
@@ -57,15 +72,19 @@ export default function SignUpImageUpload({navigation}) {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button2}
-                        onPress={() => navigation.navigate('SignUpSurveyIntro')}>
+                        onPress={handleSubmit}
+                    >
                     <Text style={styles.buttontext}>Continue</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         </View>
-      );
-    }
-}
+       )}
+       </Formik> 
+       
+   )
+ }
+ }
 
 const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
