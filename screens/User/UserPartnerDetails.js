@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity, Image,  } from 'react-native';
 import Background from '../assets/images/find-bg.svg'
-import userService from '../services/user.service';
+import userService from '../../services/user.service';
 import {API_URL} from '@env'
 import { useSelector } from 'react-redux';
 import { 
@@ -11,12 +11,12 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import UserInfo from '../components/UserInfo';
-import Stats from '../components/Stats';
-import Loading from '../components/Loading';
-import invitationService from '../services/invitation.service';
+import UserInfo from '../../components/UserInfo';
+import Stats from '../../components/Stats';
+import Loading from '../../components/Loading';
+import invitationService from '../../services/invitation.service';
 
-  export default function Details({route, navigation}) {
+  export default function UserPartnerDetails({route, navigation}) {
     const IMG_URL = API_URL +'/image/'
     const [isLoading, setLoading] = useState(true);
     const [user, setUser] = useState(null)

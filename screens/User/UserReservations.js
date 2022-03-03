@@ -46,7 +46,7 @@ export default function UserReservations({navigation}) {
                     <View style={styles.usercontainer}>             
                         <Text style={styles.text2}>Study Room Reservations</Text>
                         {sessions.map(element => {
-                            return  <TouchableOpacity key={element.uuid_session}>
+                            return  <TouchableOpacity key={element.uuid_session} onPress={() => navigation.navigate('UserReservationDetails', {session: element})}>
                                         <View style={styles.userdetails}>
                                         <Image
                                             style={styles.images}

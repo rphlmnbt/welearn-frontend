@@ -7,7 +7,6 @@ import SecondaryLogoBlack from './components/SecondaryLogoBlack';
 import BackWhite from './components/BackWhite';
 import BackBlack from './components/BackBlack';
 import PickStudyRoom from './screens/PickStudyRoom';
-import Details from './screens/Details';
 import store from './store/store';
 import { Provider } from 'react-redux';
 import LoginHome from './screens/Login/LoginHome';
@@ -31,12 +30,8 @@ import UserReservations from './screens/User/UserReservations';
 import UserSettings from './screens/User/UserSettings';
 import UserCreateSession from './screens/User/UserCreateSession';
 import UserChooseSession from './screens/User/UserChooseSession';
-
-
-
-
-
-
+import UserPartnerDetails from './screens/User/UserPartnerDetails';
+import UserReservationDetails from './screens/User/UserReservationDetails';
 
 
 const Stack = createNativeStackNavigator();
@@ -148,7 +143,7 @@ function App() {
           />
           <Stack.Screen 
             name="Details" 
-            component={Details} 
+            component={UserPartnerDetails} 
             options = {{headerTitle: () => null,
               headerRight: () => <SecondaryLogo />,
               headerLeft: () => <BackWhite />}}
@@ -178,6 +173,11 @@ function App() {
           <Stack.Screen 
             name="UserChooseSession" 
             component={UserChooseSession} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="UserReservationDetails" 
+            component={UserReservationDetails} 
             options = {{headerTitle: () => null}}
           />
         </Stack.Navigator>
