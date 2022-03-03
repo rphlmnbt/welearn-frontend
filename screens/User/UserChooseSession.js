@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image  } from 're
 import Background from '../assets/images/find-bg.svg'
 import Room from '../assets/images/room.png'
 import {Picker} from '@react-native-picker/picker';
-import sessionService from '../services/session.service';
+import sessionService from '../../services/session.service';
 import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { 
