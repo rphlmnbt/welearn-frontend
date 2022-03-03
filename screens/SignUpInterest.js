@@ -3,8 +3,9 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Platform, 
 import Background from '../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
 import { TextInput } from 'react-native-gesture-handler';
-import { setInterest } from '../actions/userActions';
+import { changeInterest } from '../actions/signUpActions';
 import { useDispatch } from 'react-redux';
+import { Formik } from 'formik';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -23,10 +24,10 @@ export default function SignUpInterest({navigation}) {
     });
 
     const dispatch = useDispatch()
-    const[text, setText] = useState('');
 
-    const Interest = () =>  {
-        dispatch(setInterest(text))
+    const handleSubmit = (values) =>  {
+        console.log(values)
+        dispatch(changeInterest(values))
         navigation.navigate('ImageUpload')
         }
     
@@ -34,6 +35,13 @@ export default function SignUpInterest({navigation}) {
         return <AppLoading />;
     } else {
     return (
+        <Formik
+        initialValues={{
+            interest:''
+           }}
+        onSubmit={handleSubmit}
+    >
+        {({ handleChange, handleBlur, handleSubmit,values }) => (
         <View style={styles.container}>
             <View style={styles.half}>
                 <Background
@@ -45,19 +53,24 @@ export default function SignUpInterest({navigation}) {
                             placeholder="Set Interests"
                             autoCapitalize="none"
                             style={styles.textinput}
-                            onChangeText={(input) => setText(input)}
+                            onChangeText={handleChange('interest')}
+                            onBlur={handleBlur('interest')}
+                            value={values.interest}
                         />
                          <TouchableOpacity
                                 style={styles.button}
-                                onPress={Interest}
+                                onPress={handleSubmit}
                             >
                                 <Text style={styles.buttontext}> Continue</Text>
                         </TouchableOpacity>
                 </View>
             </View>
         </View>
-      );
-    }
+      )}
+      </Formik> 
+      
+  )
+}
 }
 
 const vw = Dimensions.get('window').width;
