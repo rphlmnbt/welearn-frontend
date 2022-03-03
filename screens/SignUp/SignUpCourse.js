@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image} from 'react-native';
 import AppLoading from 'expo-app-loading';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Background from '../assets/images/login-mobile-bg.svg'

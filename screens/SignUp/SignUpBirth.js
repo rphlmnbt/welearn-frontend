@@ -17,7 +17,7 @@ import {
   } from '@expo-google-fonts/poppins'
 import RadioButton from '../../components/RadioButton';
 import { changeBirth } from '../../actions/signUpActions';
-
+  
 export default function SignUpBirth({navigation}) {
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
