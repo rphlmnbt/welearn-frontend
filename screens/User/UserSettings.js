@@ -23,7 +23,7 @@ import userService from '../services/user.service';
 import axios from 'axios';
 import { uploadImage } from '../actions/userActions';
 
-  export default function Settings({navigation}) {
+  export default function UserSettings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
     const [interestModal, setInterestModal] = useState(false);
     const [image, setImage] = useState(null);
@@ -86,12 +86,15 @@ import { uploadImage } from '../actions/userActions';
           quality: 1,
         }).then((response => {
             console.log(response)
-            setImage({
-                uri: response.uri,
-                name: uuid_user + '.jpg',
-                type: 'image/jpg',
-              }) 
-            dispatch(uploadImage(response.uri))
+            
+            if (!response.cancelled) {
+                setImage({
+                    uri: response.uri,
+                    name: uuid_user + '.jpg',
+                    type: 'image/jpg',
+                  }) 
+                dispatch(uploadImage(response.uri))
+            }
         }))    
     };    
    

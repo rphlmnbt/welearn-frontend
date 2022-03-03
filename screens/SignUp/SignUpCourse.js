@@ -34,7 +34,7 @@ export default function SignUpCourse({navigation}) {
     const handleSubmit = values => {
         console.log(values)
         dispatch(changeCourse(values))
-        navigation.navigate('SignUpSurveyIntro')
+        navigation.navigate('Interests')
         
     }
 

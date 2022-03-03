@@ -16,7 +16,7 @@ import {
   } from '@expo-google-fonts/poppins'
 import BottomNav from '../components/BottomNav';
 
-export default function Requests({navigation}) {
+export default function UserRequests({navigation}) {
     const IMG_URL = API_URL +'/image/'
     const [isLoading, setLoading] = useState(true);
     const [invitations, setInvitations] = useState(null)

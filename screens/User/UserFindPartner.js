@@ -15,6 +15,7 @@ import BottomNav from '../components/BottomNav';
 import UserInfo from '../components/UserInfo';
 import Stats from '../components/Stats';
 import Loading from '../components/Loading';
+import mlService from '../services/ml.service';
   export default function FindPartner({navigation}) {
     const dispatch = useDispatch()
     const [isLoading, setLoading] = useState(true);
@@ -37,6 +38,7 @@ import Loading from '../components/Loading';
     const reload = useSelector(state => state.partner.reload)
     const studyPartners = useSelector(state => state.partner.studyPartners)
     const resultSize = useSelector(state => state.partner.resultSize)
+    const uuid_partner = useSelector(state => state.partner.uuid_user)
     const count = useSelector(state => state.partner.count)
 
     useEffect(() => {
@@ -52,6 +54,7 @@ import Loading from '../components/Loading';
     }, [])
 
     const nextPartner = () => {
+        mlService.addToDataset(uuid_user, stats, false)
         if (count == resultSize-1) {
             dispatch(setPartner(studyPartners[0]))
             dispatch(setCount(0))
@@ -79,7 +82,7 @@ import Loading from '../components/Loading';
                 
                 <Stats stats={stats} />
                 <View style={styles.btnContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('FindStudyRoom')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('UserChooseSession')}>
                             <Image
                             style={styles.images}
                             source={require('../assets/images/check-button.png')} />

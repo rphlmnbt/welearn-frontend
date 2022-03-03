@@ -13,7 +13,7 @@ import {
   } from '@expo-google-fonts/poppins'
 
 
-function LoginMobilePin({navigation}) {
+export default function SignUpMobilePin({navigation}) {
     const [value, setValue] = useState('');
     const [numeric, setNumeric] = useState(true);
     let [fontsLoaded] = useFonts({
@@ -77,8 +77,6 @@ function LoginMobilePin({navigation}) {
         );
     }
 }
-
-export default LoginMobilePin
 
 const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;

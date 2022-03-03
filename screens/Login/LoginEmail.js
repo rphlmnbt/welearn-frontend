@@ -5,7 +5,7 @@ import Background from '../assets/images/login-email-bg.svg'
 import LoginLogoImg from '../assets/images/wl-logo.png'
 import AppLoading from 'expo-app-loading';
 import { useDispatch } from 'react-redux';
-import { logIn } from '../actions/userActions';
+import { logIn } from '../../actions/userActions';
 import { Formik } from 'formik';
 
 
@@ -16,7 +16,7 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import authService from '../services/auth.service';
+import authService from '../../services/auth.service';
 
 function LoginEmail({navigation}) {
     let [fontsLoaded] = useFonts({

@@ -6,6 +6,8 @@ export const CONTACT_CHANGE = 'CONTACT_CHANGE'
 export const SCHOOL_CHANGE  = 'SCHOOL_CHANGE'
 export const COURSE_CHANGE = 'COURSE_CHANGE'
 export const HABITS_CHANGE = 'HABITS_CHANGE'
+export const IMAGE_CHANGE = 'IMAGE_CHANGE'
+export const INTEREST_CHANGE = 'INTEREST_CHANGE'
 
 //User Reducer
 export const LOGIN = 'LOGIN'

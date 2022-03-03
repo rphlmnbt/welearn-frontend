@@ -1,4 +1,4 @@
-import { BIRTH_CHANGE, NAME_CHANGE, EMAIL_CHANGE, CONTACT_CHANGE, SCHOOL_CHANGE, COURSE_CHANGE, HABITS_CHANGE } from "../constants";
+import { BIRTH_CHANGE, NAME_CHANGE, EMAIL_CHANGE, CONTACT_CHANGE, SCHOOL_CHANGE, COURSE_CHANGE, HABITS_CHANGE, IMAGE_CHANGE, INTEREST_CHANGE } from "../constants";
 
 const initialState = {
     firstName: '',
@@ -17,7 +17,9 @@ const initialState = {
     q4:0,
     q5:0,
     q6:0,
-    q7:0
+    q7:0,
+    src: '',
+    interest: '',
 }
 
 const signUpReducer = (state = initialState, action) => {
@@ -66,6 +68,16 @@ const signUpReducer = (state = initialState, action) => {
                 q5:action.payload.q5,
                 q6:action.payload.q6,
                 q7:action.payload.q7,
+            }
+        case IMAGE_CHANGE:
+            return{
+                ...state,
+                src:action.payload
+            }
+        case INTEREST_CHANGE:
+            return{
+                ...state,
+                interest:action.payload.interest
             }
         default:
             return state;
