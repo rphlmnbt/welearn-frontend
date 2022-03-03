@@ -2,35 +2,42 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Header from './components/Header';
-import SecondaryLogo from './components/SecondaryLogo'
-import LoginHome from './screens/LoginHome';
-import LoginEmail from './screens/LoginEmail';
-import LoginMobile from './screens/LoginMobile'
+import SecondaryLogo from './components/SecondaryLogo';
 import SecondaryLogoBlack from './components/SecondaryLogoBlack';
-import SignUpMobilePin from './screens/SignUpMobilePin';
 import BackWhite from './components/BackWhite';
 import BackBlack from './components/BackBlack';
-import SignUpPersonal from './screens/SignUpPersonal';
-import SignUpBirth from './screens/SignUpBirth';
-import SignUpContact from './screens/SignUpContact';
-import SignUpSchool from './screens/SignUpSchool';
-import SignUpCourse from './screens/SignUpCourse';
-import SignUpSurveyIntro from './screens/SignUpSurveyIntro';
-import SignUpSurvey from './screens/SignUpSurvey';
-import UserDashboard from './screens/UserDashboard';
-import FindPartner from './screens/FindPartner'
 import PickStudyRoom from './screens/PickStudyRoom';
-import UserRequests from './screens/UserRequests';
 import Details from './screens/Details';
-import UserReservations from './screens/UserReservations';
 import store from './store/store';
-import { Provider } from 'react-redux'
-import SignUpEmail from './screens/SignUpEmail';
-import UserSettings from './screens/UserSettings';
-import SignUpInterest from './screens/SignUpInterest';
-import SignUpImageUpload from './screens/SignUpImageUpload';
-import UserCreateSession from './screens/UserCreateSession';
-import UserChooseSession from './screens/UserChooseSession';
+import { Provider } from 'react-redux';
+import LoginHome from './screens/Login/LoginHome';
+import LoginEmail from './screens/Login/LoginEmail';
+import LoginMobile from './screens/Login/LoginMobile';
+import SignUpMobilePin from './screens/SignUp/SignUpMobilePin';
+import SignUpPersonal from './screens/SignUp/SignUpPersonal';
+import SignUpBirth from './screens/SignUp/SignUpBirth';
+import SignUpContact from './screens/SignUp/SignUpContact';
+import SignUpSchool from  './screens/SignUp/SignUpSchool';
+import SignUpCourse from './screens/SignUp/SignUpCourse';
+import SignUpSurveyIntro from './screens/SignUp/SignUpSurveyIntro';
+import SignUpSurvey from './screens/SignUp/SignUpSurvey';
+import SignUpEmail from './screens/SignUp/SignUpEmail';
+import SignUpInterest from './screens/SignUp/SignUpInterest';
+import SignUpImageUpload from './screens/SignUp/SignUpImageUpload';
+import UserDashboard from './screens/User/UserDashboard';
+import UserRequests from './screens/User/UserRequests';
+import UserFindPartner from './screens/User/UserFindPartner';
+import UserReservations from './screens/User/UserReservations';
+import UserSettings from './screens/User/UserSettings';
+import UserCreateSession from './screens/User/UserCreateSession';
+import UserChooseSession from './screens/User/UserChooseSession';
+
+
+
+
+
+
+
 
 const Stack = createNativeStackNavigator();
 
@@ -118,7 +125,7 @@ function App() {
           />
           <Stack.Screen 
             name="FindPartner" 
-            component={FindPartner} 
+            component={UserFindPartner} 
             options = {{headerTitle: () => null,
               headerRight: () => <SecondaryLogo />,
               headerLeft: () => <BackWhite />}}
