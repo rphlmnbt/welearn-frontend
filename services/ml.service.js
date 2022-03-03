@@ -16,6 +16,10 @@ const addToDataset = (
         console.log(response)
     })
     .catch(error => {
-        //TODO: handle the error when implemented
+        console.log(error)
     })
+}
+
+export default {
+    addToDataset
 }
