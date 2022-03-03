@@ -13,8 +13,9 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import Loading from '../../components/Loading';
-import invitationService from '../../services/invitation.service';
+import Loading from '../components/Loading';
+import invitationService from '../services/invitation.service';
+import mlService from '../services/ml.service';
 
   export default function UserChooseSession({route, navigation}) {
     const [selectedSession, setSelectedSession] = useState();
@@ -22,6 +23,7 @@ import invitationService from '../../services/invitation.service';
     const [isLoading, setLoading] = useState(true);
     const uuid_user = useSelector(state => state.user.uuid_user)
     const uuid_partner = useSelector(state => state.partner.uuid_user)
+    const stats = useSelector(state => state.partner.stats)
 
     useFocusEffect(
         React.useCallback(() => {
@@ -34,12 +36,6 @@ import invitationService from '../../services/invitation.service';
         }, [])
       );
     
-
-    const showMode = (currentMode) => {
-        setShow(true);
-        setMode(currentMode);
-    };
-    
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -49,6 +45,7 @@ import invitationService from '../../services/invitation.service';
 
     const submit = () =>{
         invitationService.sendInvitation(selectedSession, uuid_partner)
+        mlService.addToDataset(uuid_user, stats, true)
         navigation.navigate('UserDashboard')
     }
 

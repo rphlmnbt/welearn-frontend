@@ -20,7 +20,7 @@ const sendInvitation = (
         console.log(response)
     })
     .catch(error => {
-        //TODO: handle the error when implemented
+        console.log(error)
     })
 }
 
@@ -35,7 +35,7 @@ const acceptInvitation = (
         console.log(response.data)
     })
     .catch(error => {
-        //TODO: handle the error when implemented
+        console.log(error)
     })
 }
 
@@ -50,7 +50,7 @@ const rejectInvitation = (
         console.log(response.data)
     })
     .catch(error => {
-        //TODO: handle the error when implemented
+        console.log(error)
     })
 }
 

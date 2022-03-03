@@ -15,6 +15,7 @@ import BottomNav from '../components/BottomNav';
 import UserInfo from '../components/UserInfo';
 import Stats from '../components/Stats';
 import Loading from '../components/Loading';
+import mlService from '../services/ml.service';
   export default function FindPartner({navigation}) {
     const dispatch = useDispatch()
     const [isLoading, setLoading] = useState(true);
@@ -53,6 +54,7 @@ import Loading from '../components/Loading';
     }, [])
 
     const nextPartner = () => {
+        mlService.addToDataset(uuid_user, stats, false)
         if (count == resultSize-1) {
             dispatch(setPartner(studyPartners[0]))
             dispatch(setCount(0))
