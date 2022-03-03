@@ -18,6 +18,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { changeHabits, signUp } from '../actions/signUpActions';
 import authService from '../services/auth.service';
+import imageService from '../services/image.service';
+import userService from '../services/user.service';
 
 export default function SignUpSurvey({navigation}) {
 
@@ -42,6 +44,8 @@ export default function SignUpSurvey({navigation}) {
     const university = useSelector(state => state.signUp.university)
     const course = useSelector(state => state.signUp.course)
     const yearLevel = useSelector(state => state.signUp.yearLevel)
+    const interest = useSelector(state => state.signUp.interest)
+    const src = useSelector(state => state.signUp.src)
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -127,23 +131,6 @@ export default function SignUpSurvey({navigation}) {
     }
 
     const signUp = () => {
-        console.log(  firstName,
-            lastName,
-            birthDate,
-            gender,
-            email,
-            password,
-            contactNumber,
-            university,
-            course,
-            yearLevel,
-            timeManagement,
-            studyEnvironment,
-            examPreparation,
-            noteTaking,
-            readingSkills,
-            writingSkills,
-            mathSkills)
         authService.signUp(
             firstName,
             lastName,
@@ -155,6 +142,7 @@ export default function SignUpSurvey({navigation}) {
             university,
             course,
             yearLevel,
+            interest,
             timeManagement,
             studyEnvironment,
             examPreparation,
@@ -162,7 +150,16 @@ export default function SignUpSurvey({navigation}) {
             readingSkills,
             writingSkills,
             mathSkills
-        )
+        ).then(response => {
+            const uuid_user = response.data.uuid_user
+            const image = {
+                uri: src,
+                name: uuid_user + '.jpg',
+                type: 'image/jpg',
+            }
+            imageService.uploadImage(image, uuid_user)
+            userService.uploadImage(uuid_user, image.name)
+        })
         navigation.navigate('LoginHome')
     }
 

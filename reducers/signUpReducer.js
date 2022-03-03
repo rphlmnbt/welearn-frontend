@@ -72,7 +72,7 @@ const signUpReducer = (state = initialState, action) => {
         case IMAGE_CHANGE:
             return{
                 ...state,
-                src:action.payload.src
+                src:action.payload
             }
         case INTEREST_CHANGE:
             return{

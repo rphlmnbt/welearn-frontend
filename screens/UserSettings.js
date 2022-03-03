@@ -86,12 +86,15 @@ import { uploadImage } from '../actions/userActions';
           quality: 1,
         }).then((response => {
             console.log(response)
-            setImage({
-                uri: response.uri,
-                name: uuid_user + '.jpg',
-                type: 'image/jpg',
-              }) 
-            dispatch(uploadImage(response.uri))
+            
+            if (!response.cancelled) {
+                setImage({
+                    uri: response.uri,
+                    name: uuid_user + '.jpg',
+                    type: 'image/jpg',
+                  }) 
+                dispatch(uploadImage(response.uri))
+            }
         }))    
     };    
    
