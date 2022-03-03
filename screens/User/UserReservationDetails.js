@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Dimensions, TouchableOpacity, Image,  } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Image, Text  } from 'react-native';
 import Background from '../../assets/images/find-bg.svg'
+import { faUserCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 import userService from '../../services/user.service';
+import QRCode from 'react-native-qrcode-svg';
 import {API_URL} from '@env'
 import { useSelector } from 'react-redux';
 import { 
@@ -15,6 +17,9 @@ import UserInfo from '../../components/UserInfo';
 import Stats from '../../components/Stats';
 import Loading from '../../components/Loading';
 import invitationService from '../../services/invitation.service';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
   export default function UserReservationDetails({route, navigation}) {
     const {session} = route.params
@@ -23,9 +28,11 @@ import invitationService from '../../services/invitation.service';
     const [user, setUser] = useState(null)
     const [profilePic, setProfilePic] = useState(null)
     const myUuid = useSelector(state => state.user.uuid_user)
+    const users = session.users
 
     useEffect(() => {
-        console.log(session)
+        console.log(users)
+        setLoading(false)
     }, [])
 
 
@@ -46,25 +53,56 @@ import invitationService from '../../services/invitation.service';
                    resizeMode="cover" 
                />
             </View>
-            <View style={styles.userdetails}>
-                {/* <View style={{marginTop: '5%'}}>
-                    <UserInfo profilePic={profilePic} firstName={user.user_detail.first_name} lastName={user.user_detail.last_name} course={user.user_detail.course} yearLevel={user.user_detail.year_level} interest={user.user_detail.interest} isActive={user.isActive} />
+            <ScrollView style={styles.userdetails}>
+                <View style={styles.qrContainer}>
+                    <Text style={styles.headerText}>{session.session_name} QR Code</Text>
+                    <QRCode
+                        size={150}
+                        value={session.uuid_session}
+                    />
                 </View>
-                
-                <Stats stats={[user.survey.q1,user.survey.q2,user.survey.q3,user.survey.q4,user.survey.q5,user.survey.q6,user.survey.q7]} />
-                <View style={styles.btnContainer}>
-                    <TouchableOpacity onPress={acceptInvitation}>
-                            <Image
-                            style={styles.images}
-                            source={require('../assets/images/check-button.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={rejectInvitation}>
-                            <Image
-                            style={styles.images}
-                            source={require('../assets/images/next.png')} />
-                    </TouchableOpacity>
-                </View> */}
-            </View>
+                <View style={styles.textsection}>
+                    <View style={styles.usertext}>
+                        <Text style={styles.info}>Date: {session.date}</Text>
+                        <Text style={styles.info}>Time: {session.time}</Text>
+                        <Text style={styles.info}>Room Name: {session.room.room_name}</Text>
+
+                    </View>
+                    <View
+                        style={{
+                            borderBottomColor: '#ACACAC',
+                            borderBottomWidth: 2,
+                            marginVertical: 10
+                        }}
+                    />
+                    <View style={styles.usersContainer}>
+                        <Text style={styles.membersText}>Session Members</Text>
+                        {users.map(element => {
+                            return  <View style={styles.header}>
+                                {element.user_detail.src != null &&
+                                    <Image
+                                        style={styles.image}
+                                        source={{
+                                            uri:  IMG_URL + element.uuid_user + '?' + new Date()+ '?' + new Date()
+                                        }}
+                                    />
+                                }
+                                {element.user_detail.src == null &&
+                                    <FontAwesomeIcon icon={faUserCircle} size={80} color={'#EF4765'}/>
+                                }
+                                <View key={element.uuid_user} style={styles.infoContainer}>
+                                        <Text style={styles.nameText}>{element.user_detail.first_name} {element.user_detail.last_name}</Text>
+                                        <Text style={styles.infoText}>{element.user_detail.course}</Text>
+                                        <Text style={styles.infoText}>{element.user_detail.year_level}</Text>
+                                        <Text style={styles.infoText}>{element.user_detail.interest}</Text>
+                                </View>
+                            </View>
+                                
+                                          
+                        })}
+                    </View> 
+                </View>
+            </ScrollView>
         </View>
         );
     }
@@ -74,6 +112,20 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    membersText: {
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#EF4765',
+        fontSize: 16,
+    },
+    usersContainer: {
+        width: '100%',
+        margin: 0
+    },
+    qrContainer: {
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     btnContainer: {
         display: 'flex',
         flexDirection: 'row',
@@ -105,18 +157,18 @@ const styles = StyleSheet.create({
     userdetails: {
         backgroundColor: 'white',
         width: '100%',
-        height: '83%',
-        padding: 25,
+        height: '90%',
+        padding: 30,
         position: 'absolute',
         bottom: 0,
         borderTopRightRadius: 30,
         borderTopLeftRadius: 30,
     },
-    text1 : {
+    headerText : {
         fontFamily: 'Poppins_600SemiBold',
-        color: '#5E5E5E',
-        fontSize: 15,
-        marginBottom: 2
+        color: '#EF4765',
+        fontSize: 18,
+        marginBottom: 5
         
     },
 
@@ -147,12 +199,6 @@ const styles = StyleSheet.create({
       marginTop: '30%'
 
     },
-    images: {
-      width: 90,
-      height: 90,
-      margin: 30,
-      marginTop: 30
-    },
 
     user: {
         alignItems: 'center',
@@ -172,4 +218,67 @@ const styles = StyleSheet.create({
       flexDirection: 'column',
       width: '35%',
     },
+    textsection:{
+        flexDirection: 'column',   
+        justifyContent: 'center',
+        padding: 15,
+        paddingLeft: 0,
+        marginLeft: 10,
+        width: 300,
+    },
+
+    usertext:{
+        flexDirection: 'column',
+        marginBottom: 5,
+    },
+
+    info:{
+        fontSize: 14,
+        fontFamily: 'Poppins_600SemiBold',
+        color: "#5e5e5e"
+    },
+
+    Timerequest:{
+        color: '#ACACAC',
+        fontSize: 12,
+        fontFamily: 'Poppins_400Regular',
+        paddingRight: 25,
+    },
+
+    userinfo:{
+        fontSize: 14,
+        color: '#ACACAC',
+        
+    },
+    infoContainer: {
+        paddingLeft: 20
+    },  
+    nameText : {
+        marginTop: 5,
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#5E5E5E',
+        fontSize: 18,
+        
+    },
+    infoText: {
+        fontFamily: 'Poppins_400Regular',
+        color: '#777777',
+        fontSize: 12
+        
+    },
+    statusContainer: {
+        flexDirection: 'row'
+    },
+    image : {
+        height: 80,
+        width: 80,
+        borderRadius: 40,
+        marginTop: 10
+    },
+    header:{
+        flexDirection: 'row',
+        alignSelf: 'flex-start',
+        marginVertical: 15
+    },
+
 });
