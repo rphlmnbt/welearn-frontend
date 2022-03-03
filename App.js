@@ -119,7 +119,7 @@ function App() {
             options = {{headerTitle: () => null}}
           />
           <Stack.Screen 
-            name="FindPartner" 
+            name="UserFindPartner" 
             component={UserFindPartner} 
             options = {{headerTitle: () => null,
               headerRight: () => <SecondaryLogo />,
@@ -136,13 +136,13 @@ function App() {
             options = {{headerTitle: () => null}}
           />
           <Stack.Screen 
-            name="Requests" 
+            name="UserRequests" 
             component={UserRequests} 
             options = {{headerTitle: () => null,
             headerLeft: () => <BackBlack />}}
           />
           <Stack.Screen 
-            name="Details" 
+            name="UserPartnerDetails" 
             component={UserPartnerDetails} 
             options = {{headerTitle: () => null,
               headerRight: () => <SecondaryLogo />,
@@ -155,18 +155,18 @@ function App() {
             headerLeft: () => <BackBlack />}}
           />
           <Stack.Screen
-            name="Settings" 
+            name="UserSettings" 
             component={UserSettings} 
             options = {{headerTitle: () => null}}
           />
           <Stack.Screen 
-            name="ImageUpload" 
+            name="SignUpImageUpload" 
             component={SignUpImageUpload} 
             options = {{headerTitle: () => null}}
           />
 
            <Stack.Screen 
-            name="Interests" 
+            name="SignUpInterests" 
             component={SignUpInterest} 
             options = {{headerTitle: () => null}}
           />

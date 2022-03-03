@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image } from 'react-native';
 import AppLoading from 'expo-app-loading';
-import Background from '../assets/images/login-mobile-bg.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
+import Background from '../../assets/images/login-mobile-bg.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
 import { Formik } from 'formik';
 import { 
     useFonts,
@@ -11,7 +11,7 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import { changeContact } from '../actions/signUpActions';
+import { changeContact } from '../../actions/signUpActions'
 import { useDispatch } from 'react-redux';
 
 export default function SignUpContact({navigation}) {

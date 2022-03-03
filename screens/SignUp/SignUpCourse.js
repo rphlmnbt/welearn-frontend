@@ -3,9 +3,9 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image}
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/login-mobile-bg.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
+import Background from '../../assets/images/login-mobile-bg.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import RadioButton from '../../components/RadioButton';
 import { Formik } from 'formik';
 import {Picker} from '@react-native-picker/picker';
 import{
@@ -16,7 +16,7 @@ import{
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import { useDispatch } from 'react-redux';
-import { changeCourse } from '../actions/signUpActions';
+import {changeCourse} from '../../actions/signUpActions'
 
 export default function SignUpCourse({navigation}) {
 
@@ -34,7 +34,7 @@ export default function SignUpCourse({navigation}) {
     const handleSubmit = values => {
         console.log(values)
         dispatch(changeCourse(values))
-        navigation.navigate('Interests')
+        navigation.navigate('SignUpInterests')
         
     }
 

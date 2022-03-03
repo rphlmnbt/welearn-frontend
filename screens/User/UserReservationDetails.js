@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity, Image,  } from 'react-native';
-import Background from '../assets/images/find-bg.svg'
+import Background from '../../assets/images/find-bg.svg'
 import userService from '../../services/user.service';
 import {API_URL} from '@env'
 import { useSelector } from 'react-redux';

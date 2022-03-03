@@ -3,11 +3,11 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image,
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import CardBG from '../assets/images/card-bg1.png'
-import CardBGWh from '../assets/images/card-bg2.png'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
-import { questions } from '../assets/questions/questions';
+import CardBG from '../../assets/images/card-bg1.png'
+import CardBGWh from '../../assets/images/card-bg2.png'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import RadioButton from '../../components/RadioButton';
+import { questions } from '../../assets/questions/questions';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -16,10 +16,10 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import { useDispatch, useSelector } from 'react-redux';
-import { changeHabits, signUp } from '../actions/signUpActions';
-import authService from '../services/auth.service';
-import imageService from '../services/image.service';
-import userService from '../services/user.service';
+import { changeHabits, signUp } from '../../actions/signUpActions';
+import authService from '../../services/auth.service';
+import imageService from '../../services/image.service';
+import userService from '../../services/user.service';
 
 export default function SignUpSurvey({navigation}) {
 

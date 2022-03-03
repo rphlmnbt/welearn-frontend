@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity, Image,  } from 'react-native';
-import Background from '../assets/images/find-bg.svg'
-import userService from '../services/user.service';
+import Background from '../../assets/images/find-bg.svg'
+import userService from '../../services/user.service';
 import { useSelector, useDispatch } from 'react-redux';
-import { setPartner, setReload, setStudyPartners, setSize, setCount } from '../actions/partnerActions';
+import { setPartner, setReload, setStudyPartners, setSize, setCount } from '../../actions/partnerActions';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -11,12 +11,12 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import BottomNav from '../components/BottomNav';
-import UserInfo from '../components/UserInfo';
-import Stats from '../components/Stats';
-import Loading from '../components/Loading';
-import mlService from '../services/ml.service';
-  export default function FindPartner({navigation}) {
+import BottomNav from '../../components/BottomNav';
+import UserInfo from '../../components/UserInfo';
+import Stats from '../../components/Stats';
+import Loading from '../../components/Loading';
+import mlService from '../../services/ml.service';
+  export default function UserFindPartner({navigation}) {
     const dispatch = useDispatch()
     const [isLoading, setLoading] = useState(true);
     const uuid_user = useSelector(state => state.user.uuid_user)
@@ -85,12 +85,12 @@ import mlService from '../services/ml.service';
                     <TouchableOpacity onPress={() => navigation.navigate('UserChooseSession')}>
                             <Image
                             style={styles.images}
-                            source={require('../assets/images/check-button.png')} />
+                            source={require('../../assets/images/check-button.png')} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={nextPartner}>
                             <Image
                             style={styles.images}
-                            source={require('../assets/images/next.png')} />
+                            source={require('../../assets/images/next.png')} />
                     </TouchableOpacity>
                 </View>
             </View>

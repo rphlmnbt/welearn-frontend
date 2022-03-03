@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image  } from 'react-native';
-import Background from '../assets/images/find-bg.svg'
-import Room from '../assets/images/room.png'
+import Background from '../../assets/images/find-bg.svg'
+import Room from '../../assets/images/room.png'
 import {Picker} from '@react-native-picker/picker';
 import sessionService from '../../services/session.service';
 import { useSelector } from 'react-redux';
@@ -13,9 +13,9 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import Loading from '../components/Loading';
-import invitationService from '../services/invitation.service';
-import mlService from '../services/ml.service';
+import Loading from '../../components/Loading';
+import invitationService from '../../services/invitation.service';
+import mlService from '../../services/ml.service';
 
   export default function UserChooseSession({route, navigation}) {
     const [selectedSession, setSelectedSession] = useState();

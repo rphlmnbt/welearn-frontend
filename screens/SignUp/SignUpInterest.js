@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Platform, } from 'react-native';
-import Background from '../assets/images/login-mobile-bg.svg'
+import Background from '../../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
 import { TextInput } from 'react-native-gesture-handler';
-import { changeInterest } from '../actions/signUpActions';
+import { changeInterest } from '../../actions/signUpActions';
 import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import { 
@@ -28,7 +28,7 @@ export default function SignUpInterest({navigation}) {
     const handleSubmit = (values) =>  {
         console.log(values)
         dispatch(changeInterest(values))
-        navigation.navigate('ImageUpload')
+        navigation.navigate('SignUpImageUpload')
         }
     
     if (!fontsLoaded) {

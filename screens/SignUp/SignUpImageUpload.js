@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Platform, } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'
-import Background from '../assets/images/login-mobile-bg.svg'
+import Background from '../../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
-import { changeImage } from '../actions/signUpActions';
+import { changeImage } from '../../actions/signUpActions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { Formik } from 'formik';

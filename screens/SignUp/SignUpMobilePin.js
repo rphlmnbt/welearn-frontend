@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TouchableOpacity,} from 'react-native';
 import { KeycodeInput } from 'react-native-keycode'
 import { useState }  from 'react';
-import Background from '../assets/images/login-mobile-bg.svg'
+import Background from '../../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
 import { 
     useFonts,

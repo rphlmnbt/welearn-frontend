@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, FlatList } from 'react-native';
-import Background from '../assets/images/requests-bg.svg'
-import invitationService from '../services/invitation.service';
+import Background from '../../assets/images/requests-bg.svg'
+import invitationService from '../../services/invitation.service';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Loading from '../components/Loading';
+import Loading from '../../components/Loading';
 import {API_URL} from '@env'
 import { 
     useFonts,
@@ -14,7 +14,7 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import BottomNav from '../components/BottomNav';
+import BottomNav from '../../components/BottomNav';
 
 export default function UserRequests({navigation}) {
     const IMG_URL = API_URL +'/image/'

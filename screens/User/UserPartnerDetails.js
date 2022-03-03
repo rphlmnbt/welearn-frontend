@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity, Image,  } from 'react-native';
-import Background from '../assets/images/find-bg.svg'
+import Background from '../../assets/images/find-bg.svg';
 import userService from '../../services/user.service';
 import {API_URL} from '@env'
 import { useSelector } from 'react-redux';
@@ -76,12 +76,12 @@ import invitationService from '../../services/invitation.service';
                     <TouchableOpacity onPress={acceptInvitation}>
                             <Image
                             style={styles.images}
-                            source={require('../assets/images/check-button.png')} />
+                            source={require('../../assets/images/check-button.png')} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={rejectInvitation}>
                             <Image
                             style={styles.images}
-                            source={require('../assets/images/next.png')} />
+                            source={require('../../assets/images/next.png')} />
                     </TouchableOpacity>
                 </View>
             </View>

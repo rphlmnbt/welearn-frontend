@@ -3,9 +3,9 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image 
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/survey-bg1.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
+import Background from '../../assets/images/survey-bg1.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import RadioButton from '../../components/RadioButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
     useFonts,

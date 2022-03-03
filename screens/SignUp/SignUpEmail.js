@@ -3,9 +3,9 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image 
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/login-mobile-bg.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
+import Background from '../../assets/images/login-mobile-bg.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import RadioButton from '../../components/RadioButton';
 import { Formik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import { 
@@ -15,7 +15,7 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import { changeEmail } from '../actions/signUpActions';
+import { changeEmail } from '../../actions/signUpActions';
 
 export default function SignUpEmail({navigation}) {
    

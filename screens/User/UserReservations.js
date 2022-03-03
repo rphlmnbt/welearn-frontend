@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { useSelector } from 'react-redux';
-import Background from '../assets/images/requests-bg.svg'
+import Background from '../../assets/images/requests-bg.svg'
 import { 
     useFonts,
     Poppins_400Regular,
@@ -9,9 +9,9 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import BottomNav from '../components/BottomNav';
-import sessionService from '../services/session.service';
-import Loading from '../components/Loading';
+import BottomNav from '../../components/BottomNav';
+import sessionService from '../../services/session.service';
+import Loading from '../../components/Loading';
 
 export default function UserReservations({navigation}) {
     const [isLoading, setLoading] = useState(true);
@@ -50,7 +50,7 @@ export default function UserReservations({navigation}) {
                                         <View style={styles.userdetails}>
                                         <Image
                                             style={styles.images}
-                                            source={require('../assets/images/room.png')} 
+                                            source={require('../../assets/images/room.png')} 
                                         />
                                         <View style={styles.textsection}>
                                             <View style={styles.usertext}>

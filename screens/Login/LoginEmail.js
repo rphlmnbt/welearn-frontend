@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity, Modal} from 'react-native';
 import { Card } from 'react-native-elements'
-import Background from '../assets/images/login-email-bg.svg'
-import LoginLogoImg from '../assets/images/wl-logo.png'
+import Background from '../../assets/images/login-email-bg.svg'
+import LoginLogoImg from '../../assets/images/wl-logo.png'
 import AppLoading from 'expo-app-loading';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../../actions/userActions';

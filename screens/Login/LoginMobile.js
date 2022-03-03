@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity, Modal} from 'react-native';
-import Background from '../assets/images/login-mobile-bg.svg'
+import Background from '../../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
 import { Formik } from 'formik';
-import { logIn } from '../actions/userActions';
-import authService from '../services/auth.service';
+import { logIn } from '../../actions/userActions';
+import authService from '../../services/auth.service';
 import { useDispatch } from 'react-redux';
 
 import { 

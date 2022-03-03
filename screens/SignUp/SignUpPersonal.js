@@ -3,13 +3,13 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image,
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/login-mobile-bg.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
-import Header from '../components/Header';
+import Background from '../../assets/images/login-mobile-bg.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import RadioButton from '../../components/RadioButton';
+import Header from '../../components/Header';
 import { Formik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux'
-import { changeName } from '../actions/signUpActions'
+import { changeName } from '../../actions/signUpActions';
 import { 
     useFonts,
     Poppins_400Regular,
