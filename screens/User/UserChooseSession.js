@@ -43,7 +43,7 @@ import mlService from '../../services/ml.service';
         Poppins_700Bold,
     });
 
-    const submit = () =>{
+    const handleSubmit = () =>{
         invitationService.sendInvitation(selectedSession, uuid_partner)
         mlService.addToDataset(uuid_user, stats, true)
         navigation.navigate('UserDashboard')
@@ -92,7 +92,7 @@ import mlService from '../../services/ml.service';
                         <View style={styles.buttonstyle}>
                                 <TouchableOpacity
                                     style={styles.button}
-                                    onPress={submit}
+                                    onPress={handleSubmit}
                                     >
                                     <Text style={styles.buttontext}>Submit</Text>
                                 </TouchableOpacity>
