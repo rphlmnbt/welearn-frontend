@@ -24,6 +24,7 @@ import invitationService from '../../services/invitation.service';
     const { uuid_user } = route.params;
     const { uuid_invitation } = route.params;
     const myUuid = useSelector(state => state.user.uuid_user)
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         userService.findOneUser(uuid_user)
@@ -41,7 +42,12 @@ import invitationService from '../../services/invitation.service';
 
     const acceptInvitation = () => {
         invitationService.acceptInvitation(uuid_invitation, myUuid)
-        navigation.navigate('UserDashboard')
+        .then(response => {
+            navigation.navigate('UserDashboard')
+        }).catch(error => {
+            setOpenModal(true)
+        })
+        
     }
 
     const rejectInvitation = () => {
@@ -60,6 +66,18 @@ import invitationService from '../../services/invitation.service';
     } else {
         return (
         <View style={styles.container}>
+             <Modal
+                     animationType="slide"
+                     transparent={true}
+                     visible={openModal}
+                 >
+                     <View style={styles.modalContainer}>
+                         <Text style={styles.text4}>Invalid Credentials. Please try again.</Text>
+                         <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                             <Text style={styles.buttontext}>Try Again</Text>
+                         </TouchableOpacity>
+                     </View>
+                 </Modal>
             <View style={styles.half}>
                <Background
                    style={styles.background}
@@ -191,5 +209,47 @@ const styles = StyleSheet.create({
     column: {
       flexDirection: 'column',
       width: '35%',
+    },
+
+    modalContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        marginTop: '40%',
+        margin: 20,
+        backgroundColor: "#F2F2F2",
+        borderRadius: 5,
+        padding: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+
+    text4: {
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#5E5E5E',
+        fontSize: 16,
+        alignItems: 'center',
+        
+    },
+
+    button2: {
+        backgroundColor: '#EF4765',
+        width: '40%',
+        height: 45,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
+        marginTop: 40
     },
 });
