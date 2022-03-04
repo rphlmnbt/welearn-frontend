@@ -46,11 +46,12 @@ import mlService from '../../services/ml.service';
     const handleSubmit = () =>{
         invitationService.sendInvitation(selectedSession, uuid_partner).then(response => {
             mlService.addToDataset(uuid_user, stats, true)
+            navigation.navigate('UserDashboard')
         }).catch(error=> {
             console.log(error)
         })
         
-        navigation.navigate('UserDashboard')
+        
     }
 
     const createNewSession = () => {
