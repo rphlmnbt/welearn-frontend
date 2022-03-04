@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Dimensions, TouchableOpacity, Image,  } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Image, Modal, Text } from 'react-native';
 import Background from '../../assets/images/find-bg.svg';
 import userService from '../../services/user.service';
 import {API_URL} from '@env'
@@ -21,13 +21,13 @@ import invitationService from '../../services/invitation.service';
     const [isLoading, setLoading] = useState(true);
     const [user, setUser] = useState(null)
     const [profilePic, setProfilePic] = useState(null)
-    const { uuid_user } = route.params;
+    const { uuid_partner } = route.params;
     const { uuid_invitation } = route.params;
-    const myUuid = useSelector(state => state.user.uuid_user)
+    const uuid_user = useSelector(state => state.user.uuid_user)
     const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
-        userService.findOneUser(uuid_user)
+        userService.findOneUser(uuid_partner)
         .then(response => {
             console.log(response.data)
             setUser(response.data)
@@ -41,9 +41,14 @@ import invitationService from '../../services/invitation.service';
     }, [])
 
     const acceptInvitation = () => {
-        invitationService.acceptInvitation(uuid_invitation, myUuid)
+        invitationService.acceptInvitation(uuid_invitation, uuid_user)
         .then(response => {
-            navigation.navigate('UserDashboard')
+            if(response.status == 200) {
+                navigation.navigate('UserDashboard')
+            } else if (response.status == 400) {
+                setOpenModal(true)
+            }
+            
         }).catch(error => {
             setOpenModal(true)
         })
@@ -51,7 +56,7 @@ import invitationService from '../../services/invitation.service';
     }
 
     const rejectInvitation = () => {
-        invitationService.rejectInvitation(uuid_invitation, myUuid)
+        invitationService.rejectInvitation(uuid_invitation, uuid_user)
         navigation.navigate('UserDashboard')
     }
 
@@ -66,18 +71,21 @@ import invitationService from '../../services/invitation.service';
     } else {
         return (
         <View style={styles.container}>
-             <Modal
+            <Modal
                      animationType="slide"
                      transparent={true}
                      visible={openModal}
                  >
-                     <View style={styles.modalContainer}>
-                         <Text style={styles.text4}>Invalid Credentials. Please try again.</Text>
-                         <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
-                             <Text style={styles.buttontext}>Try Again</Text>
-                         </TouchableOpacity>
-                     </View>
-                 </Modal>
+                <View style={styles.modalContainer}>
+                    <Text style={styles.text4}>Failed! You already have a session with the same date and time.</Text>
+                    <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                        <Text style={styles.buttontext}>Exit</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                        <Text style={styles.buttontext}>View Reservations</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
             <View style={styles.half}>
                <Background
                    style={styles.background}
@@ -99,7 +107,7 @@ import invitationService from '../../services/invitation.service';
                     <TouchableOpacity onPress={rejectInvitation}>
                             <Image
                             style={styles.images}
-                            source={require('../../assets/images/next.png')} />
+                            source={require('../../assets/images/remove.png')} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -112,6 +120,11 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    buttontext: {
+        color: 'white',
+        fontFamily: 'Poppins_600SemiBold',
+        letterSpacing: 0.3,
+    },
     btnContainer: {
         display: 'flex',
         flexDirection: 'row',
@@ -176,8 +189,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_600SemiBold',
         color: '#5E5E5E',
         fontSize: 12,
-        marginBottom: 2,
-        marginTop: 5
+        marginBottom: 8,
+        marginTop: 8
         
     },
     header:{
@@ -240,8 +253,8 @@ const styles = StyleSheet.create({
 
     button2: {
         backgroundColor: '#EF4765',
-        width: '40%',
-        height: 45,
+        width: '50%',
+        height: 35,
         borderRadius: 5,
         shadowRadius: 5,
         shadowOffset: {width:2, height:2},
@@ -250,6 +263,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         marginBottom: 10,
-        marginTop: 40
+        marginTop: 10
     },
 });

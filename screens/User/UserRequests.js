@@ -51,7 +51,7 @@ export default function UserRequests({navigation}) {
                         <Text style={styles.text2}>Invitations</Text>
 
                         {invitations.map(element => {
-                            return <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('Details', {uuid_user: element.uuid_user, uuid_invitation: element.uuid_invitation})}>
+                            return <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('UserPartnerDetails', {uuid_partner: element.uuid_user, uuid_invitation: element.uuid_invitation})}>
                             <View style={styles.userdetails}>
                                 { element.creator_src != null &&
                                     <Image

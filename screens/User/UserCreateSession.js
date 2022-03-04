@@ -64,10 +64,13 @@ import Loading from '../../components/Loading';
     const handleSubmit = (values) => {
         sessionService.createSession(values.session_name, Moment(date).format("MMM Do"), selectedTime, uuid_user, selectedRoom)
         .then(response => {
-            navigation.navigate('UserChooseSession')
+            if(response.status == 200) {
+                navigation.navigate('UserChooseSession')
+            } else if (response.status == 400) {
+                setOpenModal(true)
+            }
             
-        })
-        .catch(error => {
+        }).catch(error => {
             setOpenModal(true)
         })
     }
@@ -89,7 +92,7 @@ import Loading from '../../components/Loading';
                      visible={openModal}
                  >
                      <View style={styles.modalContainer}>
-                         <Text style={styles.text4}>Invalid Credentials. Please try again.</Text>
+                         <Text style={styles.text4}>Failed! The room seems to be taken or you have other sessions for the same date and time!</Text>
                          <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
                              <Text style={styles.buttontext}>Try Again</Text>
                          </TouchableOpacity>
@@ -375,8 +378,8 @@ const styles = StyleSheet.create({
 
     button2: {
         backgroundColor: '#EF4765',
-        width: '100%',
-        height: 45,
+        width: '50%',
+        height: 35,
         borderRadius: 5,
         shadowRadius: 5,
         shadowOffset: {width:2, height:2},
