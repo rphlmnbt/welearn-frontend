@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image  } from 'react-native';
-import Background from '../assets/images/find-bg.svg'
-import Room from '../assets/images/room.png'
+import Background from '../../assets/images/find-bg.svg'
+import Room from '../../assets/images/room.png'
 import {Picker} from '@react-native-picker/picker';
-import sessionService from '../services/session.service';
+import sessionService from '../../services/session.service';
 import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { 
@@ -13,8 +13,9 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import Loading from '../components/Loading';
-import invitationService from '../services/invitation.service';
+import Loading from '../../components/Loading';
+import invitationService from '../../services/invitation.service';
+import mlService from '../../services/ml.service';
 
   export default function UserChooseSession({route, navigation}) {
     const [selectedSession, setSelectedSession] = useState();
@@ -22,6 +23,7 @@ import invitationService from '../services/invitation.service';
     const [isLoading, setLoading] = useState(true);
     const uuid_user = useSelector(state => state.user.uuid_user)
     const uuid_partner = useSelector(state => state.partner.uuid_user)
+    const stats = useSelector(state => state.partner.stats)
 
     useFocusEffect(
         React.useCallback(() => {
@@ -34,12 +36,6 @@ import invitationService from '../services/invitation.service';
         }, [])
       );
     
-
-    const showMode = (currentMode) => {
-        setShow(true);
-        setMode(currentMode);
-    };
-    
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -47,9 +43,15 @@ import invitationService from '../services/invitation.service';
         Poppins_700Bold,
     });
 
-    const submit = () =>{
-        invitationService.sendInvitation(selectedSession, uuid_partner)
-        navigation.navigate('UserDashboard')
+    const handleSubmit = () =>{
+        invitationService.sendInvitation(selectedSession, uuid_partner).then(response => {
+            mlService.addToDataset(uuid_user, stats, true)
+            navigation.navigate('UserDashboard')
+        }).catch(error=> {
+            console.log(error)
+        })
+        
+        
     }
 
     const createNewSession = () => {
@@ -95,7 +97,7 @@ import invitationService from '../services/invitation.service';
                         <View style={styles.buttonstyle}>
                                 <TouchableOpacity
                                     style={styles.button}
-                                    onPress={submit}
+                                    onPress={handleSubmit}
                                     >
                                     <Text style={styles.buttontext}>Submit</Text>
                                 </TouchableOpacity>

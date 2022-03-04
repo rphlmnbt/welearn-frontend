@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity, Modal} from 'react-native';
-import Background from '../assets/images/login-mobile-bg.svg'
+import { Card } from 'react-native-elements'
+import Background from '../../assets/images/login-email-bg.svg'
+import LoginLogoImg from '../../assets/images/wl-logo.png'
 import AppLoading from 'expo-app-loading';
-import { Formik } from 'formik';
-import { logIn } from '../actions/userActions';
-import authService from '../services/auth.service';
 import { useDispatch } from 'react-redux';
+import { logIn } from '../../actions/userActions';
+import { Formik } from 'formik';
+
 
 import { 
     useFonts,
@@ -14,20 +16,18 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import authService from '../../services/auth.service';
 
-function LoginMobile({ navigation }) {
+function LoginEmail({navigation}) {
     let [fontsLoaded] = useFonts({
-        Poppins_400Regular,
         Poppins_500Medium,
-        Poppins_600SemiBold,
-        Poppins_700Bold,
+        Poppins_600SemiBold
     });
-
     const dispatch = useDispatch()
     const [openModal, setOpenModal] = useState(false);
 
     const handleSubmit = (values) => {
-        authService.signInMobile(values.contact_number)
+        authService.signIn(values.email, values.password)
         .then(response => {
             if(response.status == 200){
                 console.log(response.data.user)
@@ -38,61 +38,76 @@ function LoginMobile({ navigation }) {
             
         })
         .catch(error => {
-            console.log(error)
             setOpenModal(true)
         })
         
   }
-
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
         return (
+            
             <Formik
             initialValues={{
-                contact_number:'',
-                }}
+                email:'',
+                password:''}}
             onSubmit={handleSubmit}
          >
             {({ handleChange, handleBlur, handleSubmit, values }) =>( 
             <View style={styles.container}>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={openModal}
-            >
-                <View style={styles.modalContainer}>
-                    <Text style={styles.text3}>Invalid Credentials. Please try again.</Text>
-                    <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
-                        <Text style={styles.buttontext}>OK</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={openModal}
+                >
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.text4}>Invalid Credentials. Please try again.</Text>
+                        <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                            <Text style={styles.buttontext}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
                 <View style={styles.half}>
                     <Background
                         style={styles.background}
                         resizeMode="cover" 
                     />
                 </View>
-                <View style={styles.form}>
+                <Image
+                    style={styles.splash}
+                    source={LoginLogoImg}
+                    resizeMode="contain" 
+                />
+                <Card containerStyle={styles.card}>
                     <View>
                         <Text style={styles.text}>
-                            My mobile
-                        </Text>
-                        <Text style={styles.text2}>
-                            Please enter your valid phone number. We will send you a 4-digit code to verify your account.
+                            Email
                         </Text>
                         <TextInput
-                            placeholder="Mobile Number"
+                            placeholder="Email"
                             autoCapitalize="none"
-                            style={styles.mobileInput}
+                            style={styles.textinput1}
+                            onChangeText={handleChange('email')}
+                            onBlur={handleBlur('email')}
+                        />
+                        <View style={{flexDirection: 'row', justifyContent:'space-between', alignItems: 'center'}}>
+                            <Text style={styles.text}>
+                                Password
+                            </Text>
+                            <Text style={styles.text2}>
+                                    Forgot Password?    
+                            </Text>
+                        </View>           
+                        <TextInput 
+                            placeholder="Password"
+                            secureTextEntry={true} 
+                            style={styles.textinput2}
                             autoCapitalize="none"
-                            keyboardType="numeric"
-                            onChangeText={handleChange('contact_number')}
-                            onBlur={handleBlur('contact_number')}
+                            onChangeText={handleChange('password')}
+                            onBlur={handleBlur('password')}
                         />
                     </View>
-                    <View>
+                    <View style={{marginTop: 20}}>
                             <TouchableOpacity
                                 style={styles.button}
                                 onPress={handleSubmit}
@@ -100,16 +115,18 @@ function LoginMobile({ navigation }) {
                                 <Text style={styles.buttontext}> Continue</Text>
                             </TouchableOpacity>
                     </View>
+            </Card>
             </View>
-            </View>
+            
         )
     }
     </Formik> 
         )   
-    } 
+}
 }
 
-export default LoginMobile
+
+export default LoginEmail
 
 const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
@@ -128,12 +145,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         zIndex: 0,
         elevation: 0,
-        bottom: 0
+        top: 0
     },
     background: {
         width: '100%',
-        height: undefined,
-        aspectRatio: 428/295,
+        aspectRatio: 329/562,
         position: 'absolute',
         bottom: 0
         
@@ -145,13 +161,36 @@ const styles = StyleSheet.create({
         marginTop: 0,
         marginBottom: 0
     },
-    form: { 
-        width: '70%',
-        height: 0.35*vh,
+    card: {
+        width: '80%',
+        borderRadius: 13,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2, 
         flexDirection: 'column',
         justifyContent: 'center'
     },
 
+    textContainer: {
+        width: 1*vw,
+        height: undefined,
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    button2: {
+        backgroundColor: '#EF4765',
+        width: '40%',
+        height: 45,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
+        marginTop: 40
+    },
     button: {
         backgroundColor: '#EF4765',
         width: '100%',
@@ -161,32 +200,51 @@ const styles = StyleSheet.create({
         shadowOffset: {width:2, height:2},
         shadowOpacity: 0.2,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: 10,
+        marginTop: 10
     },
     buttontext: {
         color: 'white',
         fontFamily: 'Poppins_600SemiBold',
         letterSpacing: 0.3
     },
-    mobileInput:{
+    textinput1:{
         borderWidth: 1,
         borderColor: '#ACACAC',
         borderRadius: 5,
         padding:8,
         width: '100%',
-        marginVertical: 40
+        marginTop: 5
+    },
+
+    textinput2:{
+        borderWidth: 1,
+        borderColor: '#ACACAC',
+        borderRadius: 5,
+        padding:8,
+        width: '100%',
+        marginTop: 5
     },
 
     text: {
+        marginTop: 15,
         fontFamily: 'Poppins_600SemiBold',
-        color: '#393946',
-        fontSize: 34
+        color: '#5E5E5E',
+        fontSize: 15
     },
 
     text2: {
-        fontFamily: 'Poppins_400Regular',
-        color: '#505062',
-        fontSize: 12   
+        marginTop: 15,
+        fontFamily: 'Poppins_500Medium',
+        color: '#EF4765'
+        
+    },
+
+    text3: {
+        fontFamily: 'Poppins_500Medium',
+        color: '#5E5E5E'
+        
     },
 
     modalContainer: {
@@ -208,7 +266,7 @@ const styles = StyleSheet.create({
         elevation: 5
     },
 
-    text3: {
+    text4: {
         fontFamily: 'Poppins_600SemiBold',
         color: '#5E5E5E',
         fontSize: 16,
@@ -216,19 +274,5 @@ const styles = StyleSheet.create({
         
     },
 
-    button2: {
-        backgroundColor: '#EF4765',
-        width: '40%',
-        height: 45,
-        borderRadius: 5,
-        shadowRadius: 5,
-        shadowOffset: {width:2, height:2},
-        shadowOpacity: 0.2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center',
-        marginBottom: 10,
-        marginTop: 40
-    },
-});
 
+});

@@ -3,11 +3,11 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image,
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import CardBG from '../assets/images/card-bg1.png'
-import CardBGWh from '../assets/images/card-bg2.png'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
-import { questions } from '../assets/questions/questions';
+import CardBG from '../../assets/images/card-bg1.png'
+import CardBGWh from '../../assets/images/card-bg2.png'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import RadioButton from '../../components/RadioButton';
+import { questions } from '../../assets/questions/questions';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -16,8 +16,10 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import { useDispatch, useSelector } from 'react-redux';
-import { changeHabits, signUp } from '../actions/signUpActions';
-import authService from '../services/auth.service';
+import { changeHabits, signUp } from '../../actions/signUpActions';
+import authService from '../../services/auth.service';
+import imageService from '../../services/image.service';
+import userService from '../../services/user.service';
 
 export default function SignUpSurvey({navigation}) {
 
@@ -42,6 +44,8 @@ export default function SignUpSurvey({navigation}) {
     const university = useSelector(state => state.signUp.university)
     const course = useSelector(state => state.signUp.course)
     const yearLevel = useSelector(state => state.signUp.yearLevel)
+    const interest = useSelector(state => state.signUp.interest)
+    const src = useSelector(state => state.signUp.src)
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -127,23 +131,6 @@ export default function SignUpSurvey({navigation}) {
     }
 
     const signUp = () => {
-        console.log(  firstName,
-            lastName,
-            birthDate,
-            gender,
-            email,
-            password,
-            contactNumber,
-            university,
-            course,
-            yearLevel,
-            timeManagement,
-            studyEnvironment,
-            examPreparation,
-            noteTaking,
-            readingSkills,
-            writingSkills,
-            mathSkills)
         authService.signUp(
             firstName,
             lastName,
@@ -155,6 +142,7 @@ export default function SignUpSurvey({navigation}) {
             university,
             course,
             yearLevel,
+            interest,
             timeManagement,
             studyEnvironment,
             examPreparation,
@@ -162,7 +150,16 @@ export default function SignUpSurvey({navigation}) {
             readingSkills,
             writingSkills,
             mathSkills
-        )
+        ).then(response => {
+            const uuid_user = response.data.uuid_user
+            const image = {
+                uri: src,
+                name: uuid_user + '.jpg',
+                type: 'image/jpg',
+            }
+            imageService.uploadImage(image, uuid_user)
+            userService.uploadImage(uuid_user, image.name)
+        })
         navigation.navigate('LoginHome')
     }
 

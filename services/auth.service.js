@@ -15,6 +15,7 @@ const signUp = (
     university,
     course,
     year_level,
+    interest,
     q1,
     q2,
     q3,
@@ -33,6 +34,7 @@ const signUp = (
         university,
         course,
         year_level,
+        interest,
         q1,
         q2,
         q3,
@@ -40,11 +42,6 @@ const signUp = (
         q5,
         q6,
         q7
-    }).then(response => {
-        console.log(response)
-    })
-    .catch(error => {
-        //TODO: handle the error when implemented
     })
 }
 

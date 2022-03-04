@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Modal  } from 'react-native';
-import Background from '../assets/images/profile-bg.svg'
+import Background from '../../assets/images/profile-bg.svg'
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle, faBook, faImage, faSignOutAlt, faCircle } from '@fortawesome/free-solid-svg-icons';
-import imageService from '../services/image.service';
+import imageService from '../../services/image.service';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -14,14 +14,14 @@ import {
   } from '@expo-google-fonts/poppins'
 import { TextInput } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
-import BottomNav from '../components/BottomNav';
+import BottomNav from '../../components/BottomNav';
 import * as ImagePicker from 'expo-image-picker'
-import UserInfo from '../components/UserInfo';
-import { setStatus } from '../actions/userActions';
-import { setInterest } from '../actions/userActions';
-import userService from '../services/user.service';
+import UserInfo from '../../components/UserInfo';
+import { setStatus } from '../../actions/userActions';
+import { setInterest } from '../../actions/userActions';
+import userService from '../../services/user.service';
 import axios from 'axios';
-import { uploadImage } from '../actions/userActions';
+import { uploadImage } from '../../actions/userActions';
 
   export default function UserSettings({navigation}) {
     const [statusModal, setStatusModal] = useState(false);
@@ -86,12 +86,15 @@ import { uploadImage } from '../actions/userActions';
           quality: 1,
         }).then((response => {
             console.log(response)
-            setImage({
-                uri: response.uri,
-                name: uuid_user + '.jpg',
-                type: 'image/jpg',
-              }) 
-            dispatch(uploadImage(response.uri))
+            
+            if (!response.cancelled) {
+                setImage({
+                    uri: response.uri,
+                    name: uuid_user + '.jpg',
+                    type: 'image/jpg',
+                  }) 
+                dispatch(uploadImage(response.uri))
+            }
         }))    
     };    
    

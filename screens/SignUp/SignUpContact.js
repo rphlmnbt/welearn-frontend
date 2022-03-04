@@ -1,13 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image } from 'react-native';
 import AppLoading from 'expo-app-loading';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/login-mobile-bg.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
+import Background from '../../assets/images/login-mobile-bg.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
 import { Formik } from 'formik';
-import { useSelector, useDispatch } from 'react-redux';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -15,9 +11,10 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import { changeEmail } from '../actions/signUpActions';
+import { changeContact } from '../../actions/signUpActions'
+import { useDispatch } from 'react-redux';
 
-export default function SignUpEmail({navigation}) {
+export default function SignUpContact({navigation}) {
    
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -26,13 +23,14 @@ export default function SignUpEmail({navigation}) {
         Poppins_700Bold,
     });
 
-    const handleSubmit = (values) => {
-        console.log(values)
-        dispatch(changeEmail(values))
-        navigation.navigate('SignUpContact')     
-    }
-
     const dispatch = useDispatch()
+
+    const handleSubmit = values => {
+        console.log(values)
+        dispatch(changeContact(values))
+        navigation.navigate('LoginMobilePin')
+        
+    }
 
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -40,13 +38,12 @@ export default function SignUpEmail({navigation}) {
         return (
             <Formik
                 initialValues={{
-                    email:'',
-                    password:''}}
+                    contactNumber: ''}}
                 onSubmit={handleSubmit}
             >
                 {({ handleChange, handleBlur, handleSubmit,values }) => (
-                    <View style={styles.container}>
-                        <View style={styles.half}>
+                     <View style={styles.container}>
+                     <View style={styles.half}>
                         <Background
                             style={styles.background}
                             resizeMode="cover" 
@@ -70,23 +67,14 @@ export default function SignUpEmail({navigation}) {
                             </Text>
                         </View>
                         <TextInput
-                            placeholder="Email"
-                            autoCapitalize="none"
-                            style={styles.textinput1}
-                            autoCapitalize="none"
-                            onChangeText={handleChange('email')}
-                            onBlur={handleBlur('email')}
-                            value={values.email}
-                        />
-                        <TextInput
-                            placeholder="Password"
-                            autoCapitalize="none"
-                            style={styles.textinput1}
-                            autoCapitalize="none"
-                            onChangeText={handleChange('password')}
-                            onBlur={handleBlur('password')}
-                            value={values.password}
-                            secureTextEntry={true}
+                                placeholder="Mobile Number"
+                                autoCapitalize="none"
+                                style={styles.mobileInput}
+                                autoCapitalize="none"
+                                keyboardType="numeric"
+                                onChangeText={handleChange('contactNumber')}
+                                onBlur={handleBlur('contactNumber')}
+                                value={values.contactNumber}
                         />
                         <TouchableOpacity
                             style={styles.button}
@@ -95,10 +83,13 @@ export default function SignUpEmail({navigation}) {
                             <Text style={styles.buttontext}> Continue</Text>
                         </TouchableOpacity>
                     </View>
+                    
+                    
                 </View>
+                    
                 )}
             </Formik> 
-            
+           
         )
     }
 }
@@ -182,7 +173,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 30
+        marginTop: 20
     },
     buttontext: {
         color: 'white',
@@ -198,6 +189,15 @@ const styles = StyleSheet.create({
     formHeader: {
         alignItems: 'center',
         marginBottom: 15
+    },
+
+    mobileInput:{
+        borderWidth: 1,
+        borderColor: '#ACACAC',
+        borderRadius: 5,
+        padding:8,
+        width: '100%',
+        marginVertical: 30
     },
 
 })

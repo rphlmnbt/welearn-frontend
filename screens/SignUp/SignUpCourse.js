@@ -1,28 +1,27 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, KeyboardAvoidingView, StatusBar, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image} from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/login-mobile-bg.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
-import Header from '../components/Header';
+import Background from '../../assets/images/login-mobile-bg.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import RadioButton from '../../components/RadioButton';
 import { Formik } from 'formik';
-import { useSelector, useDispatch } from 'react-redux'
-import { changeName } from '../actions/signUpActions'
-import { 
+import {Picker} from '@react-native-picker/picker';
+import{
     useFonts,
     Poppins_400Regular,
     Poppins_500Medium,
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import { useDispatch } from 'react-redux';
+import {changeCourse} from '../../actions/signUpActions'
 
-export default function SignUpPersonal({navigation}) {
+export default function SignUpCourse({navigation}) {
 
-    const firstName = useSelector(state => state.firstName)
-    const lastName = useSelector(state => state.lastName)
-   
+    const [selectedYear, setSelectedYear] = useState();
+
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -34,10 +33,11 @@ export default function SignUpPersonal({navigation}) {
 
     const handleSubmit = values => {
         console.log(values)
-        dispatch(changeName(values))
-        navigation.navigate('SignUpBirth')
+        dispatch(changeCourse(values))
+        navigation.navigate('SignUpInterests')
         
     }
+
 
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -45,64 +45,67 @@ export default function SignUpPersonal({navigation}) {
         return (
             <Formik
                 initialValues={{
-                    lastName:'',
-                    firstName:''}}
+                    course:'',
+                    yearLevel:''
+                }}
                 onSubmit={handleSubmit}
             >
                 {({ handleChange, handleBlur, handleSubmit,values }) => (
-                    <KeyboardAvoidingView style={{flex:1}}>
-                        <View style={styles.container}>
-                            <View style={styles.half}>
+                    <View style={styles.container}>
+                        <View style={styles.half}>
                             <Background
                                 style={styles.background}
                                 resizeMode="cover" 
                             />
-                            </View>
-                            <Image
-                                style={styles.splash}
-                                source={LogoImg}
-                                resizeMode="contain" 
-                            />
-                            <Text style={styles.text2}>
-                                    WeLearn
-                            </Text>
-                            <View style={styles.form}>
-                                <View style={styles.formHeader}>
-                                    <Text style={styles.text}>
-                                        Create a WeLearn Account
-                                    </Text>
-                                    <Text style={styles.text3}>
-                                        Please provide the following information.
-                                    </Text>
-                                </View>
-                                <TextInput
-                                    placeholder="First Name"
-                                    autoCapitalize="none"
-                                    style={styles.textinput1}
-                                    autoCapitalize="none"
-                                    onChangeText={handleChange('firstName')}
-                                    onBlur={handleBlur('firstName')}
-                                    value={values.firstName}
-                                />
-                                <TextInput
-                                    placeholder="Last Name"
-                                    autoCapitalize="none"
-                                    style={styles.textinput1}
-                                    autoCapitalize="none"
-                                    onChangeText={handleChange('lastName')}
-                                    onBlur={handleBlur('lastName')}
-                                    value={values.lastName}
-                                />
-                                <TouchableOpacity
-                                    style={styles.button}
-                                    onPress={handleSubmit}
-                                >
-                                    <Text style={styles.buttontext}> Continue</Text>
-                                </TouchableOpacity>
-                            </View>
                         </View>
-                    </KeyboardAvoidingView>
-                    
+                        <Image
+                            style={styles.splash}
+                            source={LogoImg}
+                            resizeMode="contain" 
+                        />
+                        <Text style={styles.text2}>
+                                WeLearn
+                        </Text>
+                        <View style={styles.form}>
+                            <View style={styles.formHeader}>
+                                <Text style={styles.text}>
+                                    Create a WeLearn Account
+                                </Text>
+                                <Text style={styles.text3}>
+                                    Please provide the following information.
+                                </Text>
+                            </View>
+                            <TextInput
+                                placeholder="Course Program"
+                                autoCapitalize="none"
+                                style={styles.textinput1}
+                                autoCapitalize="none"
+                                onChangeText={handleChange('course')}
+                                onBlur={handleBlur('course')}
+                                value={values.course}
+                            />
+                            <View style={styles.picker}>
+                            <Picker
+                            selectedValue={values.yearLevel}
+                            onValueChange={handleChange('yearLevel')}>
+                            <Picker.Item label="Year Level" value="select" color="#ACACAC" />
+                            <Picker.Item label="First Year" value="1st Year"/>
+                            <Picker.Item label="Second Year" value="2nd Year"/>
+                            <Picker.Item label="Third Year" value="3rd Year"/>
+                            <Picker.Item label="Fourth Year" value="4th Year"/>
+                            </Picker> 
+                            </View>
+                            
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={handleSubmit}
+                            >
+                                <Text style={styles.buttontext}> Continue</Text>
+                            </TouchableOpacity>
+                        </View>
+                        
+                        
+                    </View>
                 )}
             </Formik>          
             
@@ -121,8 +124,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: 'white',
-        paddingTop: 100,
-        flex: 1
+        paddingTop: 100
     },
     imageUpload : {
         height: '20%',
@@ -206,5 +208,15 @@ const styles = StyleSheet.create({
     formHeader: {
         alignItems: 'center',
         marginBottom: 15
+    },
+
+    picker:{
+        borderWidth: 1,
+        borderColor: '#ACACAC',
+        borderRadius: 5,
+        padding: 0,
+        width: '100%',
+        marginTop: 15,
+        height: 48
     }
 })

@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, TextInput  } from 'react-native';
-import Background from '../assets/images/find-bg.svg'
-import Room from '../assets/images/room.png'
+import Background from '../../assets/images/find-bg.svg'
+import Room from '../../assets/images/room.png'
 import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import sessionService from '../services/session.service';
-import roomService from '../services/room.service';
+import sessionService from '../../services/session.service';
+import roomService from '../../services/room.service';
 import { useSelector } from 'react-redux';
-
+import Moment from 'moment';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -16,7 +16,7 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import { Formik } from 'formik';
-import Loading from '../components/Loading';
+import Loading from '../../components/Loading';
 
   export default function UserCreateSession({navigation}) {
 
@@ -61,7 +61,7 @@ import Loading from '../components/Loading';
     });
 
     const handleSubmit = (values) => {
-        sessionService.createSession(values.session_name, date, selectedTime, uuid_user, selectedRoom)
+        sessionService.createSession(values.session_name, Moment(date).format("MMM Do"), selectedTime, uuid_user, selectedRoom)
         .then(response => {
             navigation.navigate('UserChooseSession')
         }).catch(error => {

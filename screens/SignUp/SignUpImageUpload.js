@@ -1,8 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Platform, } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'
-import Background from '../assets/images/login-mobile-bg.svg'
+import Background from '../../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
+import { changeImage } from '../../actions/signUpActions';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faUserCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
+import { Formik } from 'formik';
+import { useSelector, useDispatch } from 'react-redux';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -13,6 +18,7 @@ import {
 
 
 export default function SignUpImageUpload({navigation}) { 
+    const dispatch = useDispatch()
     const [image, setImage] = useState(null);
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -21,26 +27,40 @@ export default function SignUpImageUpload({navigation}) {
         Poppins_700Bold,
     });
 
+    const handleSubmit = (values) => {
+        console.log(values)
+        navigation.navigate('SignUpSurveyIntro')     
+    }
+
     const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
+        await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
           aspect: [1,1],
           quality: 1,
-        });
-    
-        console.log(result);
-    
-        if (!result.cancelled) {
-          setImage(result.uri);
-        }
-    };
+        }).then((response => {
+            if (!response.cancelled) {
+                console.log(response)
+                setImage({
+                    uri: response.uri,
+                }) 
+                dispatch(changeImage(response.uri))
+              }
+            
+        }))    
+    };    
 
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
     return (
+        <Formik
+            initialValues={{
+                interest:''
+            }}
+            onSubmit={handleSubmit}
+        >
+        {({ handleChange, handleBlur, handleSubmit,values }) => (
         <View style={styles.container}>
             <View style={styles.half}>
                 <Background
@@ -48,7 +68,12 @@ export default function SignUpImageUpload({navigation}) {
                     resizeMode="cover" 
                 />
                 <View style={styles.imagecontainer}>
-                    {image && <Image source={{ uri: image }} style={{ width: 350, height: 300, marginBottom: 15}} />}   
+                    {image && 
+                        <Image source={image} style={{ width: 300, height: 300, borderRadius: 150}} />
+                    }   
+                    {!image &&
+                        <FontAwesomeIcon icon={faUserCircle} size={300} color={'#EF4765'}/>
+                    }
                     <TouchableOpacity
                         style={styles.button}
                         onPress={pickImage}
@@ -57,15 +82,19 @@ export default function SignUpImageUpload({navigation}) {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button2}
-                        onPress={() => navigation.navigate('SignUpSurveyIntro')}>
+                        onPress={handleSubmit}
+                    >
                     <Text style={styles.buttontext}>Continue</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         </View>
-      );
-    }
-}
+       )}
+       </Formik> 
+       
+   )
+ }
+ }
 
 const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
@@ -111,6 +140,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: '10%',
+        marginTop: 30
         
     },
 

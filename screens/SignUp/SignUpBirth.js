@@ -1,26 +1,33 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image} from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, Platform } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/login-mobile-bg.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
+import Background from '../../assets/images/login-mobile-bg.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { useSelector, useDispatch } from 'react-redux'
 import { Formik } from 'formik';
-import {Picker} from '@react-native-picker/picker';
-import{
+import { 
     useFonts,
     Poppins_400Regular,
     Poppins_500Medium,
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import { useDispatch } from 'react-redux';
-import { changeCourse } from '../actions/signUpActions';
+import RadioButton from '../../components/RadioButton';
+import { changeBirth } from '../../actions/signUpActions';
 
-export default function SignUpCourse({navigation}) {
+export default function SignUpBirth({navigation}) {
+    const [date, setDate] = useState(new Date());
+    const [show, setShow] = useState(false);
+    const [mode, setMode] = useState('date');
+    const [gender, setGender] = useState()
+    const dispatch = useDispatch()
 
-    const [selectedYear, setSelectedYear] = useState();
+    const onSelect = (childData) =>{
+        setGender(childData)
+    }
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -28,16 +35,37 @@ export default function SignUpCourse({navigation}) {
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
+    const data = [
+        { value: 'Male' },
+        { value: 'Female' }
+    ];
 
-    const dispatch = useDispatch()
+    const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+    };
+    
+      const showDatepicker = () => {
+        showMode('date');
+    };
 
-    const handleSubmit = values => {
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+    };
+
+    const handleSubmit = () => {
+        const values = {
+            gender: gender,
+            birthDate: date
+        }
         console.log(values)
-        dispatch(changeCourse(values))
-        navigation.navigate('Interests')
+        dispatch(changeBirth(values))
+        navigation.navigate('SignUpEmail')
         
     }
-
+    const firstName = useSelector(state => state.firstName)
 
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -45,9 +73,8 @@ export default function SignUpCourse({navigation}) {
         return (
             <Formik
                 initialValues={{
-                    course:'',
-                    yearLevel:''
-                }}
+                    birthDate:'',
+                    gender:''}}
                 onSubmit={handleSubmit}
             >
                 {({ handleChange, handleBlur, handleSubmit,values }) => (
@@ -64,7 +91,7 @@ export default function SignUpCourse({navigation}) {
                             resizeMode="contain" 
                         />
                         <Text style={styles.text2}>
-                                WeLearn
+                                WeLearn{firstName}
                         </Text>
                         <View style={styles.form}>
                             <View style={styles.formHeader}>
@@ -75,39 +102,31 @@ export default function SignUpCourse({navigation}) {
                                     Please provide the following information.
                                 </Text>
                             </View>
-                            <TextInput
-                                placeholder="Course Program"
-                                autoCapitalize="none"
-                                style={styles.textinput1}
-                                autoCapitalize="none"
-                                onChangeText={handleChange('course')}
-                                onBlur={handleBlur('course')}
-                                value={values.course}
-                            />
-                            <View style={styles.picker}>
-                            <Picker
-                            selectedValue={values.yearLevel}
-                            onValueChange={handleChange('yearLevel')}>
-                            <Picker.Item label="Year Level" value="select" color="#ACACAC" />
-                            <Picker.Item label="First Year" value="1st Year"/>
-                            <Picker.Item label="Second Year" value="2nd Year"/>
-                            <Picker.Item label="Third Year" value="3rd Year"/>
-                            <Picker.Item label="Fourth Year" value="4th Year"/>
-                            </Picker> 
-                            </View>
-                            
+                            <TouchableOpacity
+                                style={styles.datePicker}
+                                onPress={showDatepicker}
+                            >
+                                <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
+                            </TouchableOpacity>
+                            <RadioButton data={data} onSelect={onSelect}/>
                             <TouchableOpacity
                                 style={styles.button}
                                 onPress={handleSubmit}
                             >
                                 <Text style={styles.buttontext}> Continue</Text>
                             </TouchableOpacity>
+                            {show && (
+                                <DateTimePicker
+                                testID="dateTimePicker"
+                                value={date}
+                                display="default"
+                                onChange={onChange}
+                                />
+                            )}
                         </View>
-                        
-                        
-                    </View>
+                    </View>     
                 )}
-            </Formik>          
+            </Formik> 
             
         )
     }
@@ -126,13 +145,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingTop: 100
     },
-    imageUpload : {
-        height: '20%',
-        width: '100%',
-        backgroundColor: '#ACACAC',
-        alignItems: 'center', 
-        justifyContent: 'center'
-    },
     textinput1:{
         borderWidth: 1,
         borderColor: '#ACACAC',
@@ -140,6 +152,16 @@ const styles = StyleSheet.create({
         padding:8,
         width: '100%',
         marginTop: 15,
+    },
+    datePicker: {
+        borderWidth: 1,
+        borderColor: '#ACACAC',
+        borderRadius: 5,
+        width: '100%',
+        height: 45,
+        marginTop: 15,
+        justifyContent: 'center',
+        padding:8,
     },
     text: {
         marginTop: 15,
@@ -209,14 +231,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 15
     },
-
-    picker:{
-        borderWidth: 1,
+    picker: {
+        borderWidth: 2,
         borderColor: '#ACACAC',
-        borderRadius: 5,
-        padding: 0,
-        width: '100%',
-        marginTop: 15,
-        height: 48
-    }
+        fontFamily: 'Poppins_600SemiBold',
+    },
+    pickerText: {
+        color: '#ACACAC',
+        fontFamily: 'Poppins_600SemiBold',
+        letterSpacing: 0.3
+    },
 })

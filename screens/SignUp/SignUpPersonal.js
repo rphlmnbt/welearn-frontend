@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, KeyboardAvoidingView, StatusBar, ScrollView } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/login-mobile-bg.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
+import Background from '../../assets/images/login-mobile-bg.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import RadioButton from '../../components/RadioButton';
+import Header from '../../components/Header';
 import { Formik } from 'formik';
+import { useSelector, useDispatch } from 'react-redux'
+import { changeName } from '../../actions/signUpActions';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -14,10 +17,11 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import { useDispatch } from 'react-redux';
-import { changeSchool } from '../actions/signUpActions';
 
-export default function SignUpSchool({navigation}) {
+export default function SignUpPersonal({navigation}) {
+
+    const firstName = useSelector(state => state.firstName)
+    const lastName = useSelector(state => state.lastName)
    
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -30,8 +34,8 @@ export default function SignUpSchool({navigation}) {
 
     const handleSubmit = values => {
         console.log(values)
-        dispatch(changeSchool(values))
-        navigation.navigate('SignUpCourse')
+        dispatch(changeName(values))
+        navigation.navigate('SignUpBirth')
         
     }
 
@@ -41,54 +45,67 @@ export default function SignUpSchool({navigation}) {
         return (
             <Formik
                 initialValues={{
-                    university:''}}
+                    lastName:'',
+                    firstName:''}}
                 onSubmit={handleSubmit}
             >
                 {({ handleChange, handleBlur, handleSubmit,values }) => (
-                    <View style={styles.container}>
-                        <View style={styles.half}>
+                    <KeyboardAvoidingView style={{flex:1}}>
+                        <View style={styles.container}>
+                            <View style={styles.half}>
                             <Background
                                 style={styles.background}
                                 resizeMode="cover" 
                             />
-                        </View>
-                        <Image
-                            style={styles.splash}
-                            source={LogoImg}
-                            resizeMode="contain" 
-                        />
-                        <Text style={styles.text2}>
-                                WeLearn
-                        </Text>
-                        <View style={styles.form}>
-                            <View style={styles.formHeader}>
-                                <Text style={styles.text}>
-                                    Create a WeLearn Account
-                                </Text>
-                                <Text style={styles.text3}>
-                                    Please provide the following information.
-                                </Text>
                             </View>
-                            <TextInput
-                                placeholder="University"
-                                autoCapitalize="none"
-                                style={styles.textinput1}
-                                autoCapitalize="none"
-                                onChangeText={handleChange('university')}
-                                onBlur={handleBlur('university')}
-                                value={values.university}
+                            <Image
+                                style={styles.splash}
+                                source={LogoImg}
+                                resizeMode="contain" 
                             />
-                            <TouchableOpacity
-                                style={styles.button}
-                                onPress={handleSubmit}
-                            >
-                                <Text style={styles.buttontext}> Continue</Text>
-                            </TouchableOpacity>
+                            <Text style={styles.text2}>
+                                    WeLearn
+                            </Text>
+                            <View style={styles.form}>
+                                <View style={styles.formHeader}>
+                                    <Text style={styles.text}>
+                                        Create a WeLearn Account
+                                    </Text>
+                                    <Text style={styles.text3}>
+                                        Please provide the following information.
+                                    </Text>
+                                </View>
+                                <TextInput
+                                    placeholder="First Name"
+                                    autoCapitalize="none"
+                                    style={styles.textinput1}
+                                    autoCapitalize="none"
+                                    onChangeText={handleChange('firstName')}
+                                    onBlur={handleBlur('firstName')}
+                                    value={values.firstName}
+                                />
+                                <TextInput
+                                    placeholder="Last Name"
+                                    autoCapitalize="none"
+                                    style={styles.textinput1}
+                                    autoCapitalize="none"
+                                    onChangeText={handleChange('lastName')}
+                                    onBlur={handleBlur('lastName')}
+                                    value={values.lastName}
+                                />
+                                <TouchableOpacity
+                                    style={styles.button}
+                                    onPress={handleSubmit}
+                                >
+                                    <Text style={styles.buttontext}> Continue</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    </View>    
+                    </KeyboardAvoidingView>
+                    
                 )}
             </Formik>          
-           
+            
         )
     }
 }
@@ -104,7 +121,8 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: 'white',
-        paddingTop: 100
+        paddingTop: 100,
+        flex: 1
     },
     imageUpload : {
         height: '20%',
@@ -188,6 +206,5 @@ const styles = StyleSheet.create({
     formHeader: {
         alignItems: 'center',
         marginBottom: 15
-    },
-
+    }
 })
