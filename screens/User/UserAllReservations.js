@@ -13,7 +13,7 @@ import BottomNav from '../../components/BottomNav';
 import sessionService from '../../services/session.service';
 import Loading from '../../components/Loading';
 
-export default function UserReservations({navigation}) {
+export default function UserAllReservations({navigation}) {
     const [isLoading, setLoading] = useState(true);
     const [sessions, setSessions] = useState(null)
     const uuid_user = useSelector(state => state.user.uuid_user)
@@ -25,7 +25,7 @@ export default function UserReservations({navigation}) {
     });
 
     useEffect(() => {
-        sessionService.getSessions(uuid_user)
+        sessionService.getAllSessions()
         .then(response => {
             console.log(response.data)
             setSessions(response.data)
@@ -43,20 +43,10 @@ export default function UserReservations({navigation}) {
                         style={styles.background}
                         resizeMode="cover" 
                     />
-                    <View style={styles.usercontainer}>
-                        <View style={styles.headerContainer}>
-                            <Text style={styles.text2}>Study Room Reservations</Text>
-                            <View style={styles.buttonstyle}>
-                                <TouchableOpacity
-                                    style={styles.button}
-                                    onPress={()=> navigation.navigate('UserAllReservations')}
-                                    >
-                                    <Text style={styles.buttontext}>All Reservations</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>             
+                    <View style={styles.usercontainer}>             
+                        <Text style={styles.text2}>Study Room Reservations</Text>
                         {sessions.map(element => {
-                            return  <TouchableOpacity key={element.uuid_session} onPress={() => navigation.navigate('UserReservationDetails', {session: element})}>
+                            return  <TouchableOpacity key={element.uuid_session}>
                                         <View style={styles.userdetails}>
                                         <Image
                                             style={styles.images}
@@ -71,6 +61,7 @@ export default function UserReservations({navigation}) {
                                                 <Text style={styles.userinfo}>{element.room.room_name}</Text>
                                                 <Text style={styles.Timerequest}>{element.date}</Text>
                                             </View>
+                                            
                                         </View>
                                         </View>
                                     </TouchableOpacity>
@@ -89,35 +80,6 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
-    button: {
-        backgroundColor: '#FE4D71',
-        marginHorizontal: 5,
-        paddingHorizontal: 8,
-        height: 30,
-        borderRadius: 5,
-        shadowRadius: 5,
-        shadowOffset: {width:2, height:2},
-        shadowOpacity: 0.2,
-        justifyContent:'center',
-        alignItems:'center'
-        
-    },
-    buttontext: {
-        color: 'white',
-        fontFamily: 'Poppins_600SemiBold',
-        letterSpacing: 0.3,
-    },
-
-    buttonstyle:{
-        alignItems: 'center',
-
-    },
-    headerContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        width: '100%',
-        justifyContent: 'space-between'
-    },
     container : {
         flexDirection: 'column', 
         alignItems: 'center', 

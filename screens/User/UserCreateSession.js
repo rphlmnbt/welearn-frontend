@@ -7,7 +7,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import sessionService from '../../services/session.service';
 import roomService from '../../services/room.service';
 import { useSelector } from 'react-redux';
-
+import Moment from 'moment';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -61,7 +61,7 @@ import Loading from '../../components/Loading';
     });
 
     const handleSubmit = (values) => {
-        sessionService.createSession(values.session_name, date, selectedTime, uuid_user, selectedRoom)
+        sessionService.createSession(values.session_name, Moment(date).format("MMM Do"), selectedTime, uuid_user, selectedRoom)
         .then(response => {
             navigation.navigate('UserChooseSession')
         }).catch(error => {

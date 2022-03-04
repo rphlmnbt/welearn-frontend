@@ -78,7 +78,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
                     <View style={styles.usersContainer}>
                         <Text style={styles.membersText}>Session Members</Text>
                         {users.map(element => {
-                            return  <View style={styles.header}>
+                            return  <View style={styles.header} key={element.uuid_user}>
                                 {element.user_detail.src != null &&
                                     <Image
                                         style={styles.image}

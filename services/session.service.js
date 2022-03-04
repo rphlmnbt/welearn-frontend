@@ -30,10 +30,19 @@ const getSessions = (
     return axios.get(SESSION_URL + `/user/${uuid_user}`)
 }
 
+const getAllSessions = (
+    uuid_user
+) => {
+    return axios.get(SESSION_URL)
+}
+
+
+
 
 
 export default {
     createSession,
-    getSessions
+    getSessions,
+    getAllSessions
 
 }
