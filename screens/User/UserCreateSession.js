@@ -96,7 +96,7 @@ import Loading from '../../components/Loading';
                          <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
                              <Text style={styles.buttontext}>Try Again</Text>
                          </TouchableOpacity>
-                         <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                         <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("UserAllReservations")}>
                              <Text style={styles.buttontext}>View Reservations</Text>
                          </TouchableOpacity>
                      </View>

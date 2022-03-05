@@ -73,7 +73,6 @@ export default function SignUpEmail({navigation}) {
                             placeholder="Email"
                             autoCapitalize="none"
                             style={styles.textinput1}
-                            autoCapitalize="none"
                             onChangeText={handleChange('email')}
                             onBlur={handleBlur('email')}
                             value={values.email}
@@ -82,7 +81,6 @@ export default function SignUpEmail({navigation}) {
                             placeholder="Password"
                             autoCapitalize="none"
                             style={styles.textinput1}
-                            autoCapitalize="none"
                             onChangeText={handleChange('password')}
                             onBlur={handleBlur('password')}
                             value={values.password}

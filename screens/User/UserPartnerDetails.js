@@ -81,7 +81,7 @@ import invitationService from '../../services/invitation.service';
                     <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
                         <Text style={styles.buttontext}>Exit</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                    <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("UserAllReservations")}>
                         <Text style={styles.buttontext}>View Reservations</Text>
                     </TouchableOpacity>
                 </View>

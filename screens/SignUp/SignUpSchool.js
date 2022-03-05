@@ -73,7 +73,6 @@ export default function SignUpSchool({navigation}) {
                                 placeholder="University"
                                 autoCapitalize="none"
                                 style={styles.textinput1}
-                                autoCapitalize="none"
                                 onChangeText={handleChange('university')}
                                 onBlur={handleBlur('university')}
                                 value={values.university}
