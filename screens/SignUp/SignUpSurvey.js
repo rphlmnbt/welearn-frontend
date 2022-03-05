@@ -162,6 +162,7 @@ export default function SignUpSurvey({navigation}) {
             writingSkills,
             mathSkills
         ).then(response => {
+            console.log(response)
             if(response.status == 200) {
                 const uuid_user = response.data.uuid_user
                 const image = {
@@ -171,12 +172,16 @@ export default function SignUpSurvey({navigation}) {
                 }
                 imageService.uploadImage(image, uuid_user)
                 userService.uploadImage(uuid_user, image.name)
-            } else if (response.status == 400) {
+                navigation.navigate('LoginHome')
+            } else  {
                 setDupModal(true)
             }
            
+        }).catch(error => {
+            console.log(error)
+            setDupModal(true)
         })
-        navigation.navigate('LoginHome')
+        
     }
 
     if (!fontsLoaded) {
@@ -199,7 +204,7 @@ export default function SignUpSurvey({navigation}) {
                 <Modal
                     animationType="slide"
                     transparent={true}
-                    visible={openModal}
+                    visible={dupModal}
                 >
                     <View style={styles.modalContainer}>
                         <Text style={styles.text4}>Failed! Email or Mobile Number already exists!</Text>
