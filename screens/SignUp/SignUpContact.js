@@ -70,7 +70,6 @@ export default function SignUpContact({navigation}) {
                                 placeholder="Mobile Number"
                                 autoCapitalize="none"
                                 style={styles.mobileInput}
-                                autoCapitalize="none"
                                 keyboardType="numeric"
                                 onChangeText={handleChange('contactNumber')}
                                 onBlur={handleBlur('contactNumber')}
