@@ -16,6 +16,7 @@ import {
   } from '@expo-google-fonts/poppins'
 import { useDispatch } from 'react-redux';
 import { changeSchool } from '../../actions/signUpActions';
+import schema from '../../schemas/signUpSchool.schema'
 
 export default function SignUpSchool({navigation}) {
    
@@ -43,8 +44,9 @@ export default function SignUpSchool({navigation}) {
                 initialValues={{
                     university:''}}
                 onSubmit={handleSubmit}
+                validationSchema={schema}
             >
-                {({ handleChange, handleBlur, handleSubmit,values }) => (
+                {({ handleChange, handleBlur, handleSubmit,values, errors }) => (
                     <View style={styles.container}>
                         <View style={styles.half}>
                             <Background
@@ -77,6 +79,9 @@ export default function SignUpSchool({navigation}) {
                                 onBlur={handleBlur('university')}
                                 value={values.university}
                             />
+                            {errors.university &&
+                            <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.university}</Text>
+                            }
                             <TouchableOpacity
                                 style={styles.button}
                                 onPress={handleSubmit}

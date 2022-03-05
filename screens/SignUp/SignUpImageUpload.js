@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Platform, } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Platform, Modal } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'
 import Background from '../../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
@@ -20,6 +20,7 @@ import {
 export default function SignUpImageUpload({navigation}) { 
     const dispatch = useDispatch()
     const [image, setImage] = useState(null);
+    const [openModal, setOpenModal] = useState(false);
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -27,9 +28,15 @@ export default function SignUpImageUpload({navigation}) {
         Poppins_700Bold,
     });
 
-    const handleSubmit = (values) => {
-        console.log(values)
-        navigation.navigate('SignUpSurveyIntro')     
+    const handleSubmit = () => {
+        if (image != null) {
+            navigation.navigate('SignUpSurveyIntro')   
+        } 
+        else {
+            setOpenModal(true)
+        }
+        console.log(image)
+       
     }
 
     const pickImage = async () => {
@@ -56,12 +63,23 @@ export default function SignUpImageUpload({navigation}) {
     return (
         <Formik
             initialValues={{
-                interest:''
             }}
             onSubmit={handleSubmit}
         >
         {({ handleChange, handleBlur, handleSubmit,values }) => (
         <View style={styles.container}>
+            <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={openModal}
+                >
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.text4}>Image is Required.</Text>
+                        <TouchableOpacity style={styles.button3} onPress={() => setOpenModal(false)}>
+                            <Text style={styles.buttontext}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
             <View style={styles.half}>
                 <Background
                     style={styles.background}
@@ -166,5 +184,48 @@ const styles = StyleSheet.create({
         
         
     },
+
+    modalContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        marginTop: '70%',
+        margin: 20,
+        backgroundColor: "#F2F2F2",
+        borderRadius: 5,
+        padding: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+
+    text4: {
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#5E5E5E',
+        fontSize: 16,
+        alignItems: 'center',
+        
+    },
+
+    button3: {
+        backgroundColor: '#EF4765',
+        width: '40%',
+        height: 45,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
+        marginTop: 40
+    },
+
 
 });
