@@ -23,3 +23,6 @@ export const PARTNER_RELOAD = 'PARTNER_RELOAD'
 export const SET_STUDYPARTNERS = 'SET_STUDYPARTNERS'
 export const SET_COUNT = 'SET_COUNT'
 export const SET_SIZE = 'SET_SIZE'
+
+//Notification Reducer
+export const SET_TOKEN = 'SET_TOKEN'

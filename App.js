@@ -1,4 +1,6 @@
-import * as React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Header from './components/Header';
@@ -34,9 +36,46 @@ import UserPartnerDetails from './screens/User/UserPartnerDetails';
 import UserReservationDetails from './screens/User/UserReservationDetails';
 import UserAllReservations from './screens/User/UserAllReservations';
 
+import notificationService from './services/notification.service';
+
 const Stack = createNativeStackNavigator();
 
-function App() {
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
+
+export default function App() {
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+    notificationService.registerForPushNotificationsAsync().then(token => {
+      setExpoPushToken(token)
+    });
+
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -193,4 +232,3 @@ function App() {
   );
 }
 
-export default App;

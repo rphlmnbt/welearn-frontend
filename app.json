@@ -4,7 +4,7 @@
     "slug": "welearn-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/wl-logo2.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -21,14 +21,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/wl-logo2.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.welearn.app",
       "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/images/wl-logo2.png"
     },
     "packagerOpts": {
       "config": "metro.config.js",
@@ -45,6 +45,15 @@
         "wasm",
         "svg"
       ]
-    }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/wl-logo2.png",
+          "color": "#ffffff"
+        }
+      ]
+    ]
   }
 }
