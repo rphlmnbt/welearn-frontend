@@ -43,7 +43,7 @@ export default function SignUpContact({navigation}) {
                 onSubmit={handleSubmit}
                 validationSchema={schema}
             >
-                {({ handleChange, handleBlur, handleSubmit,values, errors }) => (
+                {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
                      <View style={styles.container}>
                      <View style={styles.half}>
                         <Background
@@ -77,7 +77,7 @@ export default function SignUpContact({navigation}) {
                                 onBlur={handleBlur('contactNumber')}
                                 value={values.contactNumber}
                         />
-                        {errors.contactNumber &&
+                        {errors.contactNumber && touched.contactNumber &&
                             <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.contactNumber}</Text>
                         }
                         <TouchableOpacity

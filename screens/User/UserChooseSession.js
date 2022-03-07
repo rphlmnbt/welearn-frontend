@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image  } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Modal  } from 'react-native';
 import Background from '../../assets/images/find-bg.svg'
 import Room from '../../assets/images/room.png'
 import {Picker} from '@react-native-picker/picker';
@@ -24,6 +24,7 @@ import mlService from '../../services/ml.service';
     const uuid_user = useSelector(state => state.user.uuid_user)
     const uuid_partner = useSelector(state => state.partner.uuid_user)
     const stats = useSelector(state => state.partner.stats)
+    const [openModal, setOpenModal] = useState(false);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -44,11 +45,17 @@ import mlService from '../../services/ml.service';
     });
 
     const handleSubmit = () =>{
-        invitationService.sendInvitation(selectedSession, uuid_partner).then(response => {
+        invitationService.sendInvitation(selectedSession, uuid_partner)
+        .then(response => {
+            if(response.status == 200) {
             mlService.addToDataset(uuid_user, stats, true)
             navigation.navigate('UserDashboard')
+            }else if (response.status == 400) {
+                setOpenModal(true)
+            }
+
         }).catch(error=> {
-            console.log(error)
+            setOpenModal(true)
         })
         
         
@@ -62,6 +69,18 @@ import mlService from '../../services/ml.service';
     } else {
         return (
                 <View style={styles.container}>
+                     <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={openModal}
+                >
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.text5}>Failed! There is no existing session at the moment. Please try creatiing a new session.</Text>
+                        <TouchableOpacity style={styles.button3} onPress={() => setOpenModal(false)}>
+                            <Text style={styles.buttontext}>Try Again</Text>
+                        </TouchableOpacity>
+                    </View>
+                    </Modal>
                     <View style={styles.half}>
                     <Background
                         style={styles.background}
@@ -281,5 +300,47 @@ const styles = StyleSheet.create({
         width: '100%',
         marginVertical: 5,
         height: 42
+    },
+
+    modalContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        marginTop: '40%',
+        margin: 20,
+        backgroundColor: "#F2F2F2",
+        borderRadius: 5,
+        padding: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+
+    text5: {
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#5E5E5E',
+        fontSize: 16,
+        alignItems: 'center',
+        
+    },
+
+    button3: {
+        backgroundColor: '#EF4765',
+        width: '50%',
+        height: 35,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
+        marginTop: 10
     },
 });

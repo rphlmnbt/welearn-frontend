@@ -51,7 +51,7 @@ export default function SignUpPersonal({navigation}) {
                 onSubmit={handleSubmit}
                 validationSchema={schema}
             >
-                {({ handleChange, handleBlur, handleSubmit,values, errors }) => (
+                {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
                     <KeyboardAvoidingView style={{flex:1}}>
                         <View style={styles.container}>
                             <View style={styles.half}>
@@ -85,7 +85,7 @@ export default function SignUpPersonal({navigation}) {
                                     onBlur={handleBlur('firstName')}
                                     value={values.firstName}
                                 />
-                                 {errors.firstName &&
+                                 {errors.firstName && touched.firstName &&
                                 <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.firstName}</Text>
                                   }
                                 <TextInput
@@ -96,7 +96,7 @@ export default function SignUpPersonal({navigation}) {
                                     onBlur={handleBlur('lastName')}
                                     value={values.lastName}
                                 />
-                                 {errors.lastName &&
+                                 {errors.lastName && touched.lastName &&
                                 <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.lastName}</Text>
                                   }
                                 <TouchableOpacity

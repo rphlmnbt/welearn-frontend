@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image} from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, TouchableNativeFeedbackBase} from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
@@ -52,7 +52,7 @@ export default function SignUpCourse({navigation}) {
                 onSubmit={handleSubmit}
                 validationSchema={schema}
             >
-                {({ handleChange, handleBlur, handleSubmit,values, errors }) => (
+                {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
                     <View style={styles.container}>
                         <View style={styles.half}>
                             <Background
@@ -85,7 +85,7 @@ export default function SignUpCourse({navigation}) {
                                 onBlur={handleBlur('course')}
                                 value={values.course}
                             />
-                            {errors.course &&
+                            {errors.course && touched.course &&
                             <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.course}</Text>
                             }
                             <View style={styles.picker}>
@@ -98,7 +98,7 @@ export default function SignUpCourse({navigation}) {
                             <Picker.Item label="Third Year" value="3rd Year"/>
                             <Picker.Item label="Fourth Year" value="4th Year"/>
                             </Picker>
-                            {errors.yearLevel &&
+                            {errors.yearLevel && touched.yearLevel &&
                             <Text style={{ fontSize: 12, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.yearLevel}</Text>
                             } 
                             </View>

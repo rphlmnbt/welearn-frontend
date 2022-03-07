@@ -46,7 +46,7 @@ export default function SignUpSchool({navigation}) {
                 onSubmit={handleSubmit}
                 validationSchema={schema}
             >
-                {({ handleChange, handleBlur, handleSubmit,values, errors }) => (
+                {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
                     <View style={styles.container}>
                         <View style={styles.half}>
                             <Background
@@ -79,7 +79,7 @@ export default function SignUpSchool({navigation}) {
                                 onBlur={handleBlur('university')}
                                 value={values.university}
                             />
-                            {errors.university &&
+                            {errors.university && touched.university &&
                             <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.university}</Text>
                             }
                             <TouchableOpacity

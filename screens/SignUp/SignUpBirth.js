@@ -72,7 +72,7 @@ export default function SignUpBirth({navigation}) {
                 onSubmit={handleSubmit}
                 validationSchema={schema}
             >
-                {({ handleChange, handleBlur, handleSubmit,values, errors, setFieldValue }) => (
+                {({ handleChange, handleBlur, handleSubmit,values, errors, setFieldValue, touched }) => (
                     <View style={styles.container}>
                         <View style={styles.half}>
                             <Background
@@ -103,14 +103,14 @@ export default function SignUpBirth({navigation}) {
                             >
                                 <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
                             </TouchableOpacity>
-                            {errors.birthDate &&
+                            {errors.birthDate && touched.birthDate &&
                                 <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.birthDate}</Text>
                             }
                             <RadioButton data={data} onSelect={(childData) =>{
                                 setGender(childData)
                                 setFieldValue('gender', childData)
                             }}/>
-                             {errors.gender &&
+                             {errors.gender && touched.gender &&
                                 <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.gender}</Text>
                             }
                             <TouchableOpacity
