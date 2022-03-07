@@ -36,8 +36,6 @@ import UserPartnerDetails from './screens/User/UserPartnerDetails';
 import UserReservationDetails from './screens/User/UserReservationDetails';
 import UserAllReservations from './screens/User/UserAllReservations';
 
-import notificationService from './services/notification.service';
-
 const Stack = createNativeStackNavigator();
 
 Notifications.setNotificationHandler({
@@ -50,16 +48,11 @@ Notifications.setNotificationHandler({
 
 
 export default function App() {
-  const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
 
   useEffect(() => {
-    notificationService.registerForPushNotificationsAsync().then(token => {
-      setExpoPushToken(token)
-    });
-
     // This listener is fired whenever a notification is received while the app is foregrounded
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);

@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import { logIn } from '../../actions/userActions';
 import authService from '../../services/auth.service';
 import { useDispatch } from 'react-redux';
-
+import { setToken } from '../../actions/notificationActions';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -14,6 +14,7 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import notificationService from '../../services/notification.service';
 
 function LoginMobile({ navigation }) {
     let [fontsLoaded] = useFonts({
@@ -32,6 +33,9 @@ function LoginMobile({ navigation }) {
             if(response.status == 200){
                 console.log(response.data.user)
                 dispatch(logIn(response.data.user))
+                notificationService.registerForPushNotificationsAsync().then(token => {
+                    dispatch(setToken(token))
+                });
                 navigation.navigate('UserDashboard')
                 
             }
