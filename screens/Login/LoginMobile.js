@@ -86,7 +86,6 @@ function LoginMobile({ navigation }) {
                             placeholder="Mobile Number"
                             autoCapitalize="none"
                             style={styles.mobileInput}
-                            autoCapitalize="none"
                             keyboardType="numeric"
                             onChangeText={handleChange('contact_number')}
                             onBlur={handleBlur('contact_number')}
