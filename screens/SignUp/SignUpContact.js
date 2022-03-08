@@ -13,6 +13,7 @@ import {
   } from '@expo-google-fonts/poppins'
 import { changeContact } from '../../actions/signUpActions'
 import { useDispatch } from 'react-redux';
+import schema from '../../schemas/signUpContact.schema'
 
 export default function SignUpContact({navigation}) {
    
@@ -40,8 +41,9 @@ export default function SignUpContact({navigation}) {
                 initialValues={{
                     contactNumber: ''}}
                 onSubmit={handleSubmit}
+                validationSchema={schema}
             >
-                {({ handleChange, handleBlur, handleSubmit,values }) => (
+                {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
                      <View style={styles.container}>
                      <View style={styles.half}>
                         <Background
@@ -70,12 +72,14 @@ export default function SignUpContact({navigation}) {
                                 placeholder="Mobile Number"
                                 autoCapitalize="none"
                                 style={styles.mobileInput}
-                                autoCapitalize="none"
                                 keyboardType="numeric"
                                 onChangeText={handleChange('contactNumber')}
                                 onBlur={handleBlur('contactNumber')}
                                 value={values.contactNumber}
                         />
+                        {errors.contactNumber && touched.contactNumber &&
+                            <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.contactNumber}</Text>
+                        }
                         <TouchableOpacity
                             style={styles.button}
                             onPress={handleSubmit}

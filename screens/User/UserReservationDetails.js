@@ -57,7 +57,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
                 <View style={styles.qrContainer}>
                     <Text style={styles.headerText}>{session.session_name} QR Code</Text>
                     <QRCode
-                        size={150}
+                        size={300}
                         value={session.uuid_session}
                     />
                 </View>

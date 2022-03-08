@@ -16,6 +16,8 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import { changeEmail } from '../../actions/signUpActions';
+import schema from '../../schemas/signUpEmail.schema'
+
 
 export default function SignUpEmail({navigation}) {
    
@@ -38,13 +40,14 @@ export default function SignUpEmail({navigation}) {
         return <AppLoading />;
     } else {
         return (
-            <Formik
+            <Formik 
                 initialValues={{
                     email:'',
                     password:''}}
                 onSubmit={handleSubmit}
+                validationSchema={schema}
             >
-                {({ handleChange, handleBlur, handleSubmit,values }) => (
+                {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
                     <View style={styles.container}>
                         <View style={styles.half}>
                         <Background
@@ -73,21 +76,25 @@ export default function SignUpEmail({navigation}) {
                             placeholder="Email"
                             autoCapitalize="none"
                             style={styles.textinput1}
-                            autoCapitalize="none"
                             onChangeText={handleChange('email')}
                             onBlur={handleBlur('email')}
                             value={values.email}
                         />
+                         {errors.email && touched.email &&
+                            <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.email}</Text>
+                        }
                         <TextInput
                             placeholder="Password"
                             autoCapitalize="none"
                             style={styles.textinput1}
-                            autoCapitalize="none"
                             onChangeText={handleChange('password')}
                             onBlur={handleBlur('password')}
                             value={values.password}
                             secureTextEntry={true}
                         />
+                        {errors.password && touched.password &&
+                            <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.password}</Text>
+                        }
                         <TouchableOpacity
                             style={styles.button}
                             onPress={handleSubmit}

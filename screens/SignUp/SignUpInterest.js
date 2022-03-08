@@ -6,6 +6,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { changeInterest } from '../../actions/signUpActions';
 import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
+import schema from '../../schemas/signUpInterests.schema'
 import { 
     useFonts,
     Poppins_400Regular,
@@ -13,6 +14,7 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+  
 
 
 export default function SignUpInterest({navigation}) { 
@@ -40,8 +42,9 @@ export default function SignUpInterest({navigation}) {
             interest:''
            }}
         onSubmit={handleSubmit}
+        validationSchema={schema}
     >
-        {({ handleChange, handleBlur, handleSubmit,values }) => (
+        {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
         <View style={styles.container}>
             <View style={styles.half}>
                 <Background
@@ -57,6 +60,9 @@ export default function SignUpInterest({navigation}) {
                             onBlur={handleBlur('interest')}
                             value={values.interest}
                         />
+                        {errors.interest && touched.interest &&
+                            <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.interest}</Text>
+                            }
                          <TouchableOpacity
                                 style={styles.button}
                                 onPress={handleSubmit}

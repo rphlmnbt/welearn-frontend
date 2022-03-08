@@ -16,11 +16,6 @@ const createSession = (
         time,
         session_creator,
         uuid_room
-    }).then(response => {
-        console.log(response)
-    })
-    .catch(error => {
-        //TODO: handle the error when implemented
     })
 }
 
