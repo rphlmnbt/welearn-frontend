@@ -16,11 +16,6 @@ const sendInvitation = (
     return axios.post(INV_URL + '/add', {
         uuid_session,
         uuid_user
-    }).then(response => {
-        console.log(response)
-    })
-    .catch(error => {
-        console.log(error)
     })
 }
 

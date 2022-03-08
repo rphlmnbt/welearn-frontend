@@ -18,7 +18,7 @@ import invitationService from '../../services/invitation.service';
 import mlService from '../../services/ml.service';
 
   export default function UserChooseSession({route, navigation}) {
-    const [selectedSession, setSelectedSession] = useState();
+    const [selectedSession, setSelectedSession] = useState(null);
     const [sessions, setSessions] = useState(null);
     const [isLoading, setLoading] = useState(true);
     const uuid_user = useSelector(state => state.user.uuid_user)
@@ -45,18 +45,22 @@ import mlService from '../../services/ml.service';
     });
 
     const handleSubmit = () =>{
-        invitationService.sendInvitation(selectedSession, uuid_partner)
-        .then(response => {
-            if(response.status == 200) {
-            mlService.addToDataset(uuid_user, stats, true)
-            navigation.navigate('UserDashboard')
-            }else if (response.status == 400) {
-                setOpenModal(true)
-            }
-
-        }).catch(error=> {
+        console.log(selectedSession)
+        if (selectedSession == null) {
             setOpenModal(true)
-        })
+        } else {
+            invitationService.sendInvitation(selectedSession, uuid_partner)
+            .then(response => {
+                console.log(response)
+                if(response.status == 200) {
+                    mlService.addToDataset(uuid_user, stats, true)
+                    navigation.navigate('UserDashboard')
+                }
+            }).catch(error=> {
+                setOpenModal(true)
+            })
+        }
+        
         
         
     }
@@ -108,6 +112,7 @@ import mlService from '../../services/ml.service';
                                 onValueChange={(itemValue, itemIndex) =>
                                     setSelectedSession(itemValue)
                             }>
+                                <Picker.Item label={"Pick A Session"} value={null} color="black" />
                                 {sessions.map(element => {
                                     return <Picker.Item key={element.uuid_session} label={element.session_name} value={element.uuid_session} color="black" />
                                 })}
