@@ -45,15 +45,26 @@ export default function UserReservations({navigation}) {
                     />
                     <View style={styles.usercontainer}>
                         <View style={styles.headerContainer}>
-                            <Text style={styles.text2}>Study Room Reservations</Text>
-                            <View style={styles.buttonstyle}>
-                                <TouchableOpacity
-                                    style={styles.button}
-                                    onPress={()=> navigation.navigate('UserAllReservations')}
-                                    >
-                                    <Text style={styles.buttontext}>All Reservations</Text>
-                                </TouchableOpacity>
+                            <Text style={styles.text2}>Sessions</Text>
+                            <View style={{display: 'flex', flexDirection: 'row'}}>
+                                <View style={styles.buttonstyle}>
+                                    <TouchableOpacity
+                                        style={styles.button}
+                                        onPress={()=> navigation.navigate('UserAllReservations')}
+                                        >
+                                        <Text style={styles.buttontext}>View All</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={styles.buttonstyle}>
+                                    <TouchableOpacity
+                                        style={styles.button}
+                                        onPress={()=> navigation.navigate('UserFinishedSessions')}
+                                        >
+                                        <Text style={styles.buttontext}>View Finished</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
+                            
                         </View>             
                         {sessions.map(element => {
                             return  <TouchableOpacity key={element.uuid_session} onPress={() => navigation.navigate('UserReservationDetails', {session: element})}>
@@ -93,7 +104,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FE4D71',
         marginHorizontal: 5,
         paddingHorizontal: 8,
-        height: 30,
+        height: 25,
         borderRadius: 5,
         shadowRadius: 5,
         shadowOffset: {width:2, height:2},

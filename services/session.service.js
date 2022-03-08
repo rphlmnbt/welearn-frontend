@@ -25,8 +25,13 @@ const getSessions = (
     return axios.get(SESSION_URL + `/user/${uuid_user}`)
 }
 
-const getAllSessions = (
+const getFinishedSessions = (
     uuid_user
+) => {
+    return axios.get(SESSION_URL + `/user/finished/${uuid_user}`)
+}
+
+const getAllSessions = (
 ) => {
     return axios.get(SESSION_URL)
 }
@@ -38,6 +43,7 @@ const getAllSessions = (
 export default {
     createSession,
     getSessions,
+    getFinishedSessions,
     getAllSessions
 
 }

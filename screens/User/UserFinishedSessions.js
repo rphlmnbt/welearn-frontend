@@ -13,7 +13,7 @@ import BottomNav from '../../components/BottomNav';
 import sessionService from '../../services/session.service';
 import Loading from '../../components/Loading';
 
-export default function UserAllReservations({navigation}) {
+export default function UserFinishedSessions({navigation}) {
     const [isLoading, setLoading] = useState(true);
     const [sessions, setSessions] = useState(null)
     const uuid_user = useSelector(state => state.user.uuid_user)
@@ -25,7 +25,7 @@ export default function UserAllReservations({navigation}) {
     });
 
     useEffect(() => {
-        sessionService.getAllSessions()
+        sessionService.getFinishedSessions(uuid_user)
         .then(response => {
             console.log(response.data)
             setSessions(response.data)
@@ -44,9 +44,9 @@ export default function UserAllReservations({navigation}) {
                         resizeMode="cover" 
                     />
                     <View style={styles.usercontainer}>             
-                        <Text style={styles.text2}>All Sessions</Text>
+                        <Text style={styles.text2}>Finished Sessions</Text>
                         {sessions.map(element => {
-                            return  <TouchableOpacity key={element.uuid_session}>
+                            return  <TouchableOpacity key={element.uuid_session} onPress={() => navigation.navigate('UserFinishedSessionDetails', {session: element})}>
                                         <View style={styles.userdetails}>
                                         <Image
                                             style={styles.images}

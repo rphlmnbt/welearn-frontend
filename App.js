@@ -35,6 +35,8 @@ import UserChooseSession from './screens/User/UserChooseSession';
 import UserPartnerDetails from './screens/User/UserPartnerDetails';
 import UserReservationDetails from './screens/User/UserReservationDetails';
 import UserAllReservations from './screens/User/UserAllReservations';
+import UserFinishedSessions from './screens/User/UserFinishedSessions';
+import UserFinishedSessionDetails from './screens/User/UserFinishedSessionDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -213,11 +215,23 @@ export default function App() {
             options = {{headerTitle: () => null,
               headerLeft: () => <BackBlack />}}
           />
+          <Stack.Screen
+            name="UserFinishedSessions"
+            component={UserFinishedSessions}
+            options = {{headerTitle: () => null,
+              headerLeft: () => <BackBlack />}}
+          />
           <Stack.Screen 
             name="UserReservationDetails" 
             component={UserReservationDetails} 
             options = {{headerTitle: () => null}}
           />
+          <Stack.Screen 
+            name="UserFinishedSessionDetails" 
+            component={UserFinishedSessionDetails} 
+            options = {{headerTitle: () => null}}
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
