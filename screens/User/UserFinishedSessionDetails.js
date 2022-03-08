@@ -26,7 +26,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
     const [isLoading, setLoading] = useState(true);
     const [user, setUser] = useState(null)
     const [profilePic, setProfilePic] = useState(null)
-    const myUuid = useSelector(state => state.user.uuid_user)
+    const uuid_user = useSelector(state => state.user.uuid_user)
     const users = session.users
 
     useEffect(() => {
@@ -53,8 +53,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
                />
             </View>
             <ScrollView style={styles.userdetails}>
+                
                 <View style={styles.textsection}>
                     <View style={styles.usertext}>
+                        <Text style={styles.headerText}>{session.session_name}</Text>
                         <Text style={styles.info}>Date: {session.date}</Text>
                         <Text style={styles.info}>Time: {session.time}</Text>
                         <Text style={styles.info}>Room Name: {session.room.room_name}</Text>
@@ -70,27 +72,29 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
                     <View style={styles.usersContainer}>
                         <Text style={styles.membersText}>Session Members</Text>
                         {users.map(element => {
-                            return  <View style={styles.header} key={element.uuid_user}>
-                                {element.user_detail.src != null &&
-                                    <Image
-                                        style={styles.image}
-                                        source={{
-                                            uri:  IMG_URL + element.uuid_user + '?' + new Date()+ '?' + new Date()
-                                        }}
-                                    />
-                                }
-                                {element.user_detail.src == null &&
-                                    <FontAwesomeIcon icon={faUserCircle} size={80} color={'#EF4765'}/>
-                                }
-                                <View key={element.uuid_user} style={styles.infoContainer}>
-                                        <Text style={styles.nameText}>{element.user_detail.first_name} {element.user_detail.last_name}</Text>
-                                        <Text style={styles.infoText}>{element.user_detail.course}</Text>
-                                        <Text style={styles.infoText}>{element.user_detail.year_level}</Text>
-                                        <Text style={styles.infoText}>{element.user_detail.interest}</Text>
+                            if(element.uuid_user != uuid_user) {
+                                return  <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('UserReviewPartners', {uuid_partner: element.uuid_user})}>
+                                <View style={styles.header} key={element.uuid_user}>
+                                    {element.user_detail.src != null &&
+                                        <Image
+                                            style={styles.image}
+                                            source={{
+                                                uri:  IMG_URL + element.uuid_user + '?' + new Date()+ '?' + new Date()
+                                            }}
+                                        />
+                                    }
+                                    {element.user_detail.src == null &&
+                                        <FontAwesomeIcon icon={faUserCircle} size={80} color={'#EF4765'}/>
+                                    }
+                                    <View key={element.uuid_user} style={styles.infoContainer}>
+                                            <Text style={styles.nameText}>{element.user_detail.first_name} {element.user_detail.last_name}</Text>
+                                            <Text style={styles.infoText}>{element.user_detail.course}</Text>
+                                            <Text style={styles.infoText}>{element.user_detail.year_level}</Text>
+                                            <Text style={styles.infoText}>{element.user_detail.interest}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                                
-                                          
+                            </TouchableOpacity>
+                            }
                         })}
                     </View> 
                 </View>

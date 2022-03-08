@@ -37,6 +37,7 @@ import UserReservationDetails from './screens/User/UserReservationDetails';
 import UserAllReservations from './screens/User/UserAllReservations';
 import UserFinishedSessions from './screens/User/UserFinishedSessions';
 import UserFinishedSessionDetails from './screens/User/UserFinishedSessionDetails';
+import UserReviewPartners from './screens/User/UserReviewPartners';
 
 const Stack = createNativeStackNavigator();
 
@@ -178,6 +179,13 @@ export default function App() {
           <Stack.Screen 
             name="UserPartnerDetails" 
             component={UserPartnerDetails} 
+            options = {{headerTitle: () => null,
+              headerRight: () => <SecondaryLogo />,
+              headerLeft: () => <BackWhite />}}
+          />
+          <Stack.Screen 
+            name="UserReviewPartners" 
+            component={UserReviewPartners} 
             options = {{headerTitle: () => null,
               headerRight: () => <SecondaryLogo />,
               headerLeft: () => <BackWhite />}}

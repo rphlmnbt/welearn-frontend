@@ -53,7 +53,6 @@ import mlService from '../../services/ml.service';
             .then(response => {
                 console.log(response)
                 if(response.status == 200) {
-                    mlService.addToDataset(uuid_user, stats, true)
                     navigation.navigate('UserDashboard')
                 }
             }).catch(error=> {
