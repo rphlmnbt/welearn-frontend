@@ -12,6 +12,7 @@ import {
 import BottomNav from '../../components/BottomNav';
 import sessionService from '../../services/session.service';
 import Loading from '../../components/Loading';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function UserAllReservations({navigation}) {
     const [isLoading, setLoading] = useState(true);
@@ -45,27 +46,30 @@ export default function UserAllReservations({navigation}) {
                     />
                     <View style={styles.usercontainer}>             
                         <Text style={styles.text2}>All Sessions</Text>
-                        {sessions.map(element => {
-                            return  <TouchableOpacity key={element.uuid_session}>
-                                        <View style={styles.userdetails}>
-                                        <Image
-                                            style={styles.images}
-                                            source={require('../../assets/images/room.png')} 
-                                        />
-                                        <View style={styles.textsection}>
-                                            <View style={styles.usertext}>
-                                                <Text style={styles.name}>{element.session_name}</Text>
-                                                <Text style={styles.Timerequest}>{element.time}</Text>
+                        <ScrollView>
+                            {sessions.map(element => {
+                                return  <TouchableOpacity key={element.uuid_session}>
+                                            <View style={styles.userdetails}>
+                                            <Image
+                                                style={styles.images}
+                                                source={require('../../assets/images/room.png')} 
+                                            />
+                                            <View style={styles.textsection}>
+                                                <View style={styles.usertext}>
+                                                    <Text style={styles.name}>{element.session_name}</Text>
+                                                    <Text style={styles.Timerequest}>{element.time}</Text>
+                                                </View>
+                                                <View style={styles.usertext}>
+                                                    <Text style={styles.userinfo}>{element.room.room_name}</Text>
+                                                    <Text style={styles.Timerequest}>{element.date}</Text>
+                                                </View>
+                                                
                                             </View>
-                                            <View style={styles.usertext}>
-                                                <Text style={styles.userinfo}>{element.room.room_name}</Text>
-                                                <Text style={styles.Timerequest}>{element.date}</Text>
                                             </View>
-                                            
-                                        </View>
-                                        </View>
-                                    </TouchableOpacity>
-                        })}
+                                        </TouchableOpacity>
+                            })}
+                        </ScrollView>
+                        
                         
                     </View>
                 </View>
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
     },
     half: {
         width: '100%',
-        height: '115%',
+        height: 1*vh - 0.14*vh,
         position: 'relative',
         zIndex: 0,
         elevation: 0,

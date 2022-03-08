@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         borderTopColor: '#ACACAC',
         borderTopWidth: 1,
+        backgroundColor: "#F2F2F2"
     },
     images: {
         width: 45,

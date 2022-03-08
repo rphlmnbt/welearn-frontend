@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     },
     half: {
         width: '100%',
-        height: '115%',
+        height: 1*vh - 0.14*vh,
         position: 'relative',
         zIndex: 0,
         elevation: 0,
