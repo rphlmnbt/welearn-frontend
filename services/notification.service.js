@@ -1,5 +1,9 @@
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import axios from 'axios'
+import {API_URL} from '@env'
+
+const DEVICE_URL = API_URL + '/device'
 
 const registerForPushNotificationsAsync = async  () => {
     let token;
@@ -32,7 +36,19 @@ const registerForPushNotificationsAsync = async  () => {
     return token;
 }
 
+const setDevice = (uuid_user, expoPushToken) => {
+  axios.put(DEVICE_URL + `/${uuid_user}`, {
+    expoPushToken
+  }).then(response => {
+    console.log(response)
+  })
+  .catch(error => {
+      console.log(error)
+  })
+} 
+
 export default {
-    registerForPushNotificationsAsync
+    registerForPushNotificationsAsync,
+    setDevice
   };
   

@@ -35,6 +35,7 @@ function LoginMobile({ navigation }) {
                 dispatch(logIn(response.data.user))
                 notificationService.registerForPushNotificationsAsync().then(token => {
                     dispatch(setToken(token))
+                    notificationService.setDevice(response.data.user.uuid_user, token)
                 });
                 navigation.navigate('UserDashboard')
                 
