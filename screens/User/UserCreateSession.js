@@ -62,7 +62,7 @@ import Loading from '../../components/Loading';
     });
 
     const handleSubmit = (values) => {
-        sessionService.createSession(values.session_name, Moment(date).format("MMM Do"), selectedTime, uuid_user, selectedRoom)
+        sessionService.createSession(values.session_name, Moment(date).format('MMM D, YYYY'), selectedTime, uuid_user, selectedRoom)
         .then(response => {
             if(response.status == 200) {
                 navigation.navigate('UserChooseSession')

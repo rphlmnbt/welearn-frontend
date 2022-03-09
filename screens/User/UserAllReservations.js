@@ -57,11 +57,10 @@ export default function UserAllReservations({navigation}) {
                                             <View style={styles.textsection}>
                                                 <View style={styles.usertext}>
                                                     <Text style={styles.name}>{element.session_name}</Text>
-                                                    <Text style={styles.Timerequest}>{element.time}</Text>
                                                 </View>
                                                 <View style={styles.usertext}>
-                                                    <Text style={styles.userinfo}>{element.room.room_name}</Text>
-                                                    <Text style={styles.Timerequest}>{element.date}</Text>
+                                                    <Text style={styles.userinfo}>{element.date}</Text>
+                                                    <Text style={styles.userinfo}>{element.time}</Text>
                                                 </View>
                                                 
                                             </View>
