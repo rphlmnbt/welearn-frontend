@@ -13,6 +13,7 @@ import BottomNav from '../../components/BottomNav';
 import sessionService from '../../services/session.service';
 import Loading from '../../components/Loading';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function UserReservations({navigation}) {
     const [isLoading, setLoading] = useState(true);
@@ -25,14 +26,17 @@ export default function UserReservations({navigation}) {
         Poppins_700Bold,
     });
 
-    useEffect(() => {
-        sessionService.getSessions(uuid_user)
-        .then(response => {
-            console.log(response.data)
-            setSessions(response.data)
-            setLoading(false)
-        })
-     }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            sessionService.getSessions(uuid_user)
+            .then(response => {
+                console.log(response.data)
+                setSessions(response.data)
+                setLoading(false)
+            })
+         }, [])
+    )
+    
 
      if (!fontsLoaded || isLoading) {
         return <Loading />
