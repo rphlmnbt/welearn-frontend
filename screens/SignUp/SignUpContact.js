@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import Background from '../../assets/images/login-mobile-bg.svg'
@@ -14,8 +14,34 @@ import {
 import { changeContact } from '../../actions/signUpActions'
 import { useDispatch } from 'react-redux';
 import schema from '../../schemas/signUpContact.schema'
+import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
+import { getApp, initializeApp } from 'firebase/app';
+import { getAuth, PhoneAuthProvider, signInWithCredential, signInWithPhoneNumber } from 'firebase/auth';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyD4Uw8LLmGcNUq8EbkGEe5Jtxk3FBf5K90",
+    authDomain: "welearn-b047d.firebaseapp.com",
+    databaseURL: "https://welearn-b047d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "welearn-b047d",
+    storageBucket: "welearn-b047d.appspot.com",
+    messagingSenderId: "564588548490",
+    appId: "1:564588548490:web:c5f82ce4b11b9808deb873",
+    measurementId: "G-WMJZ063K7B"
+};
+  
+initializeApp(firebaseConfig)
+
+// Firebase references
+const app = getApp();
+const auth = getAuth();
 
 export default function SignUpContact({navigation}) {
+
+    const recaptchaVerifier = useRef(null);
+
+    const attemptInvisibleVerification = false;
+
+     
    
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -26,11 +52,24 @@ export default function SignUpContact({navigation}) {
 
     const dispatch = useDispatch()
 
-    const handleSubmit = values => {
-        console.log(values)
-        dispatch(changeContact(values))
-        navigation.navigate('LoginMobilePin')
+    const handleSubmit = async values => {
         
+        try {
+            const phoneProvider = new PhoneAuthProvider(auth);
+            const verificationId = await phoneProvider.verifyPhoneNumber(
+                values.contactNumber,
+                recaptchaVerifier.current
+            );
+            console.log(verificationId)
+            let newValues = {
+                contactNumber: values.contactNumber,
+                verificationId: verificationId
+            }
+            dispatch(changeContact(newValues))
+            navigation.navigate('LoginMobilePin')
+        } catch (err) {
+            console.log(err)
+        }  
     }
 
     if (!fontsLoaded) {
@@ -45,51 +84,55 @@ export default function SignUpContact({navigation}) {
             >
                 {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
                      <View style={styles.container}>
-                     <View style={styles.half}>
-                        <Background
-                            style={styles.background}
-                            resizeMode="cover" 
-                        />
-                    </View>
-                    <Image
-                        style={styles.splash}
-                        source={LogoImg}
-                        resizeMode="contain" 
-                    />
-                    <Text style={styles.text2}>
-                            WeLearn
-                    </Text>
-                    <View style={styles.form}>
-                        <View style={styles.formHeader}>
-                            <Text style={styles.text}>
-                                Create a WeLearn Account
-                            </Text>
-                            <Text style={styles.text3}>
-                                Please provide the following information.
-                            </Text>
+                        <View style={styles.half}>
+                            <Background
+                                style={styles.background}
+                                resizeMode="cover" 
+                            />
                         </View>
-                        <TextInput
-                                placeholder="Mobile Number"
-                                autoCapitalize="none"
-                                style={styles.mobileInput}
-                                keyboardType="numeric"
-                                onChangeText={handleChange('contactNumber')}
-                                onBlur={handleBlur('contactNumber')}
-                                value={values.contactNumber}
+                        <FirebaseRecaptchaVerifierModal
+                            ref={recaptchaVerifier}
+                            firebaseConfig={app.options}
+                            attemptInvisibleVerification
                         />
-                        {errors.contactNumber && touched.contactNumber &&
-                            <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.contactNumber}</Text>
-                        }
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={handleSubmit}
-                        >
-                            <Text style={styles.buttontext}> Continue</Text>
-                        </TouchableOpacity>
+                        <Image
+                            style={styles.splash}
+                            source={LogoImg}
+                            resizeMode="contain" 
+                        />
+                        <Text style={styles.text2}>
+                                WeLearn
+                        </Text>
+                        <View style={styles.form}>
+                            <View style={styles.formHeader}>
+                                <Text style={styles.text}>
+                                    Create a WeLearn Account
+                                </Text>
+                                <Text style={styles.text3}>
+                                    Please provide the following information.
+                                </Text>
+                            </View>
+                            <TextInput
+                                    placeholder="+639XXXXXXXXX"
+                                    autoCapitalize="none"
+                                    style={styles.mobileInput}
+                                    keyboardType="phone-pad"
+                                    onChangeText={handleChange('contactNumber')}
+                                    onBlur={handleBlur('contactNumber')}
+                                    value={values.contactNumber}
+                            />
+                            {errors.contactNumber && touched.contactNumber &&
+                                <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.contactNumber}</Text>
+                            }
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={handleSubmit}
+                            >
+                                <Text style={styles.buttontext}> Continue</Text>
+                            </TouchableOpacity>
+                        </View>
+                        {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
                     </View>
-                    
-                    
-                </View>
                     
                 )}
             </Formik> 

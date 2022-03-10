@@ -4,6 +4,11 @@ import { KeycodeInput } from 'react-native-keycode'
 import { useState }  from 'react';
 import Background from '../../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
+import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
+import { getApp, initializeApp } from 'firebase/app';
+import { getAuth, PhoneAuthProvider, signInWithCredential, signInWithPhoneNumber } from 'firebase/auth';
+import { useSelector } from 'react-redux';
+
 import { 
     useFonts,
     Poppins_400Regular,
@@ -12,16 +17,51 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 
+const firebaseConfig = {
+    apiKey: "AIzaSyD4Uw8LLmGcNUq8EbkGEe5Jtxk3FBf5K90",
+    authDomain: "welearn-b047d.firebaseapp.com",
+    databaseURL: "https://welearn-b047d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "welearn-b047d",
+    storageBucket: "welearn-b047d.appspot.com",
+    messagingSenderId: "564588548490",
+    appId: "1:564588548490:web:c5f82ce4b11b9808deb873",
+    measurementId: "G-WMJZ063K7B"
+};
+  
+initializeApp(firebaseConfig)
+
+// Firebase references
+const app = getApp();
+const auth = getAuth();
+
 
 export default function SignUpMobilePin({navigation}) {
     const [value, setValue] = useState('');
     const [numeric, setNumeric] = useState(true);
+
+    const verificationId = useSelector(state => state.signUp.verificationId)
+
+    const handleSubmit = async () => {
+        console.log(verificationId)
+        try {
+          const credential = PhoneAuthProvider.credential(
+            verificationId,
+            value
+          );
+          await signInWithCredential(auth, credential);
+          navigation.navigate('SignUpSchool')
+        } catch (err) {
+          console.log(err)
+        }
+    }
+    
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -44,12 +84,13 @@ export default function SignUpMobilePin({navigation}) {
                     </View>
                     <View>
                     <KeycodeInput style={styles.inputcode}
+                        length={6}
                         numeric={numeric}
                         value={value}
                         onChange={(newValue) => setValue(newValue)}
-                        onComplete={(completedValue) => {
-                        alert('Completed! Value: ' + completedValue);
-                        }}
+                        // onComplete={(completedValue) => {
+                        // alert('Completed! Value: ' + completedValue);
+                        // }}
                         tintColor='#EF4765'
                     />
                     </View>
@@ -67,12 +108,12 @@ export default function SignUpMobilePin({navigation}) {
 
                             <TouchableOpacity
                                 style={styles.button}
-                                onPress={() => navigation.navigate('SignUpSchool')}
+                                onPress={handleSubmit}
                             >
                                 <Text style={styles.buttontext}>Accept</Text>
                             </TouchableOpacity>
                     </View>
-            </View>
+                </View>
             </View>
         );
     }

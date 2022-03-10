@@ -49,11 +49,10 @@ Notifications.setNotificationHandler({
   }),
 });
 
-
 export default function App() {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
-  const responseListener = useRef();
+  const responseListener = useRef();  
 
   useEffect(() => {
     // This listener is fired whenever a notification is received while the app is foregrounded
@@ -77,7 +76,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={Header}
-          initialRouteName="LoginHome"
+          initialRouteName="SignUpContact"
         >
           <Stack.Screen 
             name="LoginHome" 
