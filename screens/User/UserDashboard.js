@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, View, Text, Dimensions  } from 'react-native';
-import Background from '../assets/images/profile-bg.svg'
+import Background from '../../assets/images/profile-bg.svg'
 import AppLoading from 'expo-app-loading';
 import { useSelector } from 'react-redux';
 import { 
@@ -10,10 +10,10 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import BottomNav from '../components/BottomNav';
-import Stats from '../components/Stats';
-import UserInfo from '../components/UserInfo';
-import imageService from '../services/image.service';
+import BottomNav from '../../components/BottomNav';
+import Stats from '../../components/Stats';
+import UserInfo from '../../components/UserInfo';
+import imageService from '../../services/image.service';
 
   export default function UserDashboard({navigation}) {
     let [fontsLoaded] = useFonts({

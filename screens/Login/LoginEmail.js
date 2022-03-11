@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TextInput, TouchableOpacity, Modal} from 'react-native';
 import { Card } from 'react-native-elements'
-import Background from '../assets/images/login-email-bg.svg'
-import LoginLogoImg from '../assets/images/wl-logo.png'
+import Background from '../../assets/images/login-email-bg.svg'
+import LoginLogoImg from '../../assets/images/wl-logo.png'
 import AppLoading from 'expo-app-loading';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../../actions/userActions';
 import { Formik } from 'formik';
-
+import { setToken } from '../../actions/notificationActions';
+import notificationService from '../../services/notification.service';
 
 import { 
     useFonts,
@@ -32,7 +33,12 @@ function LoginEmail({navigation}) {
             if(response.status == 200){
                 console.log(response.data.user)
                 dispatch(logIn(response.data.user))
+                notificationService.registerForPushNotificationsAsync().then(token => {
+                    dispatch(setToken(token))
+                    notificationService.setDevice(response.data.user.uuid_user, token)
+                });
                 navigation.navigate('UserDashboard')
+
                 
             }
             

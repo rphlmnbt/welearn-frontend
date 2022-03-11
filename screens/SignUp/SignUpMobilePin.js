@@ -1,9 +1,14 @@
 import * as React from 'react';
-import { StyleSheet, View, Image, Dimensions, Text, TouchableOpacity,} from 'react-native';
+import { StyleSheet, View, Image, Dimensions, Text, TouchableOpacity, Modal} from 'react-native';
 import { KeycodeInput } from 'react-native-keycode'
 import { useState }  from 'react';
-import Background from '../assets/images/login-mobile-bg.svg'
+import Background from '../../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
+import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
+import { getApp, initializeApp } from 'firebase/app';
+import { getAuth, PhoneAuthProvider, signInWithCredential, signInWithPhoneNumber } from 'firebase/auth';
+import { useSelector } from 'react-redux';
+
 import { 
     useFonts,
     Poppins_400Regular,
@@ -13,20 +18,70 @@ import {
   } from '@expo-google-fonts/poppins'
 
 
+const firebaseConfig = {
+    apiKey: "AIzaSyD4Uw8LLmGcNUq8EbkGEe5Jtxk3FBf5K90",
+    authDomain: "welearn-b047d.firebaseapp.com",
+    databaseURL: "https://welearn-b047d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "welearn-b047d",
+    storageBucket: "welearn-b047d.appspot.com",
+    messagingSenderId: "564588548490",
+    appId: "1:564588548490:web:c5f82ce4b11b9808deb873",
+    measurementId: "G-WMJZ063K7B"
+};
+  
+initializeApp(firebaseConfig)
+
+// Firebase references
+const app = getApp();
+const auth = getAuth();
+
+
 export default function SignUpMobilePin({navigation}) {
     const [value, setValue] = useState('');
     const [numeric, setNumeric] = useState(true);
+
+    const [openModal, setOpenModal] = useState(false);
+
+    const verificationId = useSelector(state => state.signUp.verificationId)
+
+    const handleSubmit = async () => {
+        console.log(verificationId)
+        try {
+          const credential = PhoneAuthProvider.credential(
+            verificationId,
+            value
+          );
+          await signInWithCredential(auth, credential);
+          navigation.navigate('SignUpSchool')
+        } catch (err) {
+            setOpenModal(true)
+        }
+    }
+    
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
         return (
             <View style={styles.container}>
+                <Modal
+                     animationType="slide"
+                     transparent={true}
+                     visible={openModal}
+                 >
+                     <View style={styles.modalContainer}>
+                         <Text style={styles.text4}>Invalid OTP. Please try again</Text>
+                         <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                             <Text style={styles.buttontext}>OK</Text>
+                         </TouchableOpacity>
+                     </View>
+                </Modal>
                 <View style={styles.half}>
                     <Background
                         style={styles.background}
@@ -36,7 +91,7 @@ export default function SignUpMobilePin({navigation}) {
                 <View style={styles.form}>
                     <View>
                         <Text style={styles.text}>
-                            Please enter the 4 digit OTP
+                            Please enter the 6 digit OTP
                         </Text>
                         <Text style={styles.text2}>
                             sent to your mobile number.
@@ -44,12 +99,13 @@ export default function SignUpMobilePin({navigation}) {
                     </View>
                     <View>
                     <KeycodeInput style={styles.inputcode}
+                        length={6}
                         numeric={numeric}
                         value={value}
                         onChange={(newValue) => setValue(newValue)}
-                        onComplete={(completedValue) => {
-                        alert('Completed! Value: ' + completedValue);
-                        }}
+                        // onComplete={(completedValue) => {
+                        // alert('Completed! Value: ' + completedValue);
+                        // }}
                         tintColor='#EF4765'
                     />
                     </View>
@@ -58,21 +114,18 @@ export default function SignUpMobilePin({navigation}) {
                             Don't tell anyone the code
                         </Text>
 
-                        <Text style={styles.text4}>
-                            Code expires in 5 minutes.
-                        </Text>
                         <Text style={styles.text5}>
                             RESEND OTP
                         </Text>
 
                             <TouchableOpacity
                                 style={styles.button}
-                                onPress={() => navigation.navigate('SignUpSchool')}
+                                onPress={handleSubmit}
                             >
                                 <Text style={styles.buttontext}>Accept</Text>
                             </TouchableOpacity>
                     </View>
-            </View>
+                </View>
             </View>
         );
     }
@@ -187,7 +240,49 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 15
-    }
+    },
+
+    modalContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        marginTop: '53%',
+        margin: 20,
+        backgroundColor: "#F2F2F2",
+        borderRadius: 5,
+        padding: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+
+    text4: {
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#5E5E5E',
+        fontSize: 16,
+        alignItems: 'center',
+        
+    },
+
+    button2: {
+        backgroundColor: '#EF4765',
+        width: '50%',
+        height: 35,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
+        marginTop: 10
+    },
 
 });
 

@@ -3,13 +3,14 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image,
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/login-mobile-bg.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
-import Header from '../components/Header';
+import Background from '../../assets/images/login-mobile-bg.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import RadioButton from '../../components/RadioButton';
+import Header from '../../components/Header';
 import { Formik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux'
-import { changeName } from '../actions/signUpActions'
+import { changeName } from '../../actions/signUpActions';
+import schema from '../../schemas/signUpPersonal.schema'
 import { 
     useFonts,
     Poppins_400Regular,
@@ -48,8 +49,9 @@ export default function SignUpPersonal({navigation}) {
                     lastName:'',
                     firstName:''}}
                 onSubmit={handleSubmit}
+                validationSchema={schema}
             >
-                {({ handleChange, handleBlur, handleSubmit,values }) => (
+                {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
                     <KeyboardAvoidingView style={{flex:1}}>
                         <View style={styles.container}>
                             <View style={styles.half}>
@@ -79,20 +81,24 @@ export default function SignUpPersonal({navigation}) {
                                     placeholder="First Name"
                                     autoCapitalize="none"
                                     style={styles.textinput1}
-                                    autoCapitalize="none"
                                     onChangeText={handleChange('firstName')}
                                     onBlur={handleBlur('firstName')}
                                     value={values.firstName}
                                 />
+                                 {errors.firstName && touched.firstName &&
+                                <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.firstName}</Text>
+                                  }
                                 <TextInput
                                     placeholder="Last Name"
                                     autoCapitalize="none"
                                     style={styles.textinput1}
-                                    autoCapitalize="none"
                                     onChangeText={handleChange('lastName')}
                                     onBlur={handleBlur('lastName')}
                                     value={values.lastName}
                                 />
+                                 {errors.lastName && touched.lastName &&
+                                <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.lastName}</Text>
+                                  }
                                 <TouchableOpacity
                                     style={styles.button}
                                     onPress={handleSubmit}

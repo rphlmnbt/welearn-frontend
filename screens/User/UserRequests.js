@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, FlatList } from 'react-native';
-import Background from '../assets/images/requests-bg.svg'
-import invitationService from '../services/invitation.service';
+import Background from '../../assets/images/requests-bg.svg'
+import invitationService from '../../services/invitation.service';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Loading from '../components/Loading';
+import Loading from '../../components/Loading';
+import { useFocusEffect } from '@react-navigation/native';
 import {API_URL} from '@env'
 import { 
     useFonts,
@@ -14,7 +15,7 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import BottomNav from '../components/BottomNav';
+import BottomNav from '../../components/BottomNav';
 
 export default function UserRequests({navigation}) {
     const IMG_URL = API_URL +'/image/'
@@ -28,14 +29,17 @@ export default function UserRequests({navigation}) {
         Poppins_700Bold,
     });
 
-    useEffect(() => {
-        invitationService.getInvitations(uuid_user)
-        .then(response => {
-            console.log(response.data)
-            setInvitations(response.data)
-            setLoading(false)
-        })
-     }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            invitationService.getInvitations(uuid_user)
+            .then(response => {
+                console.log(response.data)
+                setInvitations(response.data)
+                setLoading(false)
+            })
+         }, [])
+    )
+
      
      if (!fontsLoaded || isLoading) {
         return <Loading />
@@ -51,7 +55,7 @@ export default function UserRequests({navigation}) {
                         <Text style={styles.text2}>Invitations</Text>
 
                         {invitations.map(element => {
-                            return <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('Details', {uuid_user: element.uuid_user, uuid_invitation: element.uuid_invitation})}>
+                            return <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('UserPartnerDetails', {uuid_partner: element.uuid_user, uuid_invitation: element.uuid_invitation})}>
                             <View style={styles.userdetails}>
                                 { element.creator_src != null &&
                                     <Image
@@ -107,7 +111,7 @@ const styles = StyleSheet.create({
     },
     half: {
         width: '100%',
-        height: '115%',
+        height: 1*vh - 0.14*vh,
         position: 'relative',
         zIndex: 0,
         elevation: 0,

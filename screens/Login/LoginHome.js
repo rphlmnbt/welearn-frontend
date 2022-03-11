@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity } from 'react-native';
-import Background from '../assets/images/login-home-bg.svg'
-import Splash from '../assets/images/login-home-splash.svg'
+import Background from '../../assets/images/login-home-bg.svg'
+import Splash from '../../assets/images/login-home-splash.svg'
 import AppLoading from 'expo-app-loading';
 import { 
     useFonts,
