@@ -47,7 +47,7 @@ export default function SignUpEmail({navigation}) {
                 onSubmit={handleSubmit}
                 validationSchema={schema}
             >
-                {({ handleChange, handleBlur, handleSubmit,values, errors }) => (
+                {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
                     <View style={styles.container}>
                         <View style={styles.half}>
                         <Background
@@ -80,7 +80,7 @@ export default function SignUpEmail({navigation}) {
                             onBlur={handleBlur('email')}
                             value={values.email}
                         />
-                         {errors.email &&
+                         {errors.email && touched.email &&
                             <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.email}</Text>
                         }
                         <TextInput
@@ -92,7 +92,7 @@ export default function SignUpEmail({navigation}) {
                             value={values.password}
                             secureTextEntry={true}
                         />
-                        {errors.password &&
+                        {errors.password && touched.password &&
                             <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.password}</Text>
                         }
                         <TouchableOpacity

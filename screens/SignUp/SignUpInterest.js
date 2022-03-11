@@ -44,7 +44,7 @@ export default function SignUpInterest({navigation}) {
         onSubmit={handleSubmit}
         validationSchema={schema}
     >
-        {({ handleChange, handleBlur, handleSubmit,values, errors }) => (
+        {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
         <View style={styles.container}>
             <View style={styles.half}>
                 <Background
@@ -60,7 +60,7 @@ export default function SignUpInterest({navigation}) {
                             onBlur={handleBlur('interest')}
                             value={values.interest}
                         />
-                        {errors.interest &&
+                        {errors.interest && touched.interest &&
                             <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.interest}</Text>
                             }
                          <TouchableOpacity

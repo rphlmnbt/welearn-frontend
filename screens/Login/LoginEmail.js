@@ -7,7 +7,8 @@ import AppLoading from 'expo-app-loading';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../../actions/userActions';
 import { Formik } from 'formik';
-
+import { setToken } from '../../actions/notificationActions';
+import notificationService from '../../services/notification.service';
 
 import { 
     useFonts,
@@ -32,7 +33,12 @@ function LoginEmail({navigation}) {
             if(response.status == 200){
                 console.log(response.data.user)
                 dispatch(logIn(response.data.user))
+                notificationService.registerForPushNotificationsAsync().then(token => {
+                    dispatch(setToken(token))
+                    notificationService.setDevice(response.data.user.uuid_user, token)
+                });
                 navigation.navigate('UserDashboard')
+
                 
             }
             

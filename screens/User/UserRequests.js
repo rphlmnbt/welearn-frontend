@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../../components/Loading';
+import { useFocusEffect } from '@react-navigation/native';
 import {API_URL} from '@env'
 import { 
     useFonts,
@@ -28,14 +29,17 @@ export default function UserRequests({navigation}) {
         Poppins_700Bold,
     });
 
-    useEffect(() => {
-        invitationService.getInvitations(uuid_user)
-        .then(response => {
-            console.log(response.data)
-            setInvitations(response.data)
-            setLoading(false)
-        })
-     }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            invitationService.getInvitations(uuid_user)
+            .then(response => {
+                console.log(response.data)
+                setInvitations(response.data)
+                setLoading(false)
+            })
+         }, [])
+    )
+
      
      if (!fontsLoaded || isLoading) {
         return <Loading />
@@ -107,7 +111,7 @@ const styles = StyleSheet.create({
     },
     half: {
         width: '100%',
-        height: '115%',
+        height: 1*vh - 0.14*vh,
         position: 'relative',
         zIndex: 0,
         elevation: 0,

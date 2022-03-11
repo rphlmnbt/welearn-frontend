@@ -15,7 +15,7 @@ import Loading from '../../components/Loading';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
 
-export default function UserReservations({navigation}) {
+export default function UserFinishedSessions({navigation}) {
     const [isLoading, setLoading] = useState(true);
     const [sessions, setSessions] = useState(null)
     const uuid_user = useSelector(state => state.user.uuid_user)
@@ -28,7 +28,7 @@ export default function UserReservations({navigation}) {
 
     useFocusEffect(
         React.useCallback(() => {
-            sessionService.getSessions(uuid_user)
+            sessionService.getFinishedSessions(uuid_user)
             .then(response => {
                 console.log(response.data)
                 setSessions(response.data)
@@ -37,7 +37,6 @@ export default function UserReservations({navigation}) {
          }, [])
     )
     
-
      if (!fontsLoaded || isLoading) {
         return <Loading />
     } else {
@@ -48,31 +47,11 @@ export default function UserReservations({navigation}) {
                         style={styles.background}
                         resizeMode="cover" 
                     />
-                    <View style={styles.usercontainer}>
-                        <View style={styles.headerContainer}>
-                            <Text style={styles.text2}>Sessions</Text>
-                            <View style={{display: 'flex', flexDirection: 'row'}}>
-                                <View style={styles.buttonstyle}>
-                                    <TouchableOpacity
-                                        style={styles.button}
-                                        onPress={()=> navigation.navigate('UserAllReservations')}
-                                        >
-                                        <Text style={styles.buttontext}>View All</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={styles.buttonstyle}>
-                                    <TouchableOpacity
-                                        style={styles.button}
-                                        onPress={()=> navigation.navigate('UserFinishedSessions')}
-                                        >
-                                        <Text style={styles.buttontext}>View Finished</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </View>         
+                    <View style={styles.usercontainer}>             
+                        <Text style={styles.text2}>Finished Sessions</Text>
                         <ScrollView>
                             {sessions.map(element => {
-                                return  <TouchableOpacity key={element.uuid_session} onPress={() => navigation.navigate('UserReservationDetails', {session: element})}>
+                                return  <TouchableOpacity key={element.uuid_session} onPress={() => navigation.navigate('UserFinishedSessionDetails', {session: element})}>
                                             <View style={styles.userdetails}>
                                             <Image
                                                 style={styles.images}
@@ -86,15 +65,13 @@ export default function UserReservations({navigation}) {
                                                     <Text style={styles.userinfo}>{element.date}</Text>
                                                     <Text style={styles.userinfo}>{element.time}</Text>
                                                 </View>
+                                                
                                             </View>
                                             </View>
                                         </TouchableOpacity>
                             })}
-                        </ScrollView>    
-                        
-                        
+                        </ScrollView>
                     </View>
-            
                 </View>
                 <BottomNav />
                 </View>
@@ -107,35 +84,6 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
-    button: {
-        backgroundColor: '#FE4D71',
-        marginHorizontal: 5,
-        paddingHorizontal: 8,
-        height: 25,
-        borderRadius: 5,
-        shadowRadius: 5,
-        shadowOffset: {width:2, height:2},
-        shadowOpacity: 0.2,
-        justifyContent:'center',
-        alignItems:'center'
-        
-    },
-    buttontext: {
-        color: 'white',
-        fontFamily: 'Poppins_600SemiBold',
-        letterSpacing: 0.3,
-    },
-
-    buttonstyle:{
-        alignItems: 'center',
-
-    },
-    headerContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        width: '100%',
-        justifyContent: 'space-between'
-    },
     container : {
         flexDirection: 'column', 
         alignItems: 'center', 

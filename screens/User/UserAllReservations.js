@@ -12,6 +12,8 @@ import {
 import BottomNav from '../../components/BottomNav';
 import sessionService from '../../services/session.service';
 import Loading from '../../components/Loading';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function UserAllReservations({navigation}) {
     const [isLoading, setLoading] = useState(true);
@@ -24,14 +26,17 @@ export default function UserAllReservations({navigation}) {
         Poppins_700Bold,
     });
 
-    useEffect(() => {
-        sessionService.getAllSessions()
-        .then(response => {
-            console.log(response.data)
-            setSessions(response.data)
-            setLoading(false)
-        })
-     }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            sessionService.getAllSessions()
+            .then(response => {
+                console.log(response.data)
+                setSessions(response.data)
+                setLoading(false)
+            })
+         }, [])
+    )
+
 
      if (!fontsLoaded || isLoading) {
         return <Loading />
@@ -44,28 +49,30 @@ export default function UserAllReservations({navigation}) {
                         resizeMode="cover" 
                     />
                     <View style={styles.usercontainer}>             
-                        <Text style={styles.text2}>Study Room Reservations</Text>
-                        {sessions.map(element => {
-                            return  <TouchableOpacity key={element.uuid_session}>
-                                        <View style={styles.userdetails}>
-                                        <Image
-                                            style={styles.images}
-                                            source={require('../../assets/images/room.png')} 
-                                        />
-                                        <View style={styles.textsection}>
-                                            <View style={styles.usertext}>
-                                                <Text style={styles.name}>{element.session_name}</Text>
-                                                <Text style={styles.Timerequest}>{element.time}</Text>
+                        <Text style={styles.text2}>All Sessions</Text>
+                        <ScrollView>
+                            {sessions.map(element => {
+                                return  <TouchableOpacity key={element.uuid_session}>
+                                            <View style={styles.userdetails}>
+                                            <Image
+                                                style={styles.images}
+                                                source={require('../../assets/images/room.png')} 
+                                            />
+                                            <View style={styles.textsection}>
+                                                <View style={styles.usertext}>
+                                                    <Text style={styles.name}>{element.session_name}</Text>
+                                                </View>
+                                                <View style={styles.usertext}>
+                                                    <Text style={styles.userinfo}>{element.date}</Text>
+                                                    <Text style={styles.userinfo}>{element.time}</Text>
+                                                </View>
+                                                
                                             </View>
-                                            <View style={styles.usertext}>
-                                                <Text style={styles.userinfo}>{element.room.room_name}</Text>
-                                                <Text style={styles.Timerequest}>{element.date}</Text>
                                             </View>
-                                            
-                                        </View>
-                                        </View>
-                                    </TouchableOpacity>
-                        })}
+                                        </TouchableOpacity>
+                            })}
+                        </ScrollView>
+                        
                         
                     </View>
                 </View>
@@ -101,7 +108,7 @@ const styles = StyleSheet.create({
     },
     half: {
         width: '100%',
-        height: '115%',
+        height: 1*vh - 0.14*vh,
         position: 'relative',
         zIndex: 0,
         elevation: 0,
