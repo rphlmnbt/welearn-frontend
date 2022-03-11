@@ -85,13 +85,13 @@ function LoginMobile({ navigation }) {
                             My mobile
                         </Text>
                         <Text style={styles.text2}>
-                            Please enter your valid phone number. We will send you a 4-digit code to verify your account.
+                            Please enter your valid phone number.
                         </Text>
                         <TextInput
-                            placeholder="Mobile Number"
+                            placeholder="+63XXXXXXXXXX"
                             autoCapitalize="none"
                             style={styles.mobileInput}
-                            keyboardType="numeric"
+                            keyboardType="phone-pad"
                             onChangeText={handleChange('contact_number')}
                             onBlur={handleBlur('contact_number')}
                         />
