@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, Modal } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import Background from '../../assets/images/login-mobile-bg.svg'
 import LogoImg from '../../assets/images/wl-logo2.png'
@@ -17,6 +17,7 @@ import schema from '../../schemas/signUpContact.schema'
 import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
 import { getApp, initializeApp } from 'firebase/app';
 import { getAuth, PhoneAuthProvider, signInWithCredential, signInWithPhoneNumber } from 'firebase/auth';
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyD4Uw8LLmGcNUq8EbkGEe5Jtxk3FBf5K90",
@@ -40,6 +41,8 @@ export default function SignUpContact({navigation}) {
     const recaptchaVerifier = useRef(null);
 
     const attemptInvisibleVerification = false;
+
+    const [openModal, setOpenModal] = useState(false);
 
      
    
@@ -68,7 +71,7 @@ export default function SignUpContact({navigation}) {
             dispatch(changeContact(newValues))
             navigation.navigate('LoginMobilePin')
         } catch (err) {
-            console.log(err)
+            setOpenModal(true)
         }  
     }
 
@@ -84,6 +87,18 @@ export default function SignUpContact({navigation}) {
             >
                 {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
                      <View style={styles.container}>
+                         <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={openModal}
+                        >
+                            <View style={styles.modalContainer}>
+                                <Text style={styles.text4}>Number Format Invalid. Please follow the given format.</Text>
+                                <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                                    <Text style={styles.buttontext}>OK</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </Modal>
                         <View style={styles.half}>
                             <Background
                                 style={styles.background}
@@ -93,7 +108,6 @@ export default function SignUpContact({navigation}) {
                         <FirebaseRecaptchaVerifierModal
                             ref={recaptchaVerifier}
                             firebaseConfig={app.options}
-                            attemptInvisibleVerification
                         />
                         <Image
                             style={styles.splash}
@@ -245,6 +259,48 @@ const styles = StyleSheet.create({
         padding:8,
         width: '100%',
         marginVertical: 30
+    },
+
+    modalContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        marginTop: '53%',
+        margin: 20,
+        backgroundColor: "#F2F2F2",
+        borderRadius: 5,
+        padding: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+
+    text4: {
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#5E5E5E',
+        fontSize: 16,
+        alignItems: 'center',
+        
+    },
+
+    button2: {
+        backgroundColor: '#EF4765',
+        width: '50%',
+        height: 35,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
+        marginTop: 10
     },
 
 })
