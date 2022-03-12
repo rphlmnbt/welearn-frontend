@@ -88,13 +88,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
                                     />
                                 }
                                 {element.user_detail.src == null &&
-                                    <FontAwesomeIcon icon={faUserCircle} size={80} color={'#EF4765'}/>
+                                    <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'} style={{marginTop:25}}/>
                                 }
                                 <View key={element.uuid_user} style={styles.infoContainer}>
                                         <Text style={styles.nameText}>{element.user_detail.first_name} {element.user_detail.last_name}</Text>
                                         <Text style={styles.infoText}>{element.user_detail.course}</Text>
                                         <Text style={styles.infoText}>{element.user_detail.year_level}</Text>
                                         <Text style={styles.infoText}>{element.user_detail.interest}</Text>
+                                        <Text style={styles.infoText}>{element.email}</Text>
+                                        <Text style={styles.infoText}>{element.user_detail.contact_number}</Text>
                                 </View>
                             </View>
                                 
@@ -270,10 +272,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     image : {
-        height: 80,
-        width: 80,
-        borderRadius: 40,
-        marginTop: 10
+        height: 100,
+        width: 100,
+        borderRadius: 50,
+        marginTop: 25
     },
     header:{
         flexDirection: 'row',
