@@ -12,7 +12,7 @@ export default function BottomNav() {
                 style={styles.images}
                 source={require('../assets/images/home.png')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('UserFindPartner')}>
+            <TouchableOpacity onPress={() => navigation.navigate('UserSessionType')}>
                 <Image
                 style={styles.images}
                 source={require('../assets/images/user-plus.png')} />

@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Modal  } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Image, Text  } from 'react-native';
 import Background from '../../assets/images/find-bg.svg'
-import Room from '../../assets/images/room.png'
-import {Picker} from '@react-native-picker/picker';
-import sessionService from '../../services/session.service';
-import { useSelector } from 'react-redux';
+import userService from '../../services/user.service';
+import { useSelector, useDispatch } from 'react-redux';
+import { setPartner, setReload, setStudyPartners, setSize, setCount } from '../../actions/partnerActions';
 import { useFocusEffect } from '@react-navigation/native';
+import {Picker} from '@react-native-picker/picker';
+import Room from '../../assets/images/room-alt.png'
 import { 
     useFonts,
     Poppins_400Regular,
@@ -13,17 +14,26 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
+import BottomNav from '../../components/BottomNav';
+import UserInfo from '../../components/UserInfo';
+import Stats from '../../components/Stats';
 import Loading from '../../components/Loading';
-import invitationService from '../../services/invitation.service';
+import mlService from '../../services/ml.service';
+import sessionService from '../../services/session.service';
 
-  export default function UserChooseSession({route, navigation}) {
+export default function UserSessionType({navigation}) {
+    const dispatch = useDispatch()
+    const [isLoading, setLoading] = useState(true);
     const [selectedSession, setSelectedSession] = useState(null);
     const [sessions, setSessions] = useState(null);
-    const [isLoading, setLoading] = useState(true);
     const uuid_user = useSelector(state => state.user.uuid_user)
-    const uuid_partner = useSelector(state => state.partner.uuid_user)
-    const stats = useSelector(state => state.partner.stats)
-    const [openModal, setOpenModal] = useState(false);
+
+    let [fontsLoaded] = useFonts({
+        Poppins_400Regular,
+        Poppins_500Medium,
+        Poppins_600SemiBold,
+        Poppins_700Bold,
+    });
 
     useFocusEffect(
         React.useCallback(() => {
@@ -34,104 +44,72 @@ import invitationService from '../../services/invitation.service';
                })
         }, [])
     );
-    
-    let [fontsLoaded] = useFonts({
-        Poppins_400Regular,
-        Poppins_500Medium,
-        Poppins_600SemiBold,
-        Poppins_700Bold,
-    });
 
-    const handleSubmit = () =>{
-        console.log(selectedSession)
-        if (selectedSession == null) {
-            setOpenModal(true)
-        } else {
-            invitationService.sendInvitation(selectedSession, uuid_partner)
-            .then(response => {
-                console.log(response)
-                if(response.status == 200) {
-                    navigation.navigate('UserDashboard')
-                }
-            }).catch(error=> {
-                setOpenModal(true)
-            })
-        }   
-    }
 
-    const createNewSession = () => {
-        navigation.navigate('UserCreateSession')
-    }
-    
     if (!fontsLoaded || isLoading) {
         return <Loading />
     } else {
         return (
-                <View style={styles.container}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={openModal}
-                    >
-                    <View style={styles.modalContainer}>
-                        <Text style={styles.text5}>Failed! There is no existing session at the moment. Please try creatiing a new session.</Text>
-                        <TouchableOpacity style={styles.button3} onPress={() => setOpenModal(false)}>
-                            <Text style={styles.buttontext}>Try Again</Text>
-                        </TouchableOpacity>
-                    </View>
-                    </Modal>
-                    <View style={styles.half}>
-                    <Background
-                        style={styles.background}
-                        resizeMode="cover" 
-                    />
-                    
-                    </View>
-                    <View style={styles.header}>
-                        <Text style={styles.text1}>Hello, Student!</Text>
-                        <Text style={styles.text2}>Pick A Study Session</Text>
-                        <Image
-                            source={Room}
-                            style={styles.images}
-                        />
-                    </View>
-                    
-                    <View style={styles.userdetails}>
-                        <Text style={styles.text4}>Choose Existing Session</Text>
-                        <Text style={styles.text3}>
-                            Sessions
-                        </Text>
-                        <View style={styles.picker}>
-                            <Picker
-                                selectedValue={selectedSession}
-                                onValueChange={(itemValue, itemIndex) =>
-                                    setSelectedSession(itemValue)
-                            }>
-                                <Picker.Item label={"Pick A Session"} value={null} color="black" />
-                                {sessions.map(element => {
-                                    return <Picker.Item key={element.uuid_session} label={element.session_name} value={element.uuid_session} color="black" />
-                                })}
-                            </Picker> 
-                        </View>
-                        <View style={styles.buttonstyle}>
-                                <TouchableOpacity
-                                    style={styles.button}
-                                    onPress={handleSubmit}
-                                    >
-                                    <Text style={styles.buttontext}>Submit</Text>
-                                </TouchableOpacity>
-                        </View>
-                        <Text style={styles.text4}>-OR-</Text>
-                        <View style={styles.buttonstyle}>
-                                <TouchableOpacity
-                                    style={styles.button2}
-                                    onPress={createNewSession}
-                                    >
-                                    <Text style={styles.buttontext}>Create New Session</Text>
-                                </TouchableOpacity>
-                        </View>
-                    </View>   
+        <View style={styles.container}>
+            <View style={styles.half}>
+               <Background
+                   style={styles.background}
+                   resizeMode="cover" 
+               />
+            </View>
+            <View style={styles.userdetails}>
+                <Text style={styles.text4}>Find partners for an existing session</Text>
+                
+                <Image
+                    source={Room}
+                    style={styles.images}
+                />
+                <Text style={styles.text3}>
+                    Choose Session
+                </Text>
+                <View style={styles.picker}>
+                    <Picker
+                        selectedValue={selectedSession}
+                        onValueChange={(itemValue, itemIndex) =>
+                            setSelectedSession(itemValue)
+                    }>
+                        <Picker.Item label={"Pick A Session"} value={null} color="black" />
+                        {sessions.map(element => {
+                            return <Picker.Item key={element.uuid_session} label={element.session_name} value={element.uuid_session} color="black" />
+                        })}
+                    </Picker> 
+                   
                 </View>
+                <View style={styles.buttonstyle}>
+                <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => {console.log("Here")}}
+                    >
+                        <Text style={styles.buttontext}>Pick Session</Text>
+                    </TouchableOpacity>
+                </View>
+                <View
+                    style={{
+                        borderBottomColor: '#ACACAC',
+                        borderBottomWidth: 2,
+                        marginVertical: 10,
+                        marginBottom: 20
+                    }}
+                />
+                <View style={styles.buttonstyle}>
+                        <Text style={styles.text4}>Find Study Partners for a new session</Text>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => {navigation.navigate('UserFindPartner')}}
+                        >
+                           <Text style={styles.buttontext}>New Session</Text>
+                        </TouchableOpacity>
+                </View>
+                
+            </View>
+            
+           <BottomNav/>   
+       </View>
         );
     }
 }
@@ -166,7 +144,7 @@ const styles = StyleSheet.create({
     userdetails: {
         backgroundColor: 'white',
         width: '100%',
-        height: '55%',
+        height: '83%',
         padding: 25,
         position: 'absolute',
         bottom: 0,
@@ -194,9 +172,9 @@ const styles = StyleSheet.create({
     text3 : {
         fontFamily: 'Poppins_600SemiBold',
         color: '#5E5E5E',
-        fontSize: 16,
+        fontSize: 14,
         marginBottom: 0,
-        marginTop: 10,
+        marginTop: 0,
         
     },
 
@@ -205,7 +183,7 @@ const styles = StyleSheet.create({
         color: '#5E5E5E',
         fontSize: 16,
         marginBottom: 0,
-        marginTop: 18,
+        marginTop: 0,
         textAlign: 'center'
         
     },
@@ -227,7 +205,7 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       borderRadius: 10,
       borderWidth: 1,
-      marginBottom: 10
+      marginBottom: 0
     },
 
     picker:{
@@ -242,13 +220,14 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#FE4D71',
-        width: '30%',
+        width: '50%',
         height: 45,
         borderRadius: 5,
         shadowRadius: 5,
         shadowOffset: {width:2, height:2},
         shadowOpacity: 0.2,
-        marginTop: 25,
+        marginTop: 20,
+        marginBottom: 20,
         justifyContent:'center',
         alignItems:'center'
         
