@@ -3,7 +3,7 @@ import { StyleSheet, View, Dimensions, TouchableOpacity, Image, Text  } from 're
 import Background from '../../assets/images/find-bg.svg'
 import { faUserCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 import userService from '../../services/user.service';
-import {API_URL} from '@env'
+
 import { useSelector } from 'react-redux';
 import { 
     useFonts,
@@ -19,10 +19,11 @@ import invitationService from '../../services/invitation.service';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import UserList from '../../components/UserList';
 
   export default function UserFinishedSessionDetails({route, navigation}) {
     const {session} = route.params
-    const IMG_URL = API_URL +'/image/'
+    
     const [isLoading, setLoading] = useState(true);
     const [user, setUser] = useState(null)
     const [profilePic, setProfilePic] = useState(null)
@@ -74,28 +75,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
                         {users.map(element => {
                             if(element.uuid_user != uuid_user) {
                                 return  <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('UserReviewPartners', {uuid_partner: element.uuid_user})}>
-                                <View style={styles.header} key={element.uuid_user}>
-                                    {element.user_detail.src != null &&
-                                        <Image
-                                            style={styles.image}
-                                            source={{
-                                                uri:  IMG_URL + element.uuid_user + '?' + new Date()+ '?' + new Date()
-                                            }}
-                                        />
-                                    }
-                                    {element.user_detail.src == null &&
-                                        <FontAwesomeIcon icon={faUserCircle} size={80} color={'#EF4765'} style={{marginTop:25}}/>
-                                    }
-                                    <View key={element.uuid_user} style={styles.infoContainer}>
-                                            <Text style={styles.nameText}>{element.user_detail.first_name} {element.user_detail.last_name}</Text>
-                                            <Text style={styles.infoText}>{element.user_detail.course}</Text>
-                                            <Text style={styles.infoText}>{element.user_detail.year_level}</Text>
-                                            <Text style={styles.infoText}>{element.user_detail.interest}</Text>
-                                            <Text style={styles.infoText}>{element.email}</Text>
-                                            <Text style={styles.infoText}>{element.user_detail.contact_number}</Text>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
+                                    <UserList element={element} />
+                                </TouchableOpacity>
                             }
                         })}
                     </View> 
@@ -192,11 +173,7 @@ const styles = StyleSheet.create({
         marginTop: 5
         
     },
-    header:{
-      alignItems: 'center',
-      marginTop: '30%'
-
-    },
+    
 
     user: {
         alignItems: 'center',
@@ -207,14 +184,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: '55%',
-    },
-    row: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-    },
-    column: {
-      flexDirection: 'column',
-      width: '35%',
     },
     textsection:{
         flexDirection: 'column',   
@@ -248,31 +217,11 @@ const styles = StyleSheet.create({
         color: '#ACACAC',
         
     },
-    infoContainer: {
-        paddingLeft: 20
-    },  
-    nameText : {
-        marginTop: 5,
-        fontFamily: 'Poppins_600SemiBold',
-        color: '#5E5E5E',
-        fontSize: 18,
-        
-    },
-    infoText: {
-        fontFamily: 'Poppins_400Regular',
-        color: '#777777',
-        fontSize: 12
-        
-    },
+    
     statusContainer: {
         flexDirection: 'row'
     },
-    image : {
-        height: 100,
-        width: 100,
-        borderRadius: 50,
-        marginTop: 25
-    },
+    
     header:{
         flexDirection: 'row',
         alignSelf: 'flex-start',

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity, Image, Text  } from 'react-native';
 import Background from '../../assets/images/find-bg.svg'
-import { faUserCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 import userService from '../../services/user.service';
 import QRCode from 'react-native-qrcode-svg';
 import {API_URL} from '@env'
@@ -19,7 +18,8 @@ import Loading from '../../components/Loading';
 import invitationService from '../../services/invitation.service';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+
+import UserList from '../../components/UserList';
 
   export default function UserReservationDetails({route, navigation}) {
     const {session} = route.params
@@ -78,27 +78,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
                     <View style={styles.usersContainer}>
                         <Text style={styles.membersText}>Session Members</Text>
                         {users.map(element => {
-                            return  <View style={styles.header} key={element.uuid_user}>
-                                {element.user_detail.src != null &&
-                                    <Image
-                                        style={styles.image}
-                                        source={{
-                                            uri:  IMG_URL + element.uuid_user + '?' + new Date()+ '?' + new Date()
-                                        }}
-                                    />
-                                }
-                                {element.user_detail.src == null &&
-                                    <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'} style={{marginTop:25}}/>
-                                }
-                                <View key={element.uuid_user} style={styles.infoContainer}>
-                                        <Text style={styles.nameText}>{element.user_detail.first_name} {element.user_detail.last_name}</Text>
-                                        <Text style={styles.infoText}>{element.user_detail.course}</Text>
-                                        <Text style={styles.infoText}>{element.user_detail.year_level}</Text>
-                                        <Text style={styles.infoText}>{element.user_detail.interest}</Text>
-                                        <Text style={styles.infoText}>{element.email}</Text>
-                                        <Text style={styles.infoText}>{element.user_detail.contact_number}</Text>
-                                </View>
-                            </View>
+                            return  <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('UserReviewPartners', {uuid_partner: element.uuid_user})}>
+                                <UserList element={element} />
+                            </TouchableOpacity>
                                 
                                           
                         })}

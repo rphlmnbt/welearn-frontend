@@ -21,6 +21,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { Modal } from 'react-native-paper';
+import UserList from '../../components/UserList';
 
   export default function UserInvitationDetails({route, navigation}) {
     const {session} = route.params
@@ -124,28 +125,8 @@ import { Modal } from 'react-native-paper';
                     <View style={styles.usersContainer}>
                         <Text style={styles.membersText}>Session Members</Text>
                         {users.map(element => {
-                            return  <TouchableOpacity onPress={() => navigation.navigate('UserPartnerDetails', {uuid_partner: element.uuid_user})}>
-                                <View style={styles.header} key={element.uuid_user}>
-                                    {element.user_detail.src != null &&
-                                        <Image
-                                            style={styles.image}
-                                            source={{
-                                                uri:  IMG_URL + element.uuid_user + '?' + new Date()+ '?' + new Date()
-                                            }}
-                                        />
-                                    }
-                                    {element.user_detail.src == null &&
-                                        <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'} style={{marginTop:25}}/>
-                                    }
-                                    <View key={element.uuid_user} style={styles.infoContainer}>
-                                            <Text style={styles.nameText}>{element.user_detail.first_name} {element.user_detail.last_name}</Text>
-                                            <Text style={styles.infoText}>{element.user_detail.course}</Text>
-                                            <Text style={styles.infoText}>{element.user_detail.year_level}</Text>
-                                            <Text style={styles.infoText}>{element.user_detail.interest}</Text>
-                                            <Text style={styles.infoText}>{element.email}</Text>
-                                            <Text style={styles.infoText}>{element.user_detail.contact_number}</Text>
-                                    </View>
-                                </View>
+                            return  <TouchableOpacity key={element.uuid_user} onPress={() => navigation.navigate('UserPartnerDetails', {uuid_partner: element.uuid_user})}>
+                                <UserList element={element} />
                             </TouchableOpacity>
                            
                                 

@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image } from "react-native";
 
 export default function SessionList(props) {
     return (
-        <View style={styles.userdetails}>
+        <View key={props.element.uuid_session} style={styles.userdetails}>
             <Image
                 style={styles.images}
                 source={require('../assets/images/room.png')} 
