@@ -24,6 +24,7 @@ import invitationService from '../../services/invitation.service';
     const uuid_partner = useSelector(state => state.partner.uuid_user)
     const stats = useSelector(state => state.partner.stats)
     const [openModal, setOpenModal] = useState(false);
+    const [dupModal, setDupModal] = useState(false);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -44,17 +45,20 @@ import invitationService from '../../services/invitation.service';
 
     const handleSubmit = () =>{
         console.log(selectedSession)
+        console.log(uuid_user)
         if (selectedSession == null) {
             setOpenModal(true)
         } else {
-            invitationService.sendInvitation(selectedSession, uuid_partner)
+            invitationService.sendInvitation(selectedSession,uuid_user, uuid_partner)
             .then(response => {
-                console.log(response)
+                console.log(response.data)
                 if(response.status == 200) {
-                    navigation.navigate('UserDashboard')
+                    //navigation.navigate('UserDashboard')
+                } else {
+                    setDupModal(true)
                 }
             }).catch(error=> {
-                setOpenModal(true)
+                setDupModal(true)
             })
         }   
     }
@@ -73,13 +77,27 @@ import invitationService from '../../services/invitation.service';
                         transparent={true}
                         visible={openModal}
                     >
-                    <View style={styles.modalContainer}>
-                        <Text style={styles.text5}>Failed! There is no existing session at the moment. Please try creatiing a new session.</Text>
-                        <TouchableOpacity style={styles.button3} onPress={() => setOpenModal(false)}>
-                            <Text style={styles.buttontext}>Try Again</Text>
-                        </TouchableOpacity>
-                    </View>
+                        <View style={styles.modalContainer}>
+                            <Text style={styles.text5}>Failed! There is no existing session at the moment. Please try creating a new session.</Text>
+                            <TouchableOpacity style={styles.button3} onPress={() => setOpenModal(false)}>
+                                <Text style={styles.buttontext}>Try Again</Text>
+                            </TouchableOpacity>
+                        </View>
                     </Modal>
+
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={dupModal}
+                    >
+                        <View style={styles.modalContainer}>
+                            <Text style={styles.text5}>An invitation has already been sent to this user!</Text>
+                            <TouchableOpacity style={styles.button3} onPress={() => setDupModal(false)}>
+                                <Text style={styles.buttontext}>Try Again</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
+
                     <View style={styles.half}>
                     <Background
                         style={styles.background}

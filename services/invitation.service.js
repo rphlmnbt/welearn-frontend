@@ -11,10 +11,12 @@ const getInvitations = (
 
 const sendInvitation = (
     uuid_session,
+    sender,
     uuid_user
 ) => {
     return axios.post(INV_URL + '/add', {
         uuid_session,
+        sender,
         uuid_user
     })
 }
