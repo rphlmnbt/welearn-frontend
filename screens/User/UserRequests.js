@@ -16,6 +16,7 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import BottomNav from '../../components/BottomNav';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function UserRequests({navigation}) {
     const IMG_URL = API_URL +'/image/'
@@ -54,28 +55,49 @@ export default function UserRequests({navigation}) {
                     <View style={styles.usercontainer}>             
                         <Text style={styles.text2}>Invitations</Text>
 
-                        {invitations.map(element => {
-                            return <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('UserPartnerDetails', {uuid_partner: element.uuid_user, uuid_invitation: element.uuid_invitation})}>
+                        {/* {invitations.map(element => {
+                            return <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('UserPartnerDetails', {uuid_partner: element.sender_uuid, uuid_invitation: element.uuid_invitation})}>
                             <View style={styles.userdetails}>
-                                { element.creator_src != null &&
+                                { element.sender_src != null &&
                                     <Image
                                         style={styles.image}
-                                        source= {{uri:IMG_URL + element.uuid_user + '?' + new Date()}}
+                                        source= {{uri:IMG_URL + element.sender_uuid + '?' + new Date()}}
                                     />
                                 }
-                                { element.creator_src == null &&
+                                { element.sender_src == null &&
                                     <FontAwesomeIcon icon={faUserCircle} size={80} color={'#EF4765'}/>
                                 }
                                 
                                 
                                 <View style={styles.textsection}>
-                                    <Text style={styles.name}>{element.creator_first_name} {element.creator_last_name}</Text>
+                                    <Text style={styles.name}>{element.sender_first_name} {element.sender_last_name}</Text>
                                     <Text style={styles.subinfo}>{element.time}</Text>
                                     <Text  style={styles.subinfo}>{element.date}</Text>
                                 </View>
                             </View>
-                        </TouchableOpacity>
-                        })}
+                            </TouchableOpacity>
+                        })} */}
+                          <ScrollView>
+                            {invitations.map(element => {
+                                return  <TouchableOpacity key={element.uuid_session} onPress={() => navigation.navigate('UserInvitationDetails', {session: element})}>
+                                            <View style={styles.userdetails}>
+                                            <Image
+                                                style={styles.images}
+                                                source={require('../../assets/images/room.png')} 
+                                            />
+                                            <View style={styles.textsection}>
+                                                <View style={styles.usertext}>
+                                                    <Text style={styles.name}>{element.session_name}</Text>
+                                                </View>
+                                                <View style={styles.usertext}>
+                                                    <Text style={styles.userinfo}>{element.date}</Text>
+                                                    <Text style={styles.userinfo}>{element.time}</Text>
+                                                </View>
+                                            </View>
+                                            </View>
+                                        </TouchableOpacity>
+                            })}
+                        </ScrollView>    
                        
                     </View>
                 </View>
@@ -143,7 +165,6 @@ const styles = StyleSheet.create({
         height: 100,
         flexDirection: 'row',   
         justifyContent: 'flex-start',
-        paddingLeft: 30,
         paddingTop: 15,
         paddingBottom: 15,
     },
@@ -152,6 +173,12 @@ const styles = StyleSheet.create({
         height: 80,
         width: 80,
         borderRadius: 40
+    },
+    
+    images:{
+        width: 60,
+        height: 60,
+
     },
 
     textsection:{
@@ -188,6 +215,8 @@ const styles = StyleSheet.create({
         color: '#ACACAC',
         
     }
+
+    
     
 
 })
