@@ -22,9 +22,7 @@ import invitationService from '../../services/invitation.service';
     const [user, setUser] = useState(null)
     const [profilePic, setProfilePic] = useState(null)
     const { uuid_partner } = route.params;
-    const { uuid_invitation } = route.params;
     const uuid_user = useSelector(state => state.user.uuid_user)
-    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         userService.findOneUser(uuid_partner)
@@ -40,25 +38,7 @@ import invitationService from '../../services/invitation.service';
         })
     }, [])
 
-    const acceptInvitation = () => {
-        invitationService.acceptInvitation(uuid_invitation, uuid_user)
-        .then(response => {
-            if(response.status == 200) {
-                navigation.navigate('UserDashboard')
-            } else if (response.status == 400) {
-                setOpenModal(true)
-            }
-            
-        }).catch(error => {
-            setOpenModal(true)
-        })
-        
-    }
-
-    const rejectInvitation = () => {
-        invitationService.rejectInvitation(uuid_invitation, uuid_user)
-        navigation.navigate('UserDashboard')
-    }
+    
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -71,21 +51,7 @@ import invitationService from '../../services/invitation.service';
     } else {
         return (
         <View style={styles.container}>
-            <Modal
-                     animationType="slide"
-                     transparent={true}
-                     visible={openModal}
-                 >
-                <View style={styles.modalContainer}>
-                    <Text style={styles.text4}>Failed! You already have a session with the same date and time.</Text>
-                    <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
-                        <Text style={styles.buttontext}>Exit</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("UserAllReservations")}>
-                        <Text style={styles.buttontext}>View Reservations</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
+           
             <View style={styles.half}>
                <Background
                    style={styles.background}
@@ -93,23 +59,11 @@ import invitationService from '../../services/invitation.service';
                />
             </View>
             <View style={styles.userdetails}>
-                <View style={{marginTop: '5%'}}>
+                <View style={{marginTop: '15%'}}>
                     <UserInfo profilePic={profilePic} firstName={user.user_detail.first_name} lastName={user.user_detail.last_name} course={user.user_detail.course} yearLevel={user.user_detail.year_level} interest={user.user_detail.interest} isActive={user.isActive} />
                 </View>
                 
                 <Stats stats={[user.survey.q1,user.survey.q2,user.survey.q3,user.survey.q4,user.survey.q5,user.survey.q6,user.survey.q7]} />
-                <View style={styles.btnContainer}>
-                    <TouchableOpacity onPress={acceptInvitation}>
-                            <Image
-                            style={styles.images}
-                            source={require('../../assets/images/check-button.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={rejectInvitation}>
-                            <Image
-                            style={styles.images}
-                            source={require('../../assets/images/remove.png')} />
-                    </TouchableOpacity>
-                </View>
             </View>
         </View>
         );

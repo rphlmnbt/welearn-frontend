@@ -16,6 +16,8 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import BottomNav from '../../components/BottomNav';
+import { ScrollView } from 'react-native-gesture-handler';
+import SessionList from '../../components/SessionList';
 
 export default function UserRequests({navigation}) {
     const IMG_URL = API_URL +'/image/'
@@ -53,29 +55,13 @@ export default function UserRequests({navigation}) {
                     />
                     <View style={styles.usercontainer}>             
                         <Text style={styles.text2}>Invitations</Text>
-
-                        {invitations.map(element => {
-                            return <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('UserPartnerDetails', {uuid_partner: element.uuid_user, uuid_invitation: element.uuid_invitation})}>
-                            <View style={styles.userdetails}>
-                                { element.creator_src != null &&
-                                    <Image
-                                        style={styles.image}
-                                        source= {{uri:IMG_URL + element.uuid_user + '?' + new Date()}}
-                                    />
-                                }
-                                { element.creator_src == null &&
-                                    <FontAwesomeIcon icon={faUserCircle} size={80} color={'#EF4765'}/>
-                                }
-                                
-                                
-                                <View style={styles.textsection}>
-                                    <Text style={styles.name}>{element.creator_first_name} {element.creator_last_name}</Text>
-                                    <Text style={styles.subinfo}>{element.time}</Text>
-                                    <Text  style={styles.subinfo}>{element.date}</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                        })}
+                          <ScrollView>
+                            {invitations.map(element => {
+                                return  <TouchableOpacity key={element.uuid_session} onPress={() => navigation.navigate('UserInvitationDetails', {session: element})}>
+                                            <SessionList element={element} />
+                                        </TouchableOpacity>
+                            })}
+                        </ScrollView>    
                        
                     </View>
                 </View>
@@ -138,42 +124,17 @@ const styles = StyleSheet.create({
         padding: 20
     },
 
-    userdetails:{
-        width: '100%',
-        height: 100,
-        flexDirection: 'row',   
-        justifyContent: 'flex-start',
-        paddingLeft: 30,
-        paddingTop: 15,
-        paddingBottom: 15,
-    },
+  
 
     image : {
         height: 80,
         width: 80,
         borderRadius: 40
     },
+    
+    
 
-    textsection:{
-        flexDirection: 'column',   
-        justifyContent: 'center',
-        padding: 15,
-        paddingLeft: 0,
-        marginLeft: 10,
-        width: 300,
-    },
-
-    usertext:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 2,
-    },
-
-    name:{
-        fontSize: 14,
-        fontFamily: 'Poppins_600SemiBold',
-        marginBottom:2
-    },
+    
 
     subinfo:{
         color: '#ACACAC',
@@ -183,11 +144,9 @@ const styles = StyleSheet.create({
         marginBottom: 2
     },
 
-    userinfo:{
-        fontSize: 14,
-        color: '#ACACAC',
-        
-    }
+    
+
+    
     
 
 })

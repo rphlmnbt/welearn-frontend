@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity, Image, Text  } from 'react-native';
 import Background from '../../assets/images/find-bg.svg'
+import { faUserCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 import userService from '../../services/user.service';
 import QRCode from 'react-native-qrcode-svg';
 import {API_URL} from '@env'
@@ -18,17 +19,37 @@ import Loading from '../../components/Loading';
 import invitationService from '../../services/invitation.service';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { Modal } from 'react-native-paper';
 import UserList from '../../components/UserList';
 
-  export default function UserReservationDetails({route, navigation}) {
+  export default function UserInvitationDetails({route, navigation}) {
     const {session} = route.params
     const IMG_URL = API_URL +'/image/'
     const [isLoading, setLoading] = useState(true);
-    const [user, setUser] = useState(null)
-    const [profilePic, setProfilePic] = useState(null)
-    const myUuid = useSelector(state => state.user.uuid_user)
+    const uuid_user = useSelector(state => state.user.uuid_user)
+    const [openModal, setOpenModal] = useState(false);
     const users = session.users
+
+    const acceptInvitation = () => {
+        invitationService.acceptInvitation(session.uuid_invitation, uuid_user)
+        .then(response => {
+            if(response.status == 200) {
+                navigation.navigate('UserDashboard')
+            } else if (response.status == 400) {
+                setOpenModal(true)
+            }
+            
+        }).catch(error => {
+            setOpenModal(true)
+        })
+        
+    }
+
+    const rejectInvitation = () => {
+        invitationService.rejectInvitation(session.uuid_invitation, uuid_user)
+        navigation.navigate('UserDashboard')
+    }
 
     useEffect(() => {
         console.log(users)
@@ -47,6 +68,21 @@ import UserList from '../../components/UserList';
     } else {
         return (
         <View style={styles.container}>
+             <Modal
+                     animationType="slide"
+                     transparent={true}
+                     visible={openModal}
+                 >
+                <View style={styles.modalContainer}>
+                    <Text style={styles.text4}>Failed! You already have a session with the same date and time.</Text>
+                    <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                        <Text style={styles.buttontext}>Exit</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("UserAllReservations")}>
+                        <Text style={styles.buttontext}>View Reservations</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
             <View style={styles.half}>
                <Background
                    style={styles.background}
@@ -55,19 +91,30 @@ import UserList from '../../components/UserList';
             </View>
             <ScrollView style={styles.userdetails}>
                 <View style={styles.qrContainer}>
-                    <Text style={styles.headerText}>{session.session_name} QR Code</Text>
-                    <QRCode
-                        size={300}
-                        value={session.uuid_session}
-                    />
+                    <Text style={styles.headerText}>You are invited to {session.session_name}</Text>
                 </View>
                 <View style={styles.textsection}>
                     <View style={styles.usertext}>
                         <Text style={styles.info}>Date: {session.date}</Text>
                         <Text style={styles.info}>Time: {session.time}</Text>
                         <Text style={styles.info}>Room Name: {session.room.room_name}</Text>
-
+                        <Text style={styles.info}>Invited By: {session.sender_first_name} {session.sender_last_name}</Text>
                     </View>
+                    <View style={styles.btnContainer}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={acceptInvitation}
+                        >
+                            <Text style={styles.buttontext}>Join Session</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.button2}
+                            onPress={rejectInvitation}
+                        >
+                            <Text style={styles.buttontext}>Reject Session</Text>
+                        </TouchableOpacity>
+                    </View>
+                    
                     <View
                         style={{
                             borderBottomColor: '#ACACAC',
@@ -78,9 +125,10 @@ import UserList from '../../components/UserList';
                     <View style={styles.usersContainer}>
                         <Text style={styles.membersText}>Session Members</Text>
                         {users.map(element => {
-                            return  <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('UserReviewPartners', {uuid_partner: element.uuid_user})}>
+                            return  <TouchableOpacity key={element.uuid_user} onPress={() => navigation.navigate('UserPartnerDetails', {uuid_partner: element.uuid_user})}>
                                 <UserList element={element} />
                             </TouchableOpacity>
+                           
                                 
                                           
                         })}
@@ -96,6 +144,44 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    button: {
+        backgroundColor: '#FE4D71',
+        width: '45%',
+        height: 45,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        marginTop: 20,
+        marginBottom: 20,
+        justifyContent:'center',
+        alignItems:'center'
+        
+    },
+    button2: {
+        backgroundColor: '#ACACAC',
+        width: '45%',
+        height: 45,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        marginTop: 20,
+        marginBottom: 20,
+        justifyContent:'center',
+        alignItems:'center'
+        
+    },
+    buttontext: {
+        color: 'white',
+        fontFamily: 'Poppins_600SemiBold',
+        letterSpacing: 0.3,
+    },
+
+    buttonstyle:{
+        alignItems: 'center',
+
+    },
     membersText: {
         fontFamily: 'Poppins_600SemiBold',
         color: '#EF4765',
@@ -113,7 +199,8 @@ const styles = StyleSheet.create({
     btnContainer: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'space-around',
+        width: '100%'
     },
     container: { 
         flexDirection: 'column', 

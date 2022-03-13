@@ -14,6 +14,7 @@ import sessionService from '../../services/session.service';
 import Loading from '../../components/Loading';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
+import SessionList from '../../components/SessionList';
 
 export default function UserAllReservations({navigation}) {
     const [isLoading, setLoading] = useState(true);
@@ -53,22 +54,7 @@ export default function UserAllReservations({navigation}) {
                         <ScrollView>
                             {sessions.map(element => {
                                 return  <TouchableOpacity key={element.uuid_session}>
-                                            <View style={styles.userdetails}>
-                                            <Image
-                                                style={styles.images}
-                                                source={require('../../assets/images/room.png')} 
-                                            />
-                                            <View style={styles.textsection}>
-                                                <View style={styles.usertext}>
-                                                    <Text style={styles.name}>{element.session_name}</Text>
-                                                </View>
-                                                <View style={styles.usertext}>
-                                                    <Text style={styles.userinfo}>{element.date}</Text>
-                                                    <Text style={styles.userinfo}>{element.time}</Text>
-                                                </View>
-                                                
-                                            </View>
-                                            </View>
+                                            <SessionList element={element} />
                                         </TouchableOpacity>
                             })}
                         </ScrollView>

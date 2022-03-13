@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Modal  } from 'react-native';
 import Background from '../../assets/images/find-bg.svg'
 import Room from '../../assets/images/room.png'
 import {Picker} from '@react-native-picker/picker';
 import sessionService from '../../services/session.service';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { 
     useFonts,
@@ -15,7 +15,7 @@ import {
   } from '@expo-google-fonts/poppins'
 import Loading from '../../components/Loading';
 import invitationService from '../../services/invitation.service';
-import mlService from '../../services/ml.service';
+import { setReload } from '../../actions/partnerActions';
 
   export default function UserChooseSession({route, navigation}) {
     const [selectedSession, setSelectedSession] = useState(null);
@@ -25,17 +25,18 @@ import mlService from '../../services/ml.service';
     const uuid_partner = useSelector(state => state.partner.uuid_user)
     const stats = useSelector(state => state.partner.stats)
     const [openModal, setOpenModal] = useState(false);
+    const [dupModal, setDupModal] = useState(false);
+    const dispatch = useDispatch()
 
     useFocusEffect(
         React.useCallback(() => {
-            console.log("reset")
                sessionService.getSessions(uuid_user)
                .then(response => {
                    setSessions(response.data)
                    setLoading(false)
                })
         }, [])
-      );
+    );
     
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -46,44 +47,60 @@ import mlService from '../../services/ml.service';
 
     const handleSubmit = () =>{
         console.log(selectedSession)
+        console.log(uuid_user)
         if (selectedSession == null) {
             setOpenModal(true)
         } else {
-            invitationService.sendInvitation(selectedSession, uuid_partner)
+            invitationService.sendInvitation(selectedSession,uuid_user, uuid_partner)
             .then(response => {
-                console.log(response)
+                console.log(response.data)
                 if(response.status == 200) {
+                    dispatch(setReload(true))
                     navigation.navigate('UserDashboard')
+                } else {
+                    setDupModal(true)
                 }
             }).catch(error=> {
-                setOpenModal(true)
+                setDupModal(true)
             })
-        }
-        
-        
-        
+        }   
     }
 
     const createNewSession = () => {
         navigation.navigate('UserCreateSession')
     }
+    
     if (!fontsLoaded || isLoading) {
         return <Loading />
     } else {
         return (
                 <View style={styles.container}>
-                     <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={openModal}
-                >
-                    <View style={styles.modalContainer}>
-                        <Text style={styles.text5}>Failed! There is no existing session at the moment. Please try creatiing a new session.</Text>
-                        <TouchableOpacity style={styles.button3} onPress={() => setOpenModal(false)}>
-                            <Text style={styles.buttontext}>Try Again</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={openModal}
+                    >
+                        <View style={styles.modalContainer}>
+                            <Text style={styles.text5}>Failed! There is no existing session at the moment. Please try creating a new session.</Text>
+                            <TouchableOpacity style={styles.button3} onPress={() => setOpenModal(false)}>
+                                <Text style={styles.buttontext}>Try Again</Text>
+                            </TouchableOpacity>
+                        </View>
                     </Modal>
+
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={dupModal}
+                    >
+                        <View style={styles.modalContainer}>
+                            <Text style={styles.text5}>An invitation has already been sent to this user!</Text>
+                            <TouchableOpacity style={styles.button3} onPress={() => setDupModal(false)}>
+                                <Text style={styles.buttontext}>Try Again</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
+
                     <View style={styles.half}>
                     <Background
                         style={styles.background}
@@ -103,7 +120,7 @@ import mlService from '../../services/ml.service';
                     <View style={styles.userdetails}>
                         <Text style={styles.text4}>Choose Existing Session</Text>
                         <Text style={styles.text3}>
-                        Sessions
+                            Sessions
                         </Text>
                         <View style={styles.picker}>
                             <Picker

@@ -20,6 +20,21 @@ const addToDataset = (
     })
 }
 
+const loadStudyPartners = (
+    uuid_user) =>{
+        return axios.get(ML_URL + `/studyPartners/${uuid_user}`)
+    }
+
+
+const loadGroupStudyPartners = (
+    users
+) => {
+    return axios.post(ML_URL + `/studyPartners`, {
+        users
+    })
+}
 export default {
-    addToDataset
+    addToDataset,
+    loadStudyPartners,
+    loadGroupStudyPartners
 }

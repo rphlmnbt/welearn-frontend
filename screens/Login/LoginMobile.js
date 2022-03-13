@@ -7,6 +7,7 @@ import { logIn } from '../../actions/userActions';
 import authService from '../../services/auth.service';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../actions/notificationActions';
+import { setReload } from '../../actions/partnerActions';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -38,7 +39,6 @@ function LoginMobile({ navigation }) {
                     notificationService.setDevice(response.data.user.uuid_user, token)
                 });
                 navigation.navigate('UserDashboard')
-                
             }
             
         })
