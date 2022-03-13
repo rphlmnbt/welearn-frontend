@@ -4,7 +4,7 @@ import Background from '../../assets/images/find-bg.svg'
 import Room from '../../assets/images/room.png'
 import {Picker} from '@react-native-picker/picker';
 import sessionService from '../../services/session.service';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { 
     useFonts,
@@ -15,6 +15,7 @@ import {
   } from '@expo-google-fonts/poppins'
 import Loading from '../../components/Loading';
 import invitationService from '../../services/invitation.service';
+import { setReload } from '../../actions/partnerActions';
 
   export default function UserChooseSession({route, navigation}) {
     const [selectedSession, setSelectedSession] = useState(null);
@@ -25,6 +26,7 @@ import invitationService from '../../services/invitation.service';
     const stats = useSelector(state => state.partner.stats)
     const [openModal, setOpenModal] = useState(false);
     const [dupModal, setDupModal] = useState(false);
+    const dispatch = useDispatch()
 
     useFocusEffect(
         React.useCallback(() => {
@@ -53,7 +55,8 @@ import invitationService from '../../services/invitation.service';
             .then(response => {
                 console.log(response.data)
                 if(response.status == 200) {
-                    //navigation.navigate('UserDashboard')
+                    dispatch(setReload(true))
+                    navigation.navigate('UserDashboard')
                 } else {
                     setDupModal(true)
                 }

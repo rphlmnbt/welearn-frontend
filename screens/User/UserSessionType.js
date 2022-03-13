@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Dimensions, TouchableOpacity, Image, Text  } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Image, Text, Modal  } from 'react-native';
 import Background from '../../assets/images/find-bg.svg'
 import userService from '../../services/user.service';
 import { useSelector, useDispatch } from 'react-redux';
@@ -27,6 +27,7 @@ export default function UserSessionType({navigation}) {
     const [selectedSession, setSelectedSession] = useState(null);
     const [sessions, setSessions] = useState(null);
     const uuid_user = useSelector(state => state.user.uuid_user)
+    const [openModal, setOpenModal] = useState(false);
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -45,12 +46,33 @@ export default function UserSessionType({navigation}) {
         }, [])
     );
 
+    const loadGroup = () => {
+        if (selectedSession == null) {
+            setOpenModal(true)
+        } else {
+            navigation.navigate('UserFindPartner', {session : selectedSession})
+        }
+
+    } 
+
 
     if (!fontsLoaded || isLoading) {
         return <Loading />
     } else {
         return (
         <View style={styles.container}>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={openModal}
+            >
+                <View style={styles.modalContainer}>
+                    <Text style={styles.text5}>Failed! There is no existing session at the moment. Please try creating a new session.</Text>
+                    <TouchableOpacity style={styles.button3} onPress={() => setOpenModal(false)}>
+                        <Text style={styles.buttontext}>Try Again</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
             <View style={styles.half}>
                <Background
                    style={styles.background}
@@ -75,7 +97,7 @@ export default function UserSessionType({navigation}) {
                     }>
                         <Picker.Item label={"Pick A Session"} value={null} color="black" />
                         {sessions.map(element => {
-                            return <Picker.Item key={element.uuid_session} label={element.session_name} value={element.uuid_session} color="black" />
+                            return <Picker.Item key={element.uuid_session} label={element.session_name} value={element} color="black" />
                         })}
                     </Picker> 
                    
@@ -83,7 +105,7 @@ export default function UserSessionType({navigation}) {
                 <View style={styles.buttonstyle}>
                 <TouchableOpacity
                         style={styles.button}
-                        onPress={() => {console.log("Here")}}
+                        onPress={loadGroup}
                     >
                         <Text style={styles.buttontext}>Pick Session</Text>
                     </TouchableOpacity>
@@ -100,7 +122,7 @@ export default function UserSessionType({navigation}) {
                         <Text style={styles.text4}>Find Study Partners for a new session</Text>
                         <TouchableOpacity
                             style={styles.button}
-                            onPress={() => {navigation.navigate('UserFindPartner')}}
+                            onPress={() => {navigation.navigate('UserFindPartner', {session : null})}}
                         >
                            <Text style={styles.buttontext}>New Session</Text>
                         </TouchableOpacity>
