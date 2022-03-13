@@ -3,8 +3,8 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image,
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/login-mobile-bg.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
+import Background from '../../assets/images/login-mobile-bg.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useSelector, useDispatch } from 'react-redux'
 import { Formik } from 'formik';
@@ -17,17 +17,14 @@ import {
   } from '@expo-google-fonts/poppins'
 import RadioButton from '../../components/RadioButton';
 import { changeBirth } from '../../actions/signUpActions';
-  
+import Moment from 'moment';
+import schema from '../../schemas/signUpBirth.schema';
 export default function SignUpBirth({navigation}) {
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
     const [mode, setMode] = useState('date');
     const [gender, setGender] = useState()
     const dispatch = useDispatch()
-
-    const onSelect = (childData) =>{
-        setGender(childData)
-    }
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -55,11 +52,8 @@ export default function SignUpBirth({navigation}) {
         setDate(currentDate);
     };
 
-    const handleSubmit = () => {
-        const values = {
-            gender: gender,
-            birthDate: date
-        }
+    const handleSubmit = (values) => {
+        values.birthDate = values.birthDate.toLocaleDateString()
         console.log(values)
         dispatch(changeBirth(values))
         navigation.navigate('SignUpEmail')
@@ -73,11 +67,12 @@ export default function SignUpBirth({navigation}) {
         return (
             <Formik
                 initialValues={{
-                    birthDate:'',
+                    birthDate: date,
                     gender:''}}
                 onSubmit={handleSubmit}
+                validationSchema={schema}
             >
-                {({ handleChange, handleBlur, handleSubmit,values }) => (
+                {({ handleChange, handleBlur, handleSubmit,values, errors, setFieldValue, touched }) => (
                     <View style={styles.container}>
                         <View style={styles.half}>
                             <Background
@@ -108,7 +103,16 @@ export default function SignUpBirth({navigation}) {
                             >
                                 <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
                             </TouchableOpacity>
-                            <RadioButton data={data} onSelect={onSelect}/>
+                            {errors.birthDate && touched.birthDate &&
+                                <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.birthDate}</Text>
+                            }
+                            <RadioButton data={data} onSelect={(childData) =>{
+                                setGender(childData)
+                                setFieldValue('gender', childData)
+                            }}/>
+                             {errors.gender && touched.gender &&
+                                <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.gender}</Text>
+                            }
                             <TouchableOpacity
                                 style={styles.button}
                                 onPress={handleSubmit}
@@ -118,7 +122,7 @@ export default function SignUpBirth({navigation}) {
                             {show && (
                                 <DateTimePicker
                                 testID="dateTimePicker"
-                                value={date}
+                                value={values.birthDate}
                                 display="default"
                                 onChange={onChange}
                                 />

@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image} from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, TouchableNativeFeedbackBase} from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/login-mobile-bg.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
+import Background from '../../assets/images/login-mobile-bg.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import RadioButton from '../../components/RadioButton';
 import { Formik } from 'formik';
 import {Picker} from '@react-native-picker/picker';
 import{
@@ -17,7 +17,8 @@ import{
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import { useDispatch } from 'react-redux';
-import { changeCourse } from '../actions/signUpActions';
+import {changeCourse} from '../../actions/signUpActions'
+import schema from '../../schemas/signUpCourse.schema'
 
 export default function SignUpCourse({navigation}) {
 
@@ -35,7 +36,7 @@ export default function SignUpCourse({navigation}) {
     const handleSubmit = values => {
         console.log(values)
         dispatch(changeCourse(values))
-        navigation.navigate('Interests')
+        navigation.navigate('SignUpInterests')
         
     }
 
@@ -50,8 +51,9 @@ export default function SignUpCourse({navigation}) {
                     yearLevel:''
                 }}
                 onSubmit={handleSubmit}
+                validationSchema={schema}
             >
-                {({ handleChange, handleBlur, handleSubmit,values }) => (
+                {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
                     <View style={styles.container}>
                         <View style={styles.half}>
                             <Background
@@ -80,11 +82,13 @@ export default function SignUpCourse({navigation}) {
                                 placeholder="Course Program"
                                 autoCapitalize="none"
                                 style={styles.textinput1}
-                                autoCapitalize="none"
                                 onChangeText={handleChange('course')}
                                 onBlur={handleBlur('course')}
                                 value={values.course}
                             />
+                            {errors.course && touched.course &&
+                            <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.course}</Text>
+                            }
                             <View style={styles.picker}>
                             <Picker
                             selectedValue={values.yearLevel}
@@ -94,7 +98,10 @@ export default function SignUpCourse({navigation}) {
                             <Picker.Item label="Second Year" value="2nd Year"/>
                             <Picker.Item label="Third Year" value="3rd Year"/>
                             <Picker.Item label="Fourth Year" value="4th Year"/>
-                            </Picker> 
+                            </Picker>
+                            {errors.yearLevel && touched.yearLevel &&
+                            <Text style={{ fontSize: 12, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.yearLevel}</Text>
+                            } 
                             </View>
                             
                             <TouchableOpacity

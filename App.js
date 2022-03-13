@@ -1,4 +1,6 @@
-import * as React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Header from './components/Header';
@@ -7,7 +9,6 @@ import SecondaryLogoBlack from './components/SecondaryLogoBlack';
 import BackWhite from './components/BackWhite';
 import BackBlack from './components/BackBlack';
 import PickStudyRoom from './screens/PickStudyRoom';
-import Details from './screens/Details';
 import store from './store/store';
 import { Provider } from 'react-redux';
 import LoginHome from './screens/Login/LoginHome';
@@ -31,17 +32,47 @@ import UserReservations from './screens/User/UserReservations';
 import UserSettings from './screens/User/UserSettings';
 import UserCreateSession from './screens/User/UserCreateSession';
 import UserChooseSession from './screens/User/UserChooseSession';
-
-
-
-
-
-
-
+import UserPartnerDetails from './screens/User/UserPartnerDetails';
+import UserReservationDetails from './screens/User/UserReservationDetails';
+import UserAllReservations from './screens/User/UserAllReservations';
+import UserFinishedSessions from './screens/User/UserFinishedSessions';
+import UserFinishedSessionDetails from './screens/User/UserFinishedSessionDetails';
+import UserReviewPartners from './screens/User/UserReviewPartners';
+import UserSessionType from './screens/User/UserSessionType';
+import UserInvitationDetails from './screens/User/UserInvitationDetails';
 
 const Stack = createNativeStackNavigator();
 
-function App() {
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
+export default function App() {
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();  
+
+  useEffect(() => {
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -124,7 +155,7 @@ function App() {
             options = {{headerTitle: () => null}}
           />
           <Stack.Screen 
-            name="FindPartner" 
+            name="UserFindPartner" 
             component={UserFindPartner} 
             options = {{headerTitle: () => null,
               headerRight: () => <SecondaryLogo />,
@@ -141,14 +172,21 @@ function App() {
             options = {{headerTitle: () => null}}
           />
           <Stack.Screen 
-            name="Requests" 
+            name="UserRequests" 
             component={UserRequests} 
             options = {{headerTitle: () => null,
             headerLeft: () => <BackBlack />}}
           />
           <Stack.Screen 
-            name="Details" 
-            component={Details} 
+            name="UserPartnerDetails" 
+            component={UserPartnerDetails} 
+            options = {{headerTitle: () => null,
+              headerRight: () => <SecondaryLogo />,
+              headerLeft: () => <BackWhite />}}
+          />
+          <Stack.Screen 
+            name="UserReviewPartners" 
+            component={UserReviewPartners} 
             options = {{headerTitle: () => null,
               headerRight: () => <SecondaryLogo />,
               headerLeft: () => <BackWhite />}}
@@ -160,18 +198,18 @@ function App() {
             headerLeft: () => <BackBlack />}}
           />
           <Stack.Screen
-            name="Settings" 
+            name="UserSettings" 
             component={UserSettings} 
             options = {{headerTitle: () => null}}
           />
           <Stack.Screen 
-            name="ImageUpload" 
+            name="SignUpImageUpload" 
             component={SignUpImageUpload} 
             options = {{headerTitle: () => null}}
           />
 
            <Stack.Screen 
-            name="Interests" 
+            name="SignUpInterests" 
             component={SignUpInterest} 
             options = {{headerTitle: () => null}}
           />
@@ -180,6 +218,41 @@ function App() {
             component={UserChooseSession} 
             options = {{headerTitle: () => null}}
           />
+          <Stack.Screen
+            name="UserAllReservations"
+            component={UserAllReservations}
+            options = {{headerTitle: () => null,
+              headerLeft: () => <BackBlack />}}
+          />
+          <Stack.Screen
+            name="UserFinishedSessions"
+            component={UserFinishedSessions}
+            options = {{headerTitle: () => null,
+              headerLeft: () => <BackBlack />}}
+          />
+          <Stack.Screen 
+            name="UserReservationDetails" 
+            component={UserReservationDetails} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="UserFinishedSessionDetails" 
+            component={UserFinishedSessionDetails} 
+            options = {{headerTitle: () => null}}
+          />
+          <Stack.Screen 
+            name="UserSessionType" 
+            component={UserSessionType} 
+            options = {{headerTitle: () => null,
+              headerRight: () => <SecondaryLogo />,
+              headerLeft: () => <BackWhite />}}
+          />
+          <Stack.Screen 
+            name="UserInvitationDetails" 
+            component={UserInvitationDetails} 
+            options = {{headerTitle: () => null}}
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
@@ -187,4 +260,3 @@ function App() {
   );
 }
 
-export default App;

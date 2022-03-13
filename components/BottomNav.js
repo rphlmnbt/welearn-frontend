@@ -12,7 +12,7 @@ export default function BottomNav() {
                 style={styles.images}
                 source={require('../assets/images/home.png')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('FindPartner')}>
+            <TouchableOpacity onPress={() => navigation.navigate('UserSessionType')}>
                 <Image
                 style={styles.images}
                 source={require('../assets/images/user-plus.png')} />
@@ -22,12 +22,12 @@ export default function BottomNav() {
                 style={styles.images}
                 source={require('../assets/images/table.png')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Requests')}>
+            <TouchableOpacity onPress={() => navigation.navigate('UserRequests')}>
                 <Image
                 style={styles.images}
                 source={require('../assets/images/people-fill.png')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+            <TouchableOpacity onPress={() => navigation.navigate('UserSettings')}>
                 <Image
                 style={styles.images}
                 source={require('../assets/images/settings.png')} />
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         borderTopColor: '#ACACAC',
         borderTopWidth: 1,
+        backgroundColor: "#F2F2F2"
     },
     images: {
         width: 45,

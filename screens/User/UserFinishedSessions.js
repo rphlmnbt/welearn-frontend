@@ -1,13 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, FlatList } from 'react-native';
-import Background from '../../assets/images/requests-bg.svg'
-import invitationService from '../../services/invitation.service';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Loading from '../../components/Loading';
-import { useFocusEffect } from '@react-navigation/native';
-import {API_URL} from '@env'
+import Background from '../../assets/images/requests-bg.svg'
 import { 
     useFonts,
     Poppins_400Regular,
@@ -16,13 +10,15 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import BottomNav from '../../components/BottomNav';
+import sessionService from '../../services/session.service';
+import Loading from '../../components/Loading';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useFocusEffect } from '@react-navigation/native';
 import SessionList from '../../components/SessionList';
 
-export default function UserRequests({navigation}) {
-    const IMG_URL = API_URL +'/image/'
+export default function UserFinishedSessions({navigation}) {
     const [isLoading, setLoading] = useState(true);
-    const [invitations, setInvitations] = useState(null)
+    const [sessions, setSessions] = useState(null)
     const uuid_user = useSelector(state => state.user.uuid_user)
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -33,16 +29,15 @@ export default function UserRequests({navigation}) {
 
     useFocusEffect(
         React.useCallback(() => {
-            invitationService.getInvitations(uuid_user)
+            sessionService.getFinishedSessions(uuid_user)
             .then(response => {
                 console.log(response.data)
-                setInvitations(response.data)
+                setSessions(response.data)
                 setLoading(false)
             })
          }, [])
     )
-
-     
+    
      if (!fontsLoaded || isLoading) {
         return <Loading />
     } else {
@@ -54,18 +49,17 @@ export default function UserRequests({navigation}) {
                         resizeMode="cover" 
                     />
                     <View style={styles.usercontainer}>             
-                        <Text style={styles.text2}>Invitations</Text>
-                          <ScrollView>
-                            {invitations.map(element => {
-                                return  <TouchableOpacity key={element.uuid_session} onPress={() => navigation.navigate('UserInvitationDetails', {session: element})}>
+                        <Text style={styles.text2}>Finished Sessions</Text>
+                        <ScrollView>
+                            {sessions.map(element => {
+                                return  <TouchableOpacity key={element.uuid_session} onPress={() => navigation.navigate('UserFinishedSessionDetails', {session: element})}>
                                             <SessionList element={element} />
                                         </TouchableOpacity>
                             })}
-                        </ScrollView>    
-                       
+                        </ScrollView>
                     </View>
                 </View>
-                <BottomNav/>
+                <BottomNav />
                 </View>
                 
         )
@@ -124,29 +118,53 @@ const styles = StyleSheet.create({
         padding: 20
     },
 
-  
-
-    image : {
-        height: 80,
-        width: 80,
-        borderRadius: 40
+    userdetails:{
+        width: '100%',
+        height: 100,
+        flexDirection: 'row',   
+        justifyContent: 'space-between',
+        paddingTop: 15,
+        paddingBottom: 15,
     },
-    
-    
 
-    
+    images:{
+        width: 60,
+        height: 60,
 
-    subinfo:{
+    },
+
+    textsection:{
+        flexDirection: 'column',   
+        justifyContent: 'center',
+        padding: 15,
+        paddingLeft: 0,
+        marginLeft: 10,
+        width: 300,
+    },
+
+    usertext:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 5,
+    },
+
+    name:{
+        fontSize: 14,
+        fontFamily: 'Poppins_600SemiBold',
+    },
+
+    Timerequest:{
         color: '#ACACAC',
-        fontSize: 12,
+        fontSize: 13,
         fontFamily: 'Poppins_400Regular',
         paddingRight: 25,
-        marginBottom: 2
     },
 
-    
-
-    
+    userinfo:{
+        fontSize: 13,
+        color: '#ACACAC',
+        
+    }
     
 
 })

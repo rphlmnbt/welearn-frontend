@@ -3,9 +3,10 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image 
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/survey-bg1.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
+import Background from '../../assets/images/survey-bg1.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import RadioButton from '../../components/RadioButton';
+import { useDispatch, useSelector } from 'react-redux';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -15,7 +16,9 @@ import {
   } from '@expo-google-fonts/poppins'
 
 export default function SignUpSurveyIntro({navigation}) {
-   
+
+    const src = useSelector(state => state.signUp.src)
+    const firstName = useSelector(state => state.signUp.firstName)
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -26,6 +29,7 @@ export default function SignUpSurveyIntro({navigation}) {
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
+        console.log(src)
         return (
             <View style={styles.container}>
                  <View style={styles.half}>
@@ -40,10 +44,20 @@ export default function SignUpSurveyIntro({navigation}) {
                             Hi
                         </Text>
                         <Text style={styles.text3}>
-                            User Name
+                            {firstName}!
                         </Text>
                     </View>
-                    <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
+                    {src &&
+                        <Image
+                            style={styles.image}
+                            source={{
+                                uri: src
+                            }}
+                        />
+                    }
+                    {!src  &&
+                        <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
+                    }
                 </View>
                 <View style={styles.textContainer}>
                     <Text style={styles.text2}>
@@ -168,6 +182,12 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'flex-start'
+    },
+    image : {
+        height: 100,
+        width: 100,
+        borderRadius: 50,
+        marginTop: 10
     }
 
 })

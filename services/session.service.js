@@ -16,11 +16,6 @@ const createSession = (
         time,
         session_creator,
         uuid_room
-    }).then(response => {
-        console.log(response)
-    })
-    .catch(error => {
-        //TODO: handle the error when implemented
     })
 }
 
@@ -30,10 +25,25 @@ const getSessions = (
     return axios.get(SESSION_URL + `/user/${uuid_user}`)
 }
 
+const getFinishedSessions = (
+    uuid_user
+) => {
+    return axios.get(SESSION_URL + `/user/finished/${uuid_user}`)
+}
+
+const getAllSessions = (
+) => {
+    return axios.get(SESSION_URL)
+}
+
+
+
 
 
 export default {
     createSession,
-    getSessions
+    getSessions,
+    getFinishedSessions,
+    getAllSessions
 
 }

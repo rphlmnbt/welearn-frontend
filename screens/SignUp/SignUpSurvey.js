@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, ImageBackground } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, ImageBackground, Modal } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import CardBG from '../assets/images/card-bg1.png'
-import CardBGWh from '../assets/images/card-bg2.png'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
-import { questions } from '../assets/questions/questions';
+import CardBG from '../../assets/images/card-bg1.png'
+import CardBGWh from '../../assets/images/card-bg2.png'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import RadioButton from '../../components/RadioButton';
+import { questions } from '../../assets/questions/questions';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -16,8 +16,10 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import { useDispatch, useSelector } from 'react-redux';
-import { changeHabits, signUp } from '../actions/signUpActions';
-import authService from '../services/auth.service';
+import { changeHabits, signUp } from '../../actions/signUpActions';
+import authService from '../../services/auth.service';
+import imageService from '../../services/image.service';
+import userService from '../../services/user.service';
 
 export default function SignUpSurvey({navigation}) {
 
@@ -42,6 +44,8 @@ export default function SignUpSurvey({navigation}) {
     const university = useSelector(state => state.signUp.university)
     const course = useSelector(state => state.signUp.course)
     const yearLevel = useSelector(state => state.signUp.yearLevel)
+    const interest = useSelector(state => state.signUp.interest)
+    const src = useSelector(state => state.signUp.src)
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -59,6 +63,8 @@ export default function SignUpSurvey({navigation}) {
     ];
 
     const dispatch = useDispatch()
+    const [dupModal, setDupModal] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
 
     const onSelect = (childData) =>{
         setRadioValue(childData)
@@ -71,6 +77,15 @@ export default function SignUpSurvey({navigation}) {
     }, [finished])
 
     const [question, setQuestion] = useState(0)
+
+    const next = () =>{
+        console.log(radioValue)
+        if(radioValue != 0 ) {
+            nextQuestion()
+        } else {
+            setOpenModal(true)
+        }
+    }
 
     const nextQuestion = () => {
         if(radioValue) {
@@ -127,23 +142,6 @@ export default function SignUpSurvey({navigation}) {
     }
 
     const signUp = () => {
-        console.log(  firstName,
-            lastName,
-            birthDate,
-            gender,
-            email,
-            password,
-            contactNumber,
-            university,
-            course,
-            yearLevel,
-            timeManagement,
-            studyEnvironment,
-            examPreparation,
-            noteTaking,
-            readingSkills,
-            writingSkills,
-            mathSkills)
         authService.signUp(
             firstName,
             lastName,
@@ -155,6 +153,7 @@ export default function SignUpSurvey({navigation}) {
             university,
             course,
             yearLevel,
+            interest,
             timeManagement,
             studyEnvironment,
             examPreparation,
@@ -162,8 +161,27 @@ export default function SignUpSurvey({navigation}) {
             readingSkills,
             writingSkills,
             mathSkills
-        )
-        navigation.navigate('LoginHome')
+        ).then(response => {
+            console.log(response)
+            if(response.status == 200) {
+                const uuid_user = response.data.uuid_user
+                const image = {
+                    uri: src,
+                    name: uuid_user + '.jpg',
+                    type: 'image/jpg',
+                }
+                imageService.uploadImage(image, uuid_user)
+                userService.uploadImage(uuid_user, image.name)
+                navigation.navigate('LoginHome')
+            } else  {
+                setDupModal(true)
+            }
+           
+        }).catch(error => {
+            console.log(error)
+            setDupModal(true)
+        })
+        
     }
 
     if (!fontsLoaded) {
@@ -171,6 +189,30 @@ export default function SignUpSurvey({navigation}) {
     } else {
         return (
             <View style={styles.container}>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={openModal}
+                >
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.text4}>Please answer the survey.</Text>
+                        <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                            <Text style={styles.buttontext}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={dupModal}
+                >
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.text4}>Failed! Email or Mobile Number already exists!</Text>
+                        <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate('LoginHome')}>
+                            <Text style={styles.buttontext}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
                 <Image
                     style={styles.splash}
                     source={LogoImg}
@@ -215,7 +257,7 @@ export default function SignUpSurvey({navigation}) {
                     <View style={styles.btnContainer}>
                             <TouchableOpacity
                                     style={styles.button}
-                                    onPress={nextQuestion}
+                                    onPress={next}
                             >
                                 <Text style={styles.buttontext}>Continue</Text>
                             </TouchableOpacity>
@@ -347,6 +389,48 @@ const styles = StyleSheet.create({
     formHeader: {
         alignItems: 'center',
         marginBottom: 15
+    },
+
+    modalContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        marginTop: '70%',
+        margin: 20,
+        backgroundColor: "#F2F2F2",
+        borderRadius: 5,
+        padding: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+
+    text4: {
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#5E5E5E',
+        fontSize: 16,
+        alignItems: 'center',
+        
+    },
+
+    button2: {
+        backgroundColor: '#EF4765',
+        width: '40%',
+        height: 45,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
+        marginTop: 40
     },
 
 })

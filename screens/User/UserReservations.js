@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { useSelector } from 'react-redux';
-import Background from '../assets/images/requests-bg.svg'
+import Background from '../../assets/images/requests-bg.svg'
 import { 
     useFonts,
     Poppins_400Regular,
@@ -9,9 +9,12 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import BottomNav from '../components/BottomNav';
-import sessionService from '../services/session.service';
-import Loading from '../components/Loading';
+import BottomNav from '../../components/BottomNav';
+import sessionService from '../../services/session.service';
+import Loading from '../../components/Loading';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useFocusEffect } from '@react-navigation/native';
+import SessionList from '../../components/SessionList';
 
 export default function UserReservations({navigation}) {
     const [isLoading, setLoading] = useState(true);
@@ -24,14 +27,17 @@ export default function UserReservations({navigation}) {
         Poppins_700Bold,
     });
 
-    useEffect(() => {
-        sessionService.getSessions(uuid_user)
-        .then(response => {
-            console.log(response.data)
-            setSessions(response.data)
-            setLoading(false)
-        })
-     }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            sessionService.getSessions(uuid_user)
+            .then(response => {
+                console.log(response.data)
+                setSessions(response.data)
+                setLoading(false)
+            })
+         }, [])
+    )
+    
 
      if (!fontsLoaded || isLoading) {
         return <Loading />
@@ -43,27 +49,39 @@ export default function UserReservations({navigation}) {
                         style={styles.background}
                         resizeMode="cover" 
                     />
-                    <View style={styles.usercontainer}>             
-                        <Text style={styles.text2}>Study Room Reservations</Text>
-                        {sessions.map(element => {
-                            return  <TouchableOpacity key={element.uuid_session}>
-                                        <View style={styles.userdetails}>
-                                        <Image
-                                            style={styles.images}
-                                            source={require('../assets/images/room.png')} 
-                                        />
-                                        <View style={styles.textsection}>
-                                            <View style={styles.usertext}>
-                                                <Text style={styles.name}>{element.session_name}</Text>
-                                                <Text style={styles.Timerequest}>{element.time}</Text>
-                                            </View>
-                                            <Text  style={styles.userinfo}>{element.room.room_name}</Text>
-                                        </View>
-                                        </View>
+                    <View style={styles.usercontainer}>
+                        <View style={styles.headerContainer}>
+                            <Text style={styles.text2}>Sessions</Text>
+                            <View style={{display: 'flex', flexDirection: 'row'}}>
+                                <View style={styles.buttonstyle}>
+                                    <TouchableOpacity
+                                        style={styles.button}
+                                        onPress={()=> navigation.navigate('UserAllReservations')}
+                                        >
+                                        <Text style={styles.buttontext}>View All</Text>
                                     </TouchableOpacity>
-                        })}
+                                </View>
+                                <View style={styles.buttonstyle}>
+                                    <TouchableOpacity
+                                        style={styles.button}
+                                        onPress={()=> navigation.navigate('UserFinishedSessions')}
+                                        >
+                                        <Text style={styles.buttontext}>View Finished</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>         
+                        <ScrollView>
+                            {sessions.map(element => {
+                                return  <TouchableOpacity key={element.uuid_session} onPress={() => navigation.navigate('UserReservationDetails', {session: element})}>
+                                           <SessionList element={element} />
+                                        </TouchableOpacity>
+                            })}
+                        </ScrollView>    
+                        
                         
                     </View>
+            
                 </View>
                 <BottomNav />
                 </View>
@@ -76,6 +94,35 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    button: {
+        backgroundColor: '#FE4D71',
+        marginHorizontal: 5,
+        paddingHorizontal: 8,
+        height: 25,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent:'center',
+        alignItems:'center'
+        
+    },
+    buttontext: {
+        color: 'white',
+        fontFamily: 'Poppins_600SemiBold',
+        letterSpacing: 0.3,
+    },
+
+    buttonstyle:{
+        alignItems: 'center',
+
+    },
+    headerContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between'
+    },
     container : {
         flexDirection: 'column', 
         alignItems: 'center', 
@@ -97,7 +144,7 @@ const styles = StyleSheet.create({
     },
     half: {
         width: '100%',
-        height: '115%',
+        height: 1*vh - 0.14*vh,
         position: 'relative',
         zIndex: 0,
         elevation: 0,
@@ -161,13 +208,13 @@ const styles = StyleSheet.create({
 
     Timerequest:{
         color: '#ACACAC',
-        fontSize: 12,
+        fontSize: 13,
         fontFamily: 'Poppins_400Regular',
         paddingRight: 25,
     },
 
     userinfo:{
-        fontSize: 14,
+        fontSize: 13,
         color: '#ACACAC',
         
     }

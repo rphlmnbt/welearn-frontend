@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, TextInput  } from 'react-native';
-import Background from '../assets/images/find-bg.svg'
-import Room from '../assets/images/room.png'
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, TextInput, Modal  } from 'react-native';
+import Background from '../../assets/images/find-bg.svg'
+import Room from '../../assets/images/room.png'
 import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import sessionService from '../services/session.service';
-import roomService from '../services/room.service';
+import sessionService from '../../services/session.service';
+import roomService from '../../services/room.service';
 import { useSelector } from 'react-redux';
-
+import Moment from 'moment';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -16,7 +16,7 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import { Formik } from 'formik';
-import Loading from '../components/Loading';
+import Loading from '../../components/Loading';
 
   export default function UserCreateSession({navigation}) {
 
@@ -27,6 +27,7 @@ import Loading from '../components/Loading';
     const [mode, setMode] = useState('date');
     const [isLoading, setLoading] = useState(true);
     const [rooms, setRooms] = useState(null)
+    const [openModal, setOpenModal] = useState(false);
     const uuid_user = useSelector(state => state.user.uuid_user)
 
     useEffect(() => {
@@ -61,11 +62,16 @@ import Loading from '../components/Loading';
     });
 
     const handleSubmit = (values) => {
-        sessionService.createSession(values.session_name, date, selectedTime, uuid_user, selectedRoom)
+        sessionService.createSession(values.session_name, Moment(date).format('MMM D, YYYY'), selectedTime, uuid_user, selectedRoom)
         .then(response => {
-            navigation.navigate('UserChooseSession')
+            if(response.status == 200) {
+                navigation.navigate('UserChooseSession')
+            } else if (response.status == 400) {
+                setOpenModal(true)
+            }
+            
         }).catch(error => {
-            console.log(error)
+            setOpenModal(true)
         })
     }
     if (!fontsLoaded || isLoading) {
@@ -79,7 +85,22 @@ import Loading from '../components/Loading';
                 onSubmit={handleSubmit}
             >
             {({ handleChange, handleBlur, handleSubmit, values }) =>( 
-                <View style={styles.container}>
+                 <View style={styles.container}>
+                 <Modal
+                     animationType="slide"
+                     transparent={true}
+                     visible={openModal}
+                 >
+                     <View style={styles.modalContainer}>
+                         <Text style={styles.text4}>Failed! The room seems to be taken or you have other sessions for the same date and time!</Text>
+                         <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                             <Text style={styles.buttontext}>Try Again</Text>
+                         </TouchableOpacity>
+                         <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("UserAllReservations")}>
+                             <Text style={styles.buttontext}>View Reservations</Text>
+                         </TouchableOpacity>
+                     </View>
+                 </Modal>
                     <View style={styles.half}>
                     <Background
                         style={styles.background}
@@ -104,7 +125,6 @@ import Loading from '../components/Loading';
                             placeholder="Session Name"
                             autoCapitalize="none"
                             style={styles.textinput1}
-                            autoCapitalize="none"
                             onChangeText={handleChange('session_name')}
                             onBlur={handleBlur('session_name')}
                         />
@@ -327,5 +347,47 @@ const styles = StyleSheet.create({
         width: '100%',
         marginVertical: 5,
         height: 42
+    },
+
+    modalContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        marginTop: '40%',
+        margin: 20,
+        backgroundColor: "#F2F2F2",
+        borderRadius: 5,
+        padding: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+
+    text4: {
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#5E5E5E',
+        fontSize: 16,
+        alignItems: 'center',
+        
+    },
+
+    button2: {
+        backgroundColor: '#EF4765',
+        width: '50%',
+        height: 35,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
+        marginTop: 10
     },
 });

@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Dimensions, TouchableOpacity, Image,  } from 'react-native';
-import Background from '../assets/images/find-bg.svg'
-import userService from '../services/user.service';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Image, Modal, Text  } from 'react-native';
+import Background from '../../assets/images/find-bg.svg'
+import userService from '../../services/user.service';
 import { useSelector, useDispatch } from 'react-redux';
-import { setPartner, setReload, setStudyPartners, setSize, setCount } from '../actions/partnerActions';
+import { setPartner, setReload, setStudyPartners, setSize, setCount } from '../../actions/partnerActions';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -11,12 +11,14 @@ import {
     Poppins_600SemiBold,
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
-import BottomNav from '../components/BottomNav';
-import UserInfo from '../components/UserInfo';
-import Stats from '../components/Stats';
-import Loading from '../components/Loading';
-import mlService from '../services/ml.service';
-  export default function FindPartner({navigation}) {
+import BottomNav from '../../components/BottomNav';
+import UserInfo from '../../components/UserInfo';
+import Stats from '../../components/Stats';
+import Loading from '../../components/Loading';
+import mlService from '../../services/ml.service';
+import invitationService from '../../services/invitation.service';
+  export default function UserFindPartner({navigation, route}) {
+    const {session} = route.params
     const dispatch = useDispatch()
     const [isLoading, setLoading] = useState(true);
     const uuid_user = useSelector(state => state.user.uuid_user)
@@ -41,20 +43,52 @@ import mlService from '../services/ml.service';
     const uuid_partner = useSelector(state => state.partner.uuid_user)
     const count = useSelector(state => state.partner.count)
 
+    const [dupModal, setDupModal] = useState(false);
+
     useEffect(() => {
         if(reload) {
-            userService.loadStudyPartners(uuid_user)
-            .then(response => {
-                dispatch(setStudyPartners(response.data))
-                dispatch(setSize(response.data.length))
-                dispatch(setPartner(response.data[count]))
-                dispatch(setReload(false))
-            })
+            if(session == null) {
+                mlService.loadStudyPartners(uuid_user)
+                .then(response => {
+                    dispatch(setStudyPartners(response.data))
+                    dispatch(setSize(response.data.length))
+                    dispatch(setPartner(response.data[count]))
+                    dispatch(setReload(false))
+                })
+            } else {
+                mlService.loadGroupStudyPartners(session.users)
+                .then(response => {
+                    dispatch(setStudyPartners(response.data))
+                    dispatch(setSize(response.data.length))
+                    dispatch(setPartner(response.data[count]))
+                    dispatch(setReload(false))
+                })
+            }
+           
         }
     }, [])
 
+    const accept = () => {
+        if (session==null) {
+            navigation.navigate('UserChooseSession')
+        } else {
+            invitationService.sendInvitation(session.uuid_session,uuid_user, uuid_partner)
+            .then(response => {
+                console.log(response.data)
+                if(response.status == 200) {
+                    dispatch(setReload(true))
+                    navigation.navigate('UserDashboard')
+                } else {
+                    setDupModal(true)
+                }
+            }).catch(error=> {
+                setDupModal(true)
+            })
+
+        }
+    }
+
     const nextPartner = () => {
-        mlService.addToDataset(uuid_user, stats, false)
         if (count == resultSize-1) {
             dispatch(setPartner(studyPartners[0]))
             dispatch(setCount(0))
@@ -69,6 +103,19 @@ import mlService from '../services/ml.service';
     } else {
         return (
         <View style={styles.container}>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={dupModal}
+            >
+                <View style={styles.modalContainer}>
+                    <Text style={styles.text5}>An invitation has already been sent to this user!</Text>
+                    <TouchableOpacity style={styles.button3} onPress={() => setDupModal(false)}>
+                        <Text style={styles.buttontext}>Try Again</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+
             <View style={styles.half}>
                <Background
                    style={styles.background}
@@ -82,15 +129,15 @@ import mlService from '../services/ml.service';
                 
                 <Stats stats={stats} />
                 <View style={styles.btnContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('UserChooseSession')}>
+                    <TouchableOpacity onPress={accept}>
                             <Image
                             style={styles.images}
-                            source={require('../assets/images/check-button.png')} />
+                            source={require('../../assets/images/check-button.png')} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={nextPartner}>
                             <Image
                             style={styles.images}
-                            source={require('../assets/images/next.png')} />
+                            source={require('../../assets/images/next.png')} />
                     </TouchableOpacity>
                 </View>
             </View>

@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Platform, } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, Platform, Modal } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'
-import Background from '../assets/images/login-mobile-bg.svg'
+import Background from '../../assets/images/login-mobile-bg.svg'
 import AppLoading from 'expo-app-loading';
-import { changeImage } from '../actions/signUpActions';
+import { changeImage } from '../../actions/signUpActions';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faUserCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { Formik } from 'formik';
+import { useSelector, useDispatch } from 'react-redux';
 import { 
     useFonts,
     Poppins_400Regular,
@@ -15,7 +18,9 @@ import {
 
 
 export default function SignUpImageUpload({navigation}) { 
+    const dispatch = useDispatch()
     const [image, setImage] = useState(null);
+    const [openModal, setOpenModal] = useState(false);
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -23,9 +28,15 @@ export default function SignUpImageUpload({navigation}) {
         Poppins_700Bold,
     });
 
-    const handleSubmit = (values) => {
-        console.log(values)
-        navigation.navigate('SignUpSurveyIntro')     
+    const handleSubmit = () => {
+        if (image != null) {
+            navigation.navigate('SignUpSurveyIntro')   
+        } 
+        else {
+            setOpenModal(true)
+        }
+        console.log(image)
+       
     }
 
     const pickImage = async () => {
@@ -35,13 +46,14 @@ export default function SignUpImageUpload({navigation}) {
           aspect: [1,1],
           quality: 1,
         }).then((response => {
-            console.log(response)
-            setImage({
-                uri: response.uri,
-                name: uuid_user + '.jpg',
-                type: 'image/jpg',
-              }) 
-            dispatch(changeImage(response.uri))
+            if (!response.cancelled) {
+                console.log(response)
+                setImage({
+                    uri: response.uri,
+                }) 
+                dispatch(changeImage(response.uri))
+              }
+            
         }))    
     };    
 
@@ -51,19 +63,35 @@ export default function SignUpImageUpload({navigation}) {
     return (
         <Formik
             initialValues={{
-                interest:''
             }}
             onSubmit={handleSubmit}
         >
         {({ handleChange, handleBlur, handleSubmit,values }) => (
         <View style={styles.container}>
+            <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={openModal}
+                >
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.text4}>Image is Required.</Text>
+                        <TouchableOpacity style={styles.button3} onPress={() => setOpenModal(false)}>
+                            <Text style={styles.buttontext}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
             <View style={styles.half}>
                 <Background
                     style={styles.background}
                     resizeMode="cover" 
                 />
                 <View style={styles.imagecontainer}>
-                    {image && <Image source={{ uri: image }} style={{ width: 350, height: 300, marginBottom: 15}} />}   
+                    {image && 
+                        <Image source={image} style={{ width: 300, height: 300, borderRadius: 150}} />
+                    }   
+                    {!image &&
+                        <FontAwesomeIcon icon={faUserCircle} size={300} color={'#EF4765'}/>
+                    }
                     <TouchableOpacity
                         style={styles.button}
                         onPress={pickImage}
@@ -130,6 +158,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: '10%',
+        marginTop: 30
         
     },
 
@@ -155,5 +184,48 @@ const styles = StyleSheet.create({
         
         
     },
+
+    modalContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        marginTop: '70%',
+        margin: 20,
+        backgroundColor: "#F2F2F2",
+        borderRadius: 5,
+        padding: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+
+    text4: {
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#5E5E5E',
+        fontSize: 16,
+        alignItems: 'center',
+        
+    },
+
+    button3: {
+        backgroundColor: '#EF4765',
+        width: '40%',
+        height: 45,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
+        marginTop: 40
+    },
+
 
 });

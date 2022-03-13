@@ -3,9 +3,9 @@ import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image 
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import Background from '../assets/images/login-mobile-bg.svg'
-import LogoImg from '../assets/images/wl-logo2.png'
-import RadioButton from '../components/RadioButton';
+import Background from '../../assets/images/login-mobile-bg.svg'
+import LogoImg from '../../assets/images/wl-logo2.png'
+import RadioButton from '../../components/RadioButton';
 import { Formik } from 'formik';
 import { 
     useFonts,
@@ -15,7 +15,8 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 import { useDispatch } from 'react-redux';
-import { changeSchool } from '../actions/signUpActions';
+import { changeSchool } from '../../actions/signUpActions';
+import schema from '../../schemas/signUpSchool.schema'
 
 export default function SignUpSchool({navigation}) {
    
@@ -43,8 +44,9 @@ export default function SignUpSchool({navigation}) {
                 initialValues={{
                     university:''}}
                 onSubmit={handleSubmit}
+                validationSchema={schema}
             >
-                {({ handleChange, handleBlur, handleSubmit,values }) => (
+                {({ handleChange, handleBlur, handleSubmit,values, errors, touched }) => (
                     <View style={styles.container}>
                         <View style={styles.half}>
                             <Background
@@ -73,11 +75,13 @@ export default function SignUpSchool({navigation}) {
                                 placeholder="University"
                                 autoCapitalize="none"
                                 style={styles.textinput1}
-                                autoCapitalize="none"
                                 onChangeText={handleChange('university')}
                                 onBlur={handleBlur('university')}
                                 value={values.university}
                             />
+                            {errors.university && touched.university &&
+                            <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.university}</Text>
+                            }
                             <TouchableOpacity
                                 style={styles.button}
                                 onPress={handleSubmit}
