@@ -6,7 +6,8 @@ import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import sessionService from '../../services/session.service';
 import roomService from '../../services/room.service';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setReload } from '../../actions/partnerActions';
 import Moment from 'moment';
 import { 
     useFonts,
@@ -17,6 +18,7 @@ import {
   } from '@expo-google-fonts/poppins'
 import { Formik } from 'formik';
 import Loading from '../../components/Loading';
+import invitationService from '../../services/invitation.service';
 
   export default function UserCreateSession({navigation}) {
 
@@ -29,6 +31,9 @@ import Loading from '../../components/Loading';
     const [rooms, setRooms] = useState(null)
     const [openModal, setOpenModal] = useState(false);
     const uuid_user = useSelector(state => state.user.uuid_user)
+    const uuid_partner = useSelector(state => state.partner.uuid_user)
+    const [dupModal, setDupModal] = useState(false);
+    const dispatch = useDispatch()
 
     useEffect(() => {
        roomService.getRooms()
@@ -64,13 +69,25 @@ import Loading from '../../components/Loading';
     const handleSubmit = (values) => {
         sessionService.createSession(values.session_name, Moment(date).format('MMM D, YYYY'), selectedTime, uuid_user, selectedRoom)
         .then(response => {
+            console.log(response.status)
             if(response.status == 200) {
-                navigation.navigate('UserChooseSession')
-            } else if (response.status == 400) {
-                setOpenModal(true)
-            }
-            
+                console.log(response.data)
+                invitationService.sendInvitation(response.data.uuid_session,uuid_user, uuid_partner)
+                .then(response => {
+                    console.log(response.data)
+                    console.log(response.status)
+                    if(response.status == '200') {
+                        console.log("Status OK")
+                        dispatch(setReload(true))
+                        navigation.navigate('UserDashboard')
+                    } 
+                }).catch(error=> {
+                    console.log(error)
+                    setDupModal(true)
+                })
+            } 
         }).catch(error => {
+            console.log(error)
             setOpenModal(true)
         })
     }
@@ -85,28 +102,40 @@ import Loading from '../../components/Loading';
                 onSubmit={handleSubmit}
             >
             {({ handleChange, handleBlur, handleSubmit, values }) =>( 
-                 <View style={styles.container}>
-                 <Modal
-                     animationType="slide"
-                     transparent={true}
-                     visible={openModal}
-                 >
-                     <View style={styles.modalContainer}>
-                         <Text style={styles.text4}>Failed! The room seems to be taken or you have other sessions for the same date and time!</Text>
-                         <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
-                             <Text style={styles.buttontext}>Try Again</Text>
-                         </TouchableOpacity>
-                         <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("UserAllReservations")}>
-                             <Text style={styles.buttontext}>View Reservations</Text>
-                         </TouchableOpacity>
-                     </View>
-                 </Modal>
+                <View style={styles.container}>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={openModal}
+                    >
+                        <View style={styles.modalContainer}>
+                            <Text style={styles.text4}>Failed! The room seems to be taken or you have other sessions for the same date and time!</Text>
+                            <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                                <Text style={styles.buttontext}>Try Again</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("UserAllReservations")}>
+                                <Text style={styles.buttontext}>View Reservations</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={dupModal}
+                    >
+                        <View style={styles.modalContainer}>
+                            <Text style={styles.text4}>An invitation has already been sent to this user!</Text>
+                            <TouchableOpacity style={styles.button2} onPress={() => setDupModal(false)}>
+                                <Text style={styles.buttontext}>Try Again</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
                     <View style={styles.half}>
-                    <Background
-                        style={styles.background}
-                        resizeMode="cover" 
-                    />
-                    
+                        <Background
+                            style={styles.background}
+                            resizeMode="cover" 
+                        />
+                        
                     </View>
                     <View style={styles.header}>
                         <Text style={styles.text1}>Hello, Student!</Text>
@@ -190,7 +219,7 @@ import Loading from '../../components/Loading';
                                     style={styles.button}
                                     onPress={handleSubmit}
                                     >
-                                    <Text style={styles.buttontext}>Submit</Text>
+                                    <Text style={styles.buttontext}>Send Invitation</Text>
                                 </TouchableOpacity>
                         </View>
                     </View>   
@@ -303,7 +332,7 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#FE4D71',
-        width: '30%',
+        paddingHorizontal: 15,
         height: 45,
         borderRadius: 5,
         shadowRadius: 5,

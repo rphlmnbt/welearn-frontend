@@ -12,11 +12,6 @@ const addToDataset = (
         uuid_user,
         stats,
         out
-    }).then(response => {
-        console.log(response)
-    })
-    .catch(error => {
-        console.log(error)
     })
 }
 

@@ -70,7 +70,7 @@ import invitationService from '../../services/invitation.service';
 
     const accept = () => {
         if (session==null) {
-            navigation.navigate('UserChooseSession')
+            navigation.navigate('UserCreateSession')
         } else {
             invitationService.sendInvitation(session.uuid_session,uuid_user, uuid_partner)
             .then(response => {
@@ -78,9 +78,7 @@ import invitationService from '../../services/invitation.service';
                 if(response.status == 200) {
                     dispatch(setReload(true))
                     navigation.navigate('UserDashboard')
-                } else {
-                    setDupModal(true)
-                }
+                } 
             }).catch(error=> {
                 setDupModal(true)
             })
@@ -109,8 +107,8 @@ import invitationService from '../../services/invitation.service';
                 visible={dupModal}
             >
                 <View style={styles.modalContainer}>
-                    <Text style={styles.text5}>An invitation has already been sent to this user!</Text>
-                    <TouchableOpacity style={styles.button3} onPress={() => setDupModal(false)}>
+                    <Text style={styles.text1}>An invitation has already been sent to this user!</Text>
+                    <TouchableOpacity style={styles.button2} onPress={() => setDupModal(false)}>
                         <Text style={styles.buttontext}>Try Again</Text>
                     </TouchableOpacity>
                 </View>
@@ -152,6 +150,43 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    modalContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        marginTop: '40%',
+        margin: 20,
+        backgroundColor: "#F2F2F2",
+        borderRadius: 5,
+        padding: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    button2: {
+        backgroundColor: '#EF4765',
+        width: '50%',
+        height: 35,
+        borderRadius: 5,
+        shadowRadius: 5,
+        shadowOffset: {width:2, height:2},
+        shadowOpacity: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
+        marginTop: 10
+    },
+    buttontext: {
+        color: 'white',
+        fontFamily: 'Poppins_600SemiBold',
+        letterSpacing: 0.3,
+    },
     btnContainer: {
         display: 'flex',
         flexDirection: 'row',
