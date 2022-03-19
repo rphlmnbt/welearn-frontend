@@ -78,7 +78,7 @@ import UserList from '../../components/UserList';
                     <View style={styles.usersContainer}>
                         <Text style={styles.membersText}>Session Members</Text>
                         {users.map(element => {
-                            return  <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('UserReviewPartners', {uuid_partner: element.uuid_user})}>
+                            return  <TouchableOpacity key={element.uuid_invitation} onPress={() => navigation.navigate('UserPartnerDetails', {uuid_partner: element.uuid_user})}>
                                 <UserList element={element} />
                             </TouchableOpacity>
                                 
