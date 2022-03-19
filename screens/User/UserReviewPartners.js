@@ -16,6 +16,7 @@ import Stats from '../../components/Stats';
 import Loading from '../../components/Loading';
 import invitationService from '../../services/invitation.service';
 import mlService from '../../services/ml.service';
+import ratingService from '../../services/rating.service';
 
   export default function UserReviewPartners({route, navigation}) {
     const IMG_URL = API_URL +'/image/'
@@ -23,7 +24,9 @@ import mlService from '../../services/ml.service';
     const [user, setUser] = useState(null)
     const [profilePic, setProfilePic] = useState(null)
     const [stats, setStats] = useState(null)
+    const [openModal, setOpenModal] = useState(false);
     const { uuid_partner } = route.params;
+    const { uuid_session } = route.params;
     const uuid_user = useSelector(state => state.user.uuid_user)
 
     useEffect(() => {
@@ -42,13 +45,31 @@ import mlService from '../../services/ml.service';
     }, [])
 
     const rateTrue = () => {
-        mlService.addToDataset(uuid_user, stats, true)
-        navigation.goBack()
+        ratingService.rateUser(uuid_user, uuid_partner, true, uuid_session)
+        .then(async response => {
+            console.log(response)
+            await mlService.addToDataset(uuid_user, stats, true)
+            navigation.goBack()
+        })
+        .catch(error => {
+            setOpenModal(true)
+            console.log(error)
+        })
+        
     }
 
     const rateFalse = () => {
-        mlService.addToDataset(uuid_user, stats, false)
-        navigation.goBack()
+        ratingService.rateUser(uuid_user, uuid_partner, false, uuid_session)
+        .then(async response => {
+            console.log(response)
+            await mlService.addToDataset(uuid_user, stats, false)
+            navigation.goBack()
+        })
+        .catch(error => {
+            setOpenModal(true)
+            console.log(error)
+        })
+        
     }
 
     let [fontsLoaded] = useFonts({
@@ -62,6 +83,18 @@ import mlService from '../../services/ml.service';
     } else {
         return (
         <View style={styles.container}>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={openModal}
+            >
+                <View style={styles.modalContainer}>
+                    <Text style={styles.text4}>User has already been rated.</Text>
+                    <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                        <Text style={styles.buttontext}>Try Again</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
             <View style={styles.half}>
                <Background
                    style={styles.background}
