@@ -44,6 +44,7 @@ import { uploadImage } from '../../actions/userActions';
         if (image != null) {
             imageService.uploadImage(image, uuid_user)
             userService.uploadImage(uuid_user, image.name)
+            console.log(image)
         }
         return () => {
             // cancel the subscription
@@ -149,7 +150,7 @@ import { uploadImage } from '../../actions/userActions';
                     />
                 </View>
                 <View style={{marginTop: '45%'}}>
-                    <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive} />
+                    <UserInfo uuid={uuid_user} profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive} />
                 </View>
                 <View style={styles.settingsContainer}>
                     <Text style={styles.text4}>
@@ -230,7 +231,7 @@ const styles = StyleSheet.create({
         height: undefined,
         aspectRatio: 428/287,
         position: 'absolute',
-        top: '-25%'
+        top: '-30%'
     },
     text1 : {
         color: 'white',

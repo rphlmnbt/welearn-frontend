@@ -249,7 +249,7 @@ export default function SignUpSurvey({navigation}) {
                                     1 (Strongly Disagree) to 5 (Strongly Agree)
                                 </Text>
                             </View>
-                            <View style={{width:'80%'}}>
+                            <View style={{width:'100%'}}>
                                 <RadioButton data={data} onSelect={onSelect}/>
                             </View>
                         </ImageBackground>
