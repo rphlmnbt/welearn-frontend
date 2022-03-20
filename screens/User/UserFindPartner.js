@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '83%',
         padding: 25,
-        paddingBottom: 50,
+        paddingBottom: 60,
         position: 'absolute',
         bottom: 0,
         borderTopRightRadius: 30,
@@ -267,10 +267,10 @@ const styles = StyleSheet.create({
 
     },
     images: {
-      width: 80,
-      height: 80,
-      margin: 30,
-      marginTop: 20
+      width: undefined,
+      aspectRatio: 1,
+      height: '35%',
+      marginHorizontal: 20
     },
 
     user: {
