@@ -249,7 +249,7 @@ export default function SignUpSurvey({navigation}) {
                                     1 (Strongly Disagree) to 5 (Strongly Agree)
                                 </Text>
                             </View>
-                            <View style={{width:'100%'}}>
+                            <View style={{width:'80%'}}>
                                 <RadioButton data={data} onSelect={onSelect}/>
                             </View>
                         </ImageBackground>
@@ -275,7 +275,7 @@ const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     btnContainer: {
-        paddingTop: 60,
+        paddingTop: 10,
         justifyContent: 'center',
         alignItems: 'center',
     },
