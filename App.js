@@ -78,7 +78,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={Header}
-          initialRouteName="LoginHome"
+          initialRouteName="SignUpCourse"
         >
           <Stack.Screen 
             name="LoginHome" 

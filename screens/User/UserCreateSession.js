@@ -35,6 +35,7 @@ import invitationService from '../../services/invitation.service';
     const [dupModal, setDupModal] = useState(false);
     const [pickerModal, setPickerModal] = useState(false)
     const [timeModal, setTimeModal] = useState(false)
+    const [incModal, setIncModal] = useState(false)
     const [dateModal, setDateModal] = useState(false)
     const dispatch = useDispatch()
 
@@ -89,41 +90,49 @@ import invitationService from '../../services/invitation.service';
     });
 
     const handleSubmit = (values) => {
-        if (Platform.OS == 'ios') {
-            sessionService.createSession(values.session_name, Moment(date).format('MMM D, YYYY'), selectedTime, uuid_user, selectedRoom.uuid_room)
-            .then(response => {
-                if(response.status == 200) {
-                    invitationService.sendInvitation(response.data.uuid_session,uuid_user, uuid_partner)
-                    .then(response => {
-                        if(response.status == '200') {
-                            dispatch(setReload(true))
-                            navigation.navigate('UserDashboard')
-                        } 
-                    }).catch(error=> {
-                        setDupModal(true)
-                    })
-                } 
-            }).catch(error => {
-                setOpenModal(true)
-            })
+        if (
+            values.session_name != null &&
+            selectedRoom.room_name != "Pick Room"
+        ) {
+            if (Platform.OS == 'ios') {
+                sessionService.createSession(values.session_name, Moment(date).format('MMM D, YYYY'), selectedTime, uuid_user, selectedRoom.uuid_room)
+                .then(response => {
+                    if(response.status == 200) {
+                        invitationService.sendInvitation(response.data.uuid_session,uuid_user, uuid_partner)
+                        .then(response => {
+                            if(response.status == '200') {
+                                dispatch(setReload(true))
+                                navigation.navigate('UserDashboard')
+                            } 
+                        }).catch(error=> {
+                            setDupModal(true)
+                        })
+                    } 
+                }).catch(error => {
+                    setOpenModal(true)
+                })
+            } else {
+                sessionService.createSession(values.session_name, Moment(date).format('MMM D, YYYY'), selectedTime, uuid_user, selectedRoom)
+                .then(response => {
+                    if(response.status == 200) {
+                        invitationService.sendInvitation(response.data.uuid_session,uuid_user, uuid_partner)
+                        .then(response => {
+                            if(response.status == '200') {
+                                dispatch(setReload(true))
+                                navigation.navigate('UserDashboard')
+                            } 
+                        }).catch(error=> {
+                            setDupModal(true)
+                        })
+                    } 
+                }).catch(error => {
+                    setOpenModal(true)
+                })
+            } 
         } else {
-            sessionService.createSession(values.session_name, Moment(date).format('MMM D, YYYY'), selectedTime, uuid_user, selectedRoom)
-            .then(response => {
-                if(response.status == 200) {
-                    invitationService.sendInvitation(response.data.uuid_session,uuid_user, uuid_partner)
-                    .then(response => {
-                        if(response.status == '200') {
-                            dispatch(setReload(true))
-                            navigation.navigate('UserDashboard')
-                        } 
-                    }).catch(error=> {
-                        setDupModal(true)
-                    })
-                } 
-            }).catch(error => {
-                setOpenModal(true)
-            })
-        } 
+            setIncModal(true)
+        }
+        
     }
     if (!fontsLoaded || isLoading) {
         return <Loading />
@@ -150,6 +159,20 @@ import invitationService from '../../services/invitation.service';
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("UserAllReservations")}>
                                     <Text style={styles.buttontext}>View Reservations</Text>
+                                </TouchableOpacity>
+                            </View>
+                       </View>
+                    </Modal>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={incModal}
+                    >
+                       <View style={styles.modalParent}>
+                        <View style={styles.modalContainer}>
+                                <Text style={styles.text4}>Failed! Please fill up all values!</Text>
+                                <TouchableOpacity style={styles.button2} onPress={() => setIncModal(false)}>
+                                    <Text style={styles.buttontext}>Try Again</Text>
                                 </TouchableOpacity>
                             </View>
                        </View>

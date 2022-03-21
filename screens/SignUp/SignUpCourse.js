@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, TouchableNativeFeedbackBase} from 'react-native';
+import { Modal, StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, TouchableNativeFeedbackBase, Platform} from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
@@ -22,7 +22,13 @@ import schema from '../../schemas/signUpCourse.schema'
 export default function SignUpCourse({navigation}) {
 
     const [selectedYear, setSelectedYear] = useState();
-
+    const [pickerModal, setPickerModal] = useState(false)
+    const yearLevels = [
+        {value: "1st Year"},
+        {value: "2nd Year"},
+        {value: "3rd Year"},
+        {value: "4th Year"},
+    ]
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,
@@ -47,7 +53,7 @@ export default function SignUpCourse({navigation}) {
             <Formik
                 initialValues={{
                     course:'',
-                    yearLevel:''
+                    yearLevel:'1st Year'
                 }}
                 onSubmit={handleSubmit}
                 validationSchema={schema}
@@ -86,22 +92,66 @@ export default function SignUpCourse({navigation}) {
                                 value={values.course}
                             />
                             {errors.course && touched.course &&
-                            <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.course}</Text>
+                                <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.course}</Text>
                             }
-                            <View style={styles.picker}>
-                            <Picker
-                            selectedValue={values.yearLevel}
-                            onValueChange={handleChange('yearLevel')}>
-                            <Picker.Item label="Year Level" value="select" color="#ACACAC" />
-                            <Picker.Item label="First Year" value="1st Year"/>
-                            <Picker.Item label="Second Year" value="2nd Year"/>
-                            <Picker.Item label="Third Year" value="3rd Year"/>
-                            <Picker.Item label="Fourth Year" value="4th Year"/>
-                            </Picker>
-                            {errors.yearLevel && touched.yearLevel &&
-                            <Text style={{ fontSize: 12, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.yearLevel}</Text>
-                            } 
-                            </View>
+                            {Platform.OS == 'android' &&
+                                <View style={styles.picker}>
+                                    <Picker
+                                        selectedValue={values.yearLevel}
+                                        onValueChange={handleChange('yearLevel')}
+                                    >
+                                        <Picker.Item label="1st Year" value="1st Year"/>
+                                        <Picker.Item label="2nd Year" value="2nd Year"/>
+                                        <Picker.Item label="3rd Year" value="3rd Year"/>
+                                        <Picker.Item label="4th Year" value="4th Year"/>
+                                    </Picker>
+                                    {errors.yearLevel && touched.yearLevel &&
+                                        <Text style={{ fontSize: 12, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.yearLevel}</Text>
+                                    } 
+                                </View>
+                            }
+                            { Platform.OS == 'ios'&& 
+                                <View style={styles.textinput1}>
+                                    <TouchableOpacity
+                                        onPress={() => setPickerModal(true)}
+                                    >
+                                        <Text  >{values.yearLevel}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            }
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={pickerModal}
+                            >
+                                
+                                <View style={styles.modalParent}>
+                                    <View style={styles.modalContainer}>
+                                        <View style={{width: '100%'}}>
+                                            {yearLevels.map(element => {
+                                                    return <TouchableOpacity
+                                                                style={styles.pickerItem}
+                                                                key={element.value}
+                                                                onPress={() => {
+                                                                    values.yearLevel = element.value
+                                                                    setPickerModal(false)
+                                                                }}
+                                                            >
+                                                                <Text style={styles.text3}>{element.value}</Text>
+                                                            </TouchableOpacity>
+                                            })}
+                                        </View>
+                                        <View style={[styles.buttonstyle, {width: '100%', borderTopWidth: 1, borderColor: '#ACACAC'}]}>
+                                                <TouchableOpacity
+                                                    style={styles.button}
+                                                    onPress={() => setPickerModal(false)}
+                                                >
+                                                    <Text style={styles.buttontext}>Go Back</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                    </View>
+                                </View>
+                            </Modal>
                             
                             <TouchableOpacity
                                 style={styles.button}
@@ -124,6 +174,14 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    pickerItem: {
+        width: '100%',
+        padding: 8,
+        justifyContent: 'center',
+        //alignItems: 'center',
+        borderTopWidth: 1,
+        borderColor: '#ACACAC'
+    },
     container : {
         flexDirection: 'column', 
         alignItems: 'center', 
@@ -225,5 +283,28 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 15,
         height: 48
-    }
+    },
+    modalParent: {
+        flex: 1, 
+        justifyContent: "center", 
+        alignItems: "center",
+    },
+    modalContainer: {
+        width: '80%',
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        margin: 20,
+        backgroundColor: "#F2F2F2",
+        borderRadius: 5,
+        padding: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
 })
