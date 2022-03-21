@@ -41,7 +41,6 @@ const uploadImage = (
     return axios.put(AUTH_URL + `/update/${uuid_user}`, {
         src
     }).then(response => {
-        console.log(response.data)
     }).catch(error => {
         console.log(error)
     })

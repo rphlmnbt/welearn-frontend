@@ -78,7 +78,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={Header}
-          initialRouteName="LoginHome"
+          initialRouteName="SignUpCourse"
         >
           <Stack.Screen 
             name="LoginHome" 
@@ -164,7 +164,8 @@ export default function App() {
           <Stack.Screen 
             name="UserCreateSession" 
             component={UserCreateSession} 
-            options = {{headerTitle: () => null}}
+            options = {{headerTitle: () => null,
+              headerLeft: () => <BackWhite />}}
           />
           <Stack.Screen 
             name="PickStudyRoom" 

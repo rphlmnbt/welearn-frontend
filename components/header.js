@@ -11,10 +11,9 @@ const Header = {
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
-        fontWeight: 'bold',
-        color: 'black'
+        color: 'transparent'
     },
-    headerShadowVisible: false
+    headerShadowVisible: false,
     
 }
 

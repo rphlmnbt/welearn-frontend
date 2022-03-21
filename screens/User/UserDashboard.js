@@ -45,7 +45,7 @@ import imageService from '../../services/image.service';
                     />
                 </View>
                 <View style={{marginTop: '45%'}}>
-                    <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive} />
+                    <UserInfo profilePic={profilePic} uuid={uuid_user} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={isActive} />
                 </View>
                 <Stats stats={stats} />
                 <BottomNav /> 
@@ -75,6 +75,6 @@ const styles = StyleSheet.create({
         height: undefined,
         aspectRatio: 428/287,
         position: 'absolute',
-        top: '-25%'
+        top: '-30%'
     }
 });

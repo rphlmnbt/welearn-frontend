@@ -275,7 +275,7 @@ const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     btnContainer: {
-        paddingTop: 60,
+        paddingTop: 10,
         justifyContent: 'center',
         alignItems: 'center',
     },

@@ -22,8 +22,10 @@ import schema from '../../schemas/signUpBirth.schema';
 export default function SignUpBirth({navigation}) {
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
+    const [display, setDisplay] = useState('default')
     const [mode, setMode] = useState('date');
     const [gender, setGender] = useState()
+    const [visible, setVisible] = useState(true)
     const dispatch = useDispatch()
 
     let [fontsLoaded] = useFonts({
@@ -32,17 +34,26 @@ export default function SignUpBirth({navigation}) {
         Poppins_600SemiBold,
         Poppins_700Bold,
     });
+
+    useEffect(() => {
+        if(Platform.OS === 'ios'){
+            setDisplay('spinner')
+        } 
+    }, [])
+
+
     const data = [
         { value: 'Male' },
         { value: 'Female' }
     ];
 
     const showMode = (currentMode) => {
-        setShow(true);
+        setShow(!show);
+        setVisible(!visible)
         setMode(currentMode);
     };
     
-      const showDatepicker = () => {
+    const showDatepicker = () => {
         showMode('date');
     };
 
@@ -53,9 +64,12 @@ export default function SignUpBirth({navigation}) {
     };
 
     const handleSubmit = (values) => {
-        values.birthDate = values.birthDate.toLocaleDateString()
-        console.log(values)
-        dispatch(changeBirth(values))
+        const newValues = {
+            gender: values.gender,
+            birthDate: date.toLocaleDateString()
+        }
+        console.log(newValues)
+        dispatch(changeBirth(newValues))
         navigation.navigate('SignUpEmail')
         
     }
@@ -103,30 +117,49 @@ export default function SignUpBirth({navigation}) {
                             >
                                 <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
                             </TouchableOpacity>
-                            {errors.birthDate && touched.birthDate &&
-                                <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.birthDate}</Text>
-                            }
-                            <RadioButton data={data} onSelect={(childData) =>{
-                                setGender(childData)
-                                setFieldValue('gender', childData)
-                            }}/>
-                             {errors.gender && touched.gender &&
-                                <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.gender}</Text>
-                            }
-                            <TouchableOpacity
-                                style={styles.button}
-                                onPress={handleSubmit}
-                            >
-                                <Text style={styles.buttontext}> Continue</Text>
-                            </TouchableOpacity>
-                            {show && (
-                                <DateTimePicker
-                                testID="dateTimePicker"
-                                value={values.birthDate}
-                                display="default"
-                                onChange={onChange}
+                            {show && Platform.OS == 'ios' && (
+                               <View>
+                                    <DateTimePicker
+                                        testID="dateTimePicker"
+                                        value={date}
+                                        display={display}
+                                        onChange={onChange}
+                                        style={{backgroundColor: 'white'}}
+                                    />
+                                    <TouchableOpacity
+                                            style={styles.button}
+                                            onPress={showDatepicker}
+                                        >
+                                            <Text style={styles.buttontext}> Choose</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                            {show && Platform.OS == 'android' && (
+                               <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={date}
+                                    display={display}
+                                    onChange={onChange}
+                                    style={{backgroundColor: 'white'}}
                                 />
                             )}
+                            { ((visible && Platform.OS === 'ios') || Platform.OS ==='android') &&
+                                <View>
+                                    <RadioButton data={data} onSelect={(childData) =>{
+                                        setGender(childData)
+                                        setFieldValue('gender', childData)
+                                    }}/>
+                                    {errors.gender && touched.gender &&
+                                        <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.gender}</Text>
+                                    }
+                                    <TouchableOpacity
+                                        style={styles.button}
+                                        onPress={handleSubmit}
+                                    >
+                                        <Text style={styles.buttontext}> Continue</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            }
                         </View>
                     </View>     
                 )}

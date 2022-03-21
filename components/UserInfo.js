@@ -1,12 +1,26 @@
-import React from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import React, { useEffect } from 'react'
+import { StyleSheet, Text, View, Image, Platform } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
+import {API_URL} from '@env'
+
 export default function UserInfo(props) {
+
+    const IMG_URL = API_URL +'/image/'
+
 
     return (
         <View style={styles.header}>
-            {props.profilePic != null &&
+            {props.profilePic != null && Platform.OS === 'ios' &&
+                <Image
+                    style={styles.image}
+                    source={{
+                        //uri: IMG_URL +  props.uuid + '?' + new Date()
+                        uri: props.profilePic
+                    }}
+                />
+            }
+            {props.profilePic != null && Platform.OS === 'android' &&
                 <Image
                     style={styles.image}
                     source={{

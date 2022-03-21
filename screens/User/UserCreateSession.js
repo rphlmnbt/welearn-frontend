@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, TextInput, Modal  } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Image, TextInput, Modal, Platform  } from 'react-native';
 import Background from '../../assets/images/find-bg.svg'
 import Room from '../../assets/images/room.png'
 import {Picker} from '@react-native-picker/picker';
@@ -22,8 +22,8 @@ import invitationService from '../../services/invitation.service';
 
   export default function UserCreateSession({navigation}) {
 
-    const [selectedRoom, setSelectedRoom] = useState();
-    const [selectedTime, setSelectedTime] = useState();
+    const [selectedRoom, setSelectedRoom] = useState({room_name: "Pick Room"});
+    const [selectedTime, setSelectedTime] = useState('7:00 AM to 8:00 AM');
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
     const [mode, setMode] = useState('date');
@@ -33,6 +33,10 @@ import invitationService from '../../services/invitation.service';
     const uuid_user = useSelector(state => state.user.uuid_user)
     const uuid_partner = useSelector(state => state.partner.uuid_user)
     const [dupModal, setDupModal] = useState(false);
+    const [pickerModal, setPickerModal] = useState(false)
+    const [timeModal, setTimeModal] = useState(false)
+    const [incModal, setIncModal] = useState(false)
+    const [dateModal, setDateModal] = useState(false)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -43,6 +47,21 @@ import invitationService from '../../services/invitation.service';
        })
     }, [])
 
+    const time = [
+        {value: "7:00 AM to 8:00 AM"},
+        {value: "8:00 AM to 9:00 AM"},
+        {value: "9:00 AM to 10:00 AM"},
+        {value: "10:00 AM to 11:00 AM"},
+        {value: "11:00 AM to 12:00 PM"},
+        {value: "12:00 PM to 1:00 PM"},
+        {value: "1:00 PM to 2:00 PM"},
+        {value: "2:00 PM to 3:00 PM"},
+        {value: "3:00 PM to 4:00 PM"},
+        {value: "4:00 PM to 5:00 PM"},
+        {value: "5:00 PM to 6:00 PM"},
+        {value: "6:00 PM to 7:00 PM"},
+    ]
+
     const showMode = (currentMode) => {
         setShow(true);
         setMode(currentMode);
@@ -51,6 +70,10 @@ import invitationService from '../../services/invitation.service';
     const showDatepicker = () => {
         showMode('date');
     };
+
+    const showPicker = () => {
+        setPickerModal(!pickerModal)
+    }
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -67,29 +90,49 @@ import invitationService from '../../services/invitation.service';
     });
 
     const handleSubmit = (values) => {
-        sessionService.createSession(values.session_name, Moment(date).format('MMM D, YYYY'), selectedTime, uuid_user, selectedRoom)
-        .then(response => {
-            console.log(response.status)
-            if(response.status == 200) {
-                console.log(response.data)
-                invitationService.sendInvitation(response.data.uuid_session,uuid_user, uuid_partner)
+        if (
+            values.session_name != null &&
+            selectedRoom.room_name != "Pick Room"
+        ) {
+            if (Platform.OS == 'ios') {
+                sessionService.createSession(values.session_name, Moment(date).format('MMM D, YYYY'), selectedTime, uuid_user, selectedRoom.uuid_room)
                 .then(response => {
-                    console.log(response.data)
-                    console.log(response.status)
-                    if(response.status == '200') {
-                        console.log("Status OK")
-                        dispatch(setReload(true))
-                        navigation.navigate('UserDashboard')
+                    if(response.status == 200) {
+                        invitationService.sendInvitation(response.data.uuid_session,uuid_user, uuid_partner)
+                        .then(response => {
+                            if(response.status == '200') {
+                                dispatch(setReload(true))
+                                navigation.navigate('UserDashboard')
+                            } 
+                        }).catch(error=> {
+                            setDupModal(true)
+                        })
                     } 
-                }).catch(error=> {
-                    console.log(error)
-                    setDupModal(true)
+                }).catch(error => {
+                    setOpenModal(true)
+                })
+            } else {
+                sessionService.createSession(values.session_name, Moment(date).format('MMM D, YYYY'), selectedTime, uuid_user, selectedRoom)
+                .then(response => {
+                    if(response.status == 200) {
+                        invitationService.sendInvitation(response.data.uuid_session,uuid_user, uuid_partner)
+                        .then(response => {
+                            if(response.status == '200') {
+                                dispatch(setReload(true))
+                                navigation.navigate('UserDashboard')
+                            } 
+                        }).catch(error=> {
+                            setDupModal(true)
+                        })
+                    } 
+                }).catch(error => {
+                    setOpenModal(true)
                 })
             } 
-        }).catch(error => {
-            console.log(error)
-            setOpenModal(true)
-        })
+        } else {
+            setIncModal(true)
+        }
+        
     }
     if (!fontsLoaded || isLoading) {
         return <Loading />
@@ -108,26 +151,44 @@ import invitationService from '../../services/invitation.service';
                         transparent={true}
                         visible={openModal}
                     >
+                       <View style={styles.modalParent}>
                         <View style={styles.modalContainer}>
-                            <Text style={styles.text4}>Failed! The room seems to be taken or you have other sessions for the same date and time!</Text>
-                            <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
-                                <Text style={styles.buttontext}>Try Again</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("UserAllReservations")}>
-                                <Text style={styles.buttontext}>View Reservations</Text>
-                            </TouchableOpacity>
-                        </View>
+                                <Text style={styles.text4}>Failed! The room seems to be taken or you have other sessions for the same date and time!</Text>
+                                <TouchableOpacity style={styles.button2} onPress={() => setOpenModal(false)}>
+                                    <Text style={styles.buttontext}>Try Again</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("UserAllReservations")}>
+                                    <Text style={styles.buttontext}>View Reservations</Text>
+                                </TouchableOpacity>
+                            </View>
+                       </View>
+                    </Modal>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={incModal}
+                    >
+                       <View style={styles.modalParent}>
+                        <View style={styles.modalContainer}>
+                                <Text style={styles.text4}>Failed! Please fill up all values!</Text>
+                                <TouchableOpacity style={styles.button2} onPress={() => setIncModal(false)}>
+                                    <Text style={styles.buttontext}>Try Again</Text>
+                                </TouchableOpacity>
+                            </View>
+                       </View>
                     </Modal>
                     <Modal
                         animationType="slide"
                         transparent={true}
                         visible={dupModal}
                     >
-                        <View style={styles.modalContainer}>
-                            <Text style={styles.text4}>An invitation has already been sent to this user!</Text>
-                            <TouchableOpacity style={styles.button2} onPress={() => setDupModal(false)}>
-                                <Text style={styles.buttontext}>Try Again</Text>
-                            </TouchableOpacity>
+                        <View style={styles.modalParent}>
+                            <View style={styles.modalContainer}>
+                                <Text style={styles.text4}>An invitation has already been sent to this user!</Text>
+                                <TouchableOpacity style={styles.button2} onPress={() => setDupModal(false)}>
+                                    <Text style={styles.buttontext}>Try Again</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </Modal>
                     <View style={styles.half}>
@@ -138,7 +199,6 @@ import invitationService from '../../services/invitation.service';
                         
                     </View>
                     <View style={styles.header}>
-                        <Text style={styles.text1}>Hello, Student!</Text>
                         <Text style={styles.text2}>Pick your discussion Room</Text>
                         <Image
                             source={Room}
@@ -160,60 +220,188 @@ import invitationService from '../../services/invitation.service';
                         <Text style={styles.text3}>
                         Room Number
                         </Text>
-                        <View style={styles.picker}>
-                            <Picker
-                            selectedValue={selectedRoom}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setSelectedRoom(itemValue)
-                            }>
-                                <Picker.Item label="Room Number" value="select" color="#ACACAC" />
-                                {rooms.map(element => {
-                                    return <Picker.Item key={element.uuid_room} label={element.room_name} value={element.uuid_room} color="black" />
-                                })}
-                            </Picker> 
-                        </View>
+                        { Platform.OS == 'ios'&& 
+                            <View style={styles.picker}>
+                                <TouchableOpacity
+                                    onPress={showPicker}
+                                >
+                                    <Text style={styles.textinput2} >{selectedRoom.room_name|| "Pick Room"}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        }
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={pickerModal}
+                        >
+                            
+                            <View style={styles.modalParent}>
+                                <View style={styles.modalContainer}>
+                                    <View style={{width: '100%'}}>
+                                        {rooms.map(element => {
+                                                return <TouchableOpacity
+                                                            style={styles.pickerItem}
+                                                            key={element.uuid_room}
+                                                            onPress={() => {
+                                                                setSelectedRoom(element)
+                                                                setPickerModal(false)
+                                                            }}
+                                                        >
+                                                            <Text style={styles.text3}>{element.room_name}</Text>
+                                                        </TouchableOpacity>
+                                        })}
+                                    </View>
+                                    <View style={[styles.buttonstyle, {width: '100%', borderTopWidth: 1, borderColor: '#ACACAC'}]}>
+                                            <TouchableOpacity
+                                                style={styles.button}
+                                                onPress={showPicker}
+                                            >
+                                                <Text style={styles.buttontext}>Go Back</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                </View>
+                            </View>
+                        </Modal>
+                        { Platform.OS == 'android' &&
+                             <View style={styles.picker}>
+                                <Picker
+                                selectedValue={selectedRoom}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setSelectedRoom(itemValue)
+                                }>
+                                    <Picker.Item label="Room Number" value="select" />
+                                    {rooms.map(element => {
+                                        return <Picker.Item key={element.uuid_room} label={element.room_name} value={element.uuid_room} color="black" />
+                                    })}
+                                </Picker> 
+                            </View>
+                        }
+                        
                         <Text style={styles.text3}>
-                        Date
+                            Date
                         </Text>
-                        <TouchableOpacity
+                        {Platform.OS == 'android' && 
+                            <TouchableOpacity
                                 style={styles.datePicker}
                                 onPress={showDatepicker}
                             >
                                 <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
                             </TouchableOpacity>
-                            {show && (
-                                <DateTimePicker
-                                testID="dateTimePicker"
-                                value={date}
-                                mode={mode}
-                                display="default"
-                                onChange={onChange}
-                                />
-                            )}
+                        }
+                        {show && Platform.OS == 'android' && (
+                            <DateTimePicker
+                            testID="dateTimePicker"
+                            value={date}
+                            mode={mode}
+                            display="default"
+                            onChange={onChange}
+                            />
+                        )}
+                        {Platform.OS == 'ios' && 
+                            <TouchableOpacity
+                                style={styles.datePicker}
+                                onPress={() => setDateModal(true)}
+                            >
+                                <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
+                            </TouchableOpacity>
+                        }
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={dateModal}
+                        >
+                            
+                            <View style={styles.modalParent}>
+                                <View style={styles.modalContainer}>
+                                    <View style={{width: '100%'}}>
+                                        <DateTimePicker
+                                            testID="dateTimePicker"
+                                            value={date}
+                                            display='spinner'
+                                            onChange={onChange}
+                                            themeVariant="light"
+                                        />
+                                        <TouchableOpacity
+                                                style={styles.button}
+                                                onPress={() => setDateModal(false)}
+                                            >
+                                                <Text style={styles.buttontext}> Choose</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                        </Modal>
                         <Text style={styles.text3}>
                         Time
                         </Text>
-                        <View style={styles.picker}>
-                            <Picker
-                            selectedValue={selectedTime}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setSelectedTime(itemValue)
-                            }>
-                                <Picker.Item label="Time" value="select" color="#ACACAC" />
-                                <Picker.Item label="7:00 AM to 8:00 AM" value="7:00 AM to 8:00 AM"/>
-                                <Picker.Item label="8:00 AM to 9:00 AM" value="8:00 AM to 9:00 AM"/>
-                                <Picker.Item label="9:00 AM to 10:00 AM" value="9:00 AM to 10:00 AM"/>
-                                <Picker.Item label="10:00 AM to 11:00 AM" value="10:00 AM to 11:00 AM"/>
-                                <Picker.Item label="11:00 AM to 12:00 PM" value="11:00 AM to 12:00 PM"/>
-                                <Picker.Item label="12:00 PM to 1:00 PM" value="12:00 PM to 1:00 PM"/>
-                                <Picker.Item label="1:00 PM to 2:00 PM" value="1:00 PM to 2:00 PM"/>
-                                <Picker.Item label="2:00 PM to 3:00 PM" value="2:00 PM to 3:00 PM"/>
-                                <Picker.Item label="3:00 PM to 4:00 PM" value="3:00 PM to 4:00 PM"/>
-                                <Picker.Item label="4:00 PM to 5:00 PM" value="4:00 PM to 5:00 PM"/>
-                                <Picker.Item label="5:00 PM to 6:00 PM" value="5:00 PM to 6:00 PM"/>
-                                <Picker.Item label="6:00 PM to 7:00 PM" value="6:00 PM to 7:00 PM"/>
-                            </Picker> 
-                        </View>
+                        {Platform.OS == 'android' &&
+                            <View style={styles.picker}>
+                                <Picker
+                                selectedValue={selectedTime}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setSelectedTime(itemValue)
+                                }>
+                                    <Picker.Item label="7:00 AM to 8:00 AM" value="7:00 AM to 8:00 AM"/>
+                                    <Picker.Item label="8:00 AM to 9:00 AM" value="8:00 AM to 9:00 AM"/>
+                                    <Picker.Item label="9:00 AM to 10:00 AM" value="9:00 AM to 10:00 AM"/>
+                                    <Picker.Item label="10:00 AM to 11:00 AM" value="10:00 AM to 11:00 AM"/>
+                                    <Picker.Item label="11:00 AM to 12:00 PM" value="11:00 AM to 12:00 PM"/>
+                                    <Picker.Item label="12:00 PM to 1:00 PM" value="12:00 PM to 1:00 PM"/>
+                                    <Picker.Item label="1:00 PM to 2:00 PM" value="1:00 PM to 2:00 PM"/>
+                                    <Picker.Item label="2:00 PM to 3:00 PM" value="2:00 PM to 3:00 PM"/>
+                                    <Picker.Item label="3:00 PM to 4:00 PM" value="3:00 PM to 4:00 PM"/>
+                                    <Picker.Item label="4:00 PM to 5:00 PM" value="4:00 PM to 5:00 PM"/>
+                                    <Picker.Item label="5:00 PM to 6:00 PM" value="5:00 PM to 6:00 PM"/>
+                                    <Picker.Item label="6:00 PM to 7:00 PM" value="6:00 PM to 7:00 PM"/>
+                                </Picker> 
+                            </View>
+                        }
+                        { Platform.OS == 'ios'&& 
+                            <View style={styles.picker}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setTimeModal(true)
+                                    }}
+                                >
+                                    <Text style={styles.textinput2} >{selectedTime}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        }
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={timeModal}
+                        >
+                            
+                            <View style={styles.modalParent}>
+                                <View style={styles.modalContainer}>
+                                    <View style={{width: '100%'}}>
+                                        {time.map(element => {
+                                                return <TouchableOpacity
+                                                            style={styles.pickerItem}
+                                                            key={element.value}
+                                                            onPress={() => {
+                                                                setSelectedTime(element.value)
+                                                                setTimeModal(false)
+                                                            }}
+                                                        >
+                                                            <Text style={styles.text3}>{element.value}</Text>
+                                                        </TouchableOpacity>
+                                        })}
+                                    </View>
+                                    <View style={[styles.buttonstyle, {width: '100%', borderTopWidth: 1, borderColor: '#ACACAC'}]}>
+                                            <TouchableOpacity
+                                                style={styles.button}
+                                                onPress={() => {
+                                                    setTimeModal(false)
+                                                }}
+                                            >
+                                                <Text style={styles.buttontext}>Go Back</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                </View>
+                            </View>
+                        </Modal>
                         <View style={styles.buttonstyle}>
                                 <TouchableOpacity
                                     style={styles.button}
@@ -234,6 +422,14 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    pickerItem: {
+        width: '100%',
+        padding: 8,
+        justifyContent: 'center',
+        //alignItems: 'center',
+        borderTopWidth: 1,
+        borderColor: '#ACACAC'
+    },
     container: { 
         flexDirection: 'column', 
         alignItems: 'center', 
@@ -317,7 +513,6 @@ const styles = StyleSheet.create({
       aspectRatio: 1,
       alignSelf: 'center',
       borderRadius: 10,
-      borderWidth: 1,
       marginBottom: 10
     },
 
@@ -377,12 +572,22 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         height: 42
     },
-
+    textinput2:{
+        padding:8,
+        width: '100%',
+        marginVertical: 5,
+        height: 42,
+    },
+    modalParent: {
+        flex: 1, 
+        justifyContent: "center", 
+        alignItems: "center",
+    },
     modalContainer: {
+        width: '80%',
         display: 'flex',
         justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        marginTop: '40%',
+        alignItems: 'center',
         margin: 20,
         backgroundColor: "#F2F2F2",
         borderRadius: 5,

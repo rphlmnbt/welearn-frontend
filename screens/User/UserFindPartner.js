@@ -46,25 +46,22 @@ import invitationService from '../../services/invitation.service';
     const [dupModal, setDupModal] = useState(false);
 
     useEffect(() => {
-        if(reload) {
-            if(session == null) {
-                mlService.loadStudyPartners(uuid_user)
-                .then(response => {
-                    dispatch(setStudyPartners(response.data))
-                    dispatch(setSize(response.data.length))
-                    dispatch(setPartner(response.data[count]))
-                    dispatch(setReload(false))
-                })
-            } else {
-                mlService.loadGroupStudyPartners(session.users)
-                .then(response => {
-                    dispatch(setStudyPartners(response.data))
-                    dispatch(setSize(response.data.length))
-                    dispatch(setPartner(response.data[count]))
-                    dispatch(setReload(false))
-                })
-            }
-           
+        if(session == null) {
+            mlService.loadStudyPartners(uuid_user)
+            .then(response => {
+                dispatch(setStudyPartners(response.data))
+                dispatch(setSize(response.data.length))
+                dispatch(setPartner(response.data[count]))
+                setLoading(false)
+            })
+        } else {
+            mlService.loadGroupStudyPartners(session.users)
+            .then(response => {
+                dispatch(setStudyPartners(response.data))
+                dispatch(setSize(response.data.length))
+                dispatch(setPartner(response.data[count]))
+                setLoading(false)
+            })
         }
     }, [])
 
@@ -96,7 +93,7 @@ import invitationService from '../../services/invitation.service';
         }
     }
 
-    if (!fontsLoaded || reload) {
+    if (!fontsLoaded || isLoading) {
         return <Loading />
     } else {
         return (
@@ -220,7 +217,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '83%',
         padding: 25,
-        paddingBottom: 50,
+        paddingBottom: 60,
         position: 'absolute',
         bottom: 0,
         borderTopRightRadius: 30,
@@ -267,10 +264,10 @@ const styles = StyleSheet.create({
 
     },
     images: {
-      width: 80,
-      height: 80,
-      margin: 30,
-      marginTop: 20
+      width: undefined,
+      aspectRatio: 1,
+      height: '35%',
+      marginHorizontal: 20
     },
 
     user: {

@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Dimensions, TouchableOpacity, Image, Text, Modal  } from 'react-native';
+import { Platform } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Image, Text, Modal, Animated  } from 'react-native';
 import Background from '../../assets/images/find-bg.svg'
 import userService from '../../services/user.service';
 import { useSelector, useDispatch } from 'react-redux';
 import { setPartner, setReload, setStudyPartners, setSize, setCount } from '../../actions/partnerActions';
 import { useFocusEffect } from '@react-navigation/native';
-import {Picker} from '@react-native-picker/picker';
+import {Picker, PickerIOS} from '@react-native-picker/picker';
+import IOSPicker from 'react-native-ios-picker'
 import Room from '../../assets/images/room-alt.png'
 import { 
     useFonts,
@@ -28,6 +30,11 @@ export default function UserSessionType({navigation}) {
     const [sessions, setSessions] = useState(null);
     const uuid_user = useSelector(state => state.user.uuid_user)
     const [openModal, setOpenModal] = useState(false);
+    const [pickerModal, setPickerModal] = useState(false);
+    const [pickerOpacity, setPickerOpacity] = useState(0)
+    const [opacityOfOtherItems, setOpacityOfOtherItems] = useState(1)
+    const [platform, setPlatform] = useState(null)
+
 
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
@@ -41,6 +48,11 @@ export default function UserSessionType({navigation}) {
                sessionService.getSessions(uuid_user)
                .then(response => {
                    setSessions(response.data)
+                    if(Platform.OS === 'ios'){
+                        setPlatform('ios')
+                    } else if (Platform.OS === 'android'){
+                        setPlatform('android')
+                    }
                    setLoading(false)
                })
         }, [])
@@ -49,89 +61,152 @@ export default function UserSessionType({navigation}) {
     const loadGroup = () => {
         if (selectedSession == null) {
             setOpenModal(true)
+        } else if (platform == 'ios'){
+            const session = sessions.filter(element => element.uuid_session.includes(selectedSession))
+            console.log(session)
+            navigation.navigate('UserFindPartner', {session : session})
         } else {
+            console.log(selectedSession)
             navigation.navigate('UserFindPartner', {session : selectedSession})
         }
 
-    } 
+    }
+    
+    const loadGroupIOS = (session) => {
+        console.log(session.session_name)
+        showPicker()
+        navigation.navigate('UserFindPartner', {session : selectedSession})
+    }
+    
+    const showPicker = () => {
+        setPickerModal(!pickerModal)
+    }
 
 
     if (!fontsLoaded || isLoading) {
         return <Loading />
     } else {
         return (
-        <View style={styles.container}>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={openModal}
-            >
-                <View style={styles.modalContainer}>
-                    <Text style={styles.text5}>Failed! There is no existing session at the moment. Please try creating a new session.</Text>
-                    <TouchableOpacity style={styles.button3} onPress={() => setOpenModal(false)}>
-                        <Text style={styles.buttontext}>Try Again</Text>
-                    </TouchableOpacity>
+            <View style={styles.container}>
+                 <View style={styles.half}>
+                    <Background
+                        style={styles.background}
+                        resizeMode="cover" 
+                    />
                 </View>
-            </Modal>
-            <View style={styles.half}>
-               <Background
-                   style={styles.background}
-                   resizeMode="cover" 
-               />
-            </View>
-            <View style={styles.userdetails}>
-                <Text style={styles.text4}>Find partners for an existing session</Text>
-                
-                <Image
-                    source={Room}
-                    style={styles.images}
-                />
-                <Text style={styles.text3}>
-                    Choose Session
-                </Text>
-                <View style={styles.picker}>
-                    <Picker
-                        selectedValue={selectedSession}
-                        onValueChange={(itemValue, itemIndex) =>
-                            setSelectedSession(itemValue)
-                    }>
-                        <Picker.Item label={"Pick A Session"} value={null} color="black" />
-                        {sessions.map(element => {
-                            return <Picker.Item key={element.uuid_session} label={element.session_name} value={element} color="black" />
-                        })}
-                    </Picker> 
-                   
-                </View>
-                <View style={styles.buttonstyle}>
-                <TouchableOpacity
-                        style={styles.button}
-                        onPress={loadGroup}
-                    >
-                        <Text style={styles.buttontext}>Pick Session</Text>
-                    </TouchableOpacity>
-                </View>
-                <View
-                    style={{
-                        borderBottomColor: '#ACACAC',
-                        borderBottomWidth: 2,
-                        marginVertical: 10,
-                        marginBottom: 20
-                    }}
-                />
-                <View style={styles.buttonstyle}>
-                        <Text style={styles.text4}>Find Study Partners for a new session</Text>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {navigation.navigate('UserFindPartner', {session : null})}}
-                        >
-                           <Text style={styles.buttontext}>New Session</Text>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={openModal}
+                >
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.text5}>Failed! There is no existing session at the moment. Please try creating a new session.</Text>
+                        <TouchableOpacity style={styles.button3} onPress={() => setOpenModal(false)}>
+                            <Text style={styles.buttontext}>Try Again</Text>
                         </TouchableOpacity>
-                </View>
+                    </View>
+                </Modal>
                 
+                    
+                   
+                <View style={styles.userdetails}>
+                    <Text style={styles.text4}>Find partners for an existing session</Text>
+                    
+                    <Image
+                        source={Room}
+                        style={styles.images}
+                    />
+                    <Text style={styles.text3}>
+                        Choose Session
+                    </Text>
+                    {platform == 'android' &&
+                        <View>
+                            <View style={styles.picker}>
+                                <Picker
+                                    selectedValue={selectedSession}
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        setSelectedSession(itemValue)
+                                }>
+                                    <Picker.Item label={"Pick A Session"} value={null} color="black" />
+                                    {sessions.map(element => {
+                                        return <Picker.Item key={element.uuid_session} label={element.session_name} value={element} color="black" />
+                                    })}
+                                </Picker> 
+                            </View>
+                            <View style={styles.buttonstyle}>
+                                <TouchableOpacity
+                                    style={styles.button}
+                                    onPress={loadGroup}
+                                >
+                                    <Text style={styles.buttontext}>Pick Session</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>    
+                    }
+                            
+                    {platform == 'ios' && 
+                        <View>
+                             <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={pickerModal}
+                            >
+                                
+                                <View style={styles.modalContainer}>
+                                    <View style={{width: '100%'}}>
+                                        {sessions.map(element => {
+                                                return <TouchableOpacity
+                                                            style={styles.pickerItem}
+                                                            key={element.uuid_session}
+                                                            onPress={() => loadGroupIOS(element)}
+                                                        >
+                                                            <Text style={styles.text3}>{element.session_name}</Text>
+                                                        </TouchableOpacity>
+                                        })}
+                                    </View>
+                                    <View style={[styles.buttonstyle, {width: '100%', borderTopWidth: 1, borderColor: '#ACACAC'}]}>
+                                            <TouchableOpacity
+                                                style={styles.button}
+                                                onPress={showPicker}
+                                            >
+                                                <Text style={styles.buttontext}>Go Back</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                </View>
+                            </Modal>
+                            <View style={styles.buttonstyle}>
+                                    <TouchableOpacity
+                                        style={styles.button}
+                                        onPress={showPicker}
+                                    >
+                                        <Text style={styles.buttontext}>Load Sessions</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>    
+                    }
+                   <View>
+                        <View
+                            style={{
+                                borderBottomColor: '#ACACAC',
+                                borderBottomWidth: 2,
+                                marginVertical: 10,
+                                marginBottom: 20
+                            }}
+                        />
+                        <View style={styles.buttonstyle}>
+                                <Text style={styles.text4}>Find Study Partners for a new session</Text>
+                                <TouchableOpacity
+                                    style={styles.button}
+                                    onPress={() => {navigation.navigate('UserFindPartner', {session : null})}}
+                                >
+                                <Text style={styles.buttontext}>New Session</Text>
+                                </TouchableOpacity>
+                        </View>
+                    </View>
+                
+                </View>     
+                <BottomNav/>   
             </View>
-            
-           <BottomNav/>   
-       </View>
         );
     }
 }
@@ -140,6 +215,14 @@ const vw = Dimensions.get('window').width;
 const vh = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    pickerItem: {
+        width: '100%',
+        padding: 8,
+        justifyContent: 'center',
+        //alignItems: 'center',
+        borderTopWidth: 1,
+        borderColor: '#ACACAC'
+    },
     container: { 
         flexDirection: 'column', 
         alignItems: 'center', 
@@ -226,7 +309,7 @@ const styles = StyleSheet.create({
       aspectRatio: 1,
       alignSelf: 'center',
       borderRadius: 10,
-      borderWidth: 1,
+      borderWidth: 0,
       marginBottom: 0
     },
 
@@ -256,7 +339,7 @@ const styles = StyleSheet.create({
     },
     button2: {
         backgroundColor: '#FE4D71',
-        width: undefined,
+        width: '90%',
         paddingHorizontal: 15,
         height: 45,
         borderRadius: 5,
