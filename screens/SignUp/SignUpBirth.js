@@ -117,7 +117,7 @@ export default function SignUpBirth({navigation}) {
                             >
                                 <Text style={styles.pickerText}>{date.toLocaleDateString()}</Text>
                             </TouchableOpacity>
-                            {show && (
+                            {show && Platform.OS == 'ios' && (
                                <View>
                                     <DateTimePicker
                                         testID="dateTimePicker"
@@ -133,6 +133,15 @@ export default function SignUpBirth({navigation}) {
                                             <Text style={styles.buttontext}> Choose</Text>
                                     </TouchableOpacity>
                                 </View>
+                            )}
+                            {show && Platform.OS == 'android' && (
+                               <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={date}
+                                    display={display}
+                                    onChange={onChange}
+                                    style={{backgroundColor: 'white'}}
+                                />
                             )}
                             { ((visible && Platform.OS === 'ios') || Platform.OS ==='android') &&
                                 <View>
