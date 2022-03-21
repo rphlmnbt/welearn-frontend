@@ -46,25 +46,22 @@ import invitationService from '../../services/invitation.service';
     const [dupModal, setDupModal] = useState(false);
 
     useEffect(() => {
-        if(reload) {
-            if(session == null) {
-                mlService.loadStudyPartners(uuid_user)
-                .then(response => {
-                    dispatch(setStudyPartners(response.data))
-                    dispatch(setSize(response.data.length))
-                    dispatch(setPartner(response.data[count]))
-                    dispatch(setReload(false))
-                })
-            } else {
-                mlService.loadGroupStudyPartners(session.users)
-                .then(response => {
-                    dispatch(setStudyPartners(response.data))
-                    dispatch(setSize(response.data.length))
-                    dispatch(setPartner(response.data[count]))
-                    dispatch(setReload(false))
-                })
-            }
-           
+        if(session == null) {
+            mlService.loadStudyPartners(uuid_user)
+            .then(response => {
+                dispatch(setStudyPartners(response.data))
+                dispatch(setSize(response.data.length))
+                dispatch(setPartner(response.data[count]))
+                setLoading(false)
+            })
+        } else {
+            mlService.loadGroupStudyPartners(session.users)
+            .then(response => {
+                dispatch(setStudyPartners(response.data))
+                dispatch(setSize(response.data.length))
+                dispatch(setPartner(response.data[count]))
+                setLoading(false)
+            })
         }
     }, [])
 
@@ -96,7 +93,7 @@ import invitationService from '../../services/invitation.service';
         }
     }
 
-    if (!fontsLoaded || reload) {
+    if (!fontsLoaded || isLoading) {
         return <Loading />
     } else {
         return (
