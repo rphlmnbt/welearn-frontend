@@ -44,7 +44,7 @@ export default function SignUpImageUpload({navigation}) {
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
           aspect: [1,1],
-          quality: 1,
+          quality: 0.5,
         }).then((response => {
             if (!response.cancelled) {
                 console.log(response)
