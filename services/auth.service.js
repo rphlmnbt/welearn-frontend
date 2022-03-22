@@ -55,10 +55,12 @@ const signIn = (
 }
 
 const signInMobile = (
-    contact_number) => {
+    contact_number,
+    password) => {
         console.log(AUTH_URL)
     return axios.post(AUTH_URL + '/signinMobile', {
-        contact_number
+        contact_number,
+        password
     })
 }
 

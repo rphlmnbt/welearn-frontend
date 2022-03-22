@@ -29,7 +29,7 @@ function LoginMobile({ navigation }) {
     const [openModal, setOpenModal] = useState(false);
 
     const handleSubmit = (values) => {
-        authService.signInMobile(values.contact_number)
+        authService.signInMobile(values.contact_number, values.password)
         .then(response => {
             if(response.status == 200){
                 console.log(response.data.user)
@@ -56,6 +56,7 @@ function LoginMobile({ navigation }) {
             <Formik
             initialValues={{
                 contact_number:'',
+                password:''
                 }}
             onSubmit={handleSubmit}
          >
@@ -85,7 +86,7 @@ function LoginMobile({ navigation }) {
                             My mobile
                         </Text>
                         <Text style={styles.text2}>
-                            Please enter your valid phone number.
+                            Please enter your valid phone number and password.
                         </Text>
                         <TextInput
                             placeholder="+63XXXXXXXXXX"
@@ -94,6 +95,14 @@ function LoginMobile({ navigation }) {
                             keyboardType="phone-pad"
                             onChangeText={handleChange('contact_number')}
                             onBlur={handleBlur('contact_number')}
+                        />
+                        <TextInput 
+                            placeholder="Password"
+                            secureTextEntry={true} 
+                            style={styles.mobileInput}
+                            autoCapitalize="none"
+                            onChangeText={handleChange('password')}
+                            onBlur={handleBlur('password')}
                         />
                     </View>
                     <View>
@@ -178,7 +187,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding:8,
         width: '100%',
-        marginVertical: 40
+        marginVertical: 10
     },
 
     text: {

@@ -100,9 +100,6 @@ function LoginEmail({navigation}) {
                             <Text style={styles.text}>
                                 Password
                             </Text>
-                            <Text style={styles.text2}>
-                                    Forgot Password?    
-                            </Text>
                         </View>           
                         <TextInput 
                             placeholder="Password"

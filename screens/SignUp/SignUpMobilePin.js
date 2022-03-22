@@ -114,10 +114,6 @@ export default function SignUpMobilePin({navigation}) {
                             Don't tell anyone the code
                         </Text>
 
-                        <Text style={styles.text5}>
-                            RESEND OTP
-                        </Text>
-
                             <TouchableOpacity
                                 style={styles.button}
                                 onPress={handleSubmit}

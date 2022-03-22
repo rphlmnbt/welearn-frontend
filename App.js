@@ -3,7 +3,7 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Header from './components/Header';
+import Header from './components/header';
 import SecondaryLogo from './components/SecondaryLogo';
 import SecondaryLogoBlack from './components/SecondaryLogoBlack';
 import BackWhite from './components/BackWhite';
