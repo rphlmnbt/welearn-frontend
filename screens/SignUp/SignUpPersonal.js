@@ -6,7 +6,7 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Background from '../../assets/images/login-mobile-bg.svg'
 import LogoImg from '../../assets/images/wl-logo2.png'
 import RadioButton from '../../components/RadioButton';
-import Header from '../../components/Header';
+import Header from '../../components/header';
 import { Formik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux'
 import { changeName } from '../../actions/signUpActions';
