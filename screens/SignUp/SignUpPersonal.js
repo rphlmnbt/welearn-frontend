@@ -1,12 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, KeyboardAvoidingView, StatusBar, ScrollView } from 'react-native';
+import React, {} from 'react';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, TextInput, Image, KeyboardAvoidingView } from 'react-native';
 import AppLoading from 'expo-app-loading';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Background from '../../assets/images/login-mobile-bg.svg'
 import LogoImg from '../../assets/images/wl-logo2.png'
-import RadioButton from '../../components/RadioButton';
-import Header from '../../components/header';
 import { Formik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux'
 import { changeName } from '../../actions/signUpActions';
@@ -19,11 +15,7 @@ import {
     Poppins_700Bold
   } from '@expo-google-fonts/poppins'
 
-export default function SignUpPersonal({navigation}) {
-
-    const firstName = useSelector(state => state.firstName)
-    const lastName = useSelector(state => state.lastName)
-   
+export default function SignUpPersonal({navigation}) {   
     let [fontsLoaded] = useFonts({
         Poppins_400Regular,
         Poppins_500Medium,

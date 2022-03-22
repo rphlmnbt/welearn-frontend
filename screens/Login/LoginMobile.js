@@ -29,6 +29,7 @@ function LoginMobile({ navigation }) {
     const [openModal, setOpenModal] = useState(false);
 
     const handleSubmit = (values) => {
+        console.log(values)
         authService.signInMobile(values.contact_number, values.password)
         .then(response => {
             if(response.status == 200){
