@@ -29,13 +29,14 @@ export default function SignUpImageUpload({navigation}) {
     });
 
     const handleSubmit = () => {
-        if (image != null) {
-            navigation.navigate('SignUpSurveyIntro')   
-        } 
-        else {
-            setOpenModal(true)
-        }
-        console.log(image)
+        // if (image != null) {
+        //     navigation.navigate('SignUpSurveyIntro')   
+        // } 
+        // else {
+        //     setOpenModal(true)
+        // }
+        // console.log(image)
+        navigation.navigate('SignUpSurveyIntro')   
        
     }
 
