@@ -15,7 +15,7 @@
     },
     "assetBundlePatterns": [
       "**/*",
-      "assets/images/*"
+      "./assets/images/*"
     ],
     "ios": {
       "supportsTablet": true
