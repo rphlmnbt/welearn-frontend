@@ -47,10 +47,10 @@ export default function SignUpPersonal({navigation}) {
                     <KeyboardAvoidingView style={{flex:1}}>
                         <View style={styles.container}>
                             <View style={styles.half}>
-                            <Background
-                                style={styles.background}
-                                resizeMode="cover" 
-                            />
+                                <Background
+                                    style={styles.background}
+                                    resizeMode="cover" 
+                                />
                             </View>
                             <Image
                                 style={styles.splash}

@@ -6,6 +6,7 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Background from '../../assets/images/survey-bg1.svg'
 import LogoImg from '../../assets/images/wl-logo2.png'
 import RadioButton from '../../components/RadioButton';
+import Loading from '../../components/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
     useFonts,
@@ -27,9 +28,8 @@ export default function SignUpSurveyIntro({navigation}) {
     });
 
     if (!fontsLoaded) {
-        return <AppLoading />;
+        return <Loading />;
     } else {
-        console.log(src)
         return (
             <View style={styles.container}>
                  <View style={styles.half}>
@@ -55,8 +55,8 @@ export default function SignUpSurveyIntro({navigation}) {
                             }}
                         />
                     }
-                    {!src  &&
-                        <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'}/>
+                    {src == null &&
+                        <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'} secondaryColor={'white'}/>
                     }
                 </View>
                 <View style={styles.textContainer}>
