@@ -99,9 +99,6 @@ export default function SignUpBirth({navigation}) {
                             source={LogoImg}
                             resizeMode="contain" 
                         />
-                        <Text style={styles.text2}>
-                                WeLearn{firstName}
-                        </Text>
                         <View style={styles.form}>
                             <View style={styles.formHeader}>
                                 <Text style={styles.text}>

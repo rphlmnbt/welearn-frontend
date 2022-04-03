@@ -18,7 +18,7 @@ const initialState = {
     q5:0,
     q6:0,
     q7:0,
-    src: '',
+    src: null,
     interest: '',
     verificationId: ''
 }

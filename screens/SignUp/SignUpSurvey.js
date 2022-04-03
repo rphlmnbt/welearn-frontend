@@ -165,13 +165,16 @@ export default function SignUpSurvey({navigation}) {
             console.log(response)
             if(response.status == 200) {
                 const uuid_user = response.data.uuid_user
-                const image = {
-                    uri: src,
-                    name: uuid_user + '.jpg',
-                    type: 'image/jpg',
+                console.log(src)
+                if (src != null) {
+                    const image = {
+                        uri: src,
+                        name: uuid_user + '.jpg',
+                        type: 'image/jpg',
+                    }
+                    imageService.uploadImage(image, uuid_user)
+                    userService.uploadImage(uuid_user, image.name)
                 }
-                imageService.uploadImage(image, uuid_user)
-                userService.uploadImage(uuid_user, image.name)
                 navigation.navigate('LoginHome')
             } else  {
                 setDupModal(true)
@@ -281,7 +284,7 @@ const styles = StyleSheet.create({
     },
     half: {
         width: '100%',
-        height: '50%',
+        height: '45%',
         position: 'absolute',
         zIndex: 0,
         elevation: 0,
