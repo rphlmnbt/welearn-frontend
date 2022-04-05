@@ -119,7 +119,7 @@ import invitationService from '../../services/invitation.service';
             </View>
             <View style={styles.userdetails}>
                 <View style={{marginTop: '5%'}}>
-                    <UserInfo profilePic={profilePic} firstName={firstName} lastName={lastName} course={course} yearLevel={yearLevel} interest={interest} isActive={true} />
+                    <UserInfo profilePic={null} firstName={"Anonymous"} lastName={null} course={course} yearLevel={yearLevel} interest={"Secret Interests"} isActive={true} />
                 </View>
                 
                 <Stats stats={stats} />

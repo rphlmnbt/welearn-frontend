@@ -22,6 +22,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { Modal } from 'react-native-paper';
 import UserList from '../../components/UserList';
+import AnonUserList from '../../components/AnonUserList';
 
   export default function UserInvitationDetails({route, navigation}) {
     const {session} = route.params
@@ -98,7 +99,7 @@ import UserList from '../../components/UserList';
                         <Text style={styles.info}>Date: {session.date}</Text>
                         <Text style={styles.info}>Time: {session.time}</Text>
                         <Text style={styles.info}>Room Name: {session.room.room_name}</Text>
-                        <Text style={styles.info}>Invited By: {session.sender_first_name} {session.sender_last_name}</Text>
+                        <Text style={styles.info}>Invited By: Anonymous</Text>
                     </View>
                     <View style={styles.btnContainer}>
                         <TouchableOpacity
@@ -126,7 +127,7 @@ import UserList from '../../components/UserList';
                         <Text style={styles.membersText}>Session Members</Text>
                         {users.map(element => {
                             return  <TouchableOpacity key={element.uuid_user} onPress={() => navigation.navigate('UserPartnerDetails', {uuid_partner: element.uuid_user})}>
-                                <UserList element={element} />
+                                <AnonUserList element={element} />
                             </TouchableOpacity>
                            
                                 
