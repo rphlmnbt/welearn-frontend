@@ -95,7 +95,7 @@ export default function SignUpSurvey({navigation}) {
         }
         if (question == 7 || question == 15 || question == 23 || question == 29 || question == 35 || question == 41 || question == 47) {
             const average = arr => arr.reduce((a,b) => a + b, 0) / arr.length;
-            const avg = average(stats).toFixed(1)
+            const avg = average(stats).toFixed(2)
             if (question == 7) {
                 setTimeManagement(avg)          
             } else if (question == 15) {
