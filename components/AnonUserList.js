@@ -10,17 +10,7 @@ export default function AnonUserList(props) {
 
     return (
         <View style={styles.header} key={props.element.uuid_user}>
-            {props.element.user_detail.src != null &&
-                <Image
-                    style={styles.image}
-                    source={{
-                        uri:  IMG_URL + props.element.uuid_user + '?' + new Date()+ '?' + new Date()
-                    }}
-                />
-            }
-            {props.element.user_detail.src == null &&
-                <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'} style={{marginTop:5}}/>
-            }
+             <FontAwesomeIcon icon={faUserCircle} size={100} color={'#EF4765'} style={{marginTop:5}}/>
             <View key={props.element.uuid_user} style={styles.infoContainer}>
                     <Text style={styles.nameText}>Anonymous</Text>
                     <Text style={styles.infoText}>{props.element.user_detail.course}</Text>

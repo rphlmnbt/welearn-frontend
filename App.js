@@ -5,7 +5,7 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Header from './components/Header';
+import Header from './components/header';
 import SecondaryLogo from './components/SecondaryLogo';
 import SecondaryLogoBlack from './components/SecondaryLogoBlack';
 import BackWhite from './components/BackWhite';
@@ -42,6 +42,7 @@ import UserReviewPartners from './screens/User/UserReviewPartners';
 import UserSessionType from './screens/User/UserSessionType';
 import UserInvitationDetails from './screens/User/UserInvitationDetails';
 import Loading from './components/Loading';
+import UserAnonPartnerDetails from './screens/User/UserAnonPartnerDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -289,6 +290,13 @@ export default function App() {
               name="UserInvitationDetails" 
               component={UserInvitationDetails} 
               options = {{headerTitle: () => null}}
+            />
+             <Stack.Screen 
+              name="UserAnonPartnerDetails" 
+              component={UserAnonPartnerDetails} 
+              options = {{headerTitle: () => null,
+                headerRight: () => <SecondaryLogo />,
+                headerLeft: () => <BackWhite />}}
             />
   
           </Stack.Navigator>

@@ -126,7 +126,7 @@ import AnonUserList from '../../components/AnonUserList';
                     <View style={styles.usersContainer}>
                         <Text style={styles.membersText}>Session Members</Text>
                         {users.map(element => {
-                            return  <TouchableOpacity key={element.uuid_user} onPress={() => navigation.navigate('UserPartnerDetails', {uuid_partner: element.uuid_user})}>
+                            return  <TouchableOpacity key={element.uuid_user} onPress={() => navigation.navigate('UserAnonPartnerDetails', {uuid_partner: element.uuid_user})}>
                                 <AnonUserList element={element} />
                             </TouchableOpacity>
                            
