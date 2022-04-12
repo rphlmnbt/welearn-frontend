@@ -75,7 +75,7 @@ export default function UserSessionType({navigation}) {
     const loadGroupIOS = (session) => {
         console.log(session.session_name)
         showPicker()
-        navigation.navigate('UserFindPartner', {session : selectedSession})
+        navigation.navigate('UserFindPartner', {session : session})
     }
     
     const showPicker = () => {

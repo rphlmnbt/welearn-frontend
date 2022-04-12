@@ -151,18 +151,21 @@ export default function App() {
             <Stack.Screen 
               name="SignUpPersonal" 
               component={SignUpPersonal} 
-              options = {{headerTitle: () => null}}
-            />
+              options = {{headerTitle: () => null,
+              headerLeft: () => <BackBlack />}}
+              />
             <Stack.Screen 
               name="SignUpBirth" 
               component={SignUpBirth} 
-              options = {{headerTitle: () => null}}
-            />
+              options = {{headerTitle: () => null,
+              headerLeft: () => <BackBlack />}}
+              />
             <Stack.Screen 
               name="SignUpEmail" 
               component={SignUpEmail} 
-              options = {{headerTitle: () => null}}
-            />
+              options = {{headerTitle: () => null,
+              headerLeft: () => <BackBlack />}}
+              />
             <Stack.Screen 
               name="SignUpContact" 
               component={SignUpContact} 
@@ -171,13 +174,15 @@ export default function App() {
             <Stack.Screen 
               name="SignUpSchool" 
               component={SignUpSchool} 
-              options = {{headerTitle: () => null}}
-            />
+              options = {{headerTitle: () => null,
+              headerLeft: () => <BackBlack />}}
+              />
             <Stack.Screen 
               name="SignUpCourse" 
               component={SignUpCourse} 
-              options = {{headerTitle: () => null}}
-            />
+              options = {{headerTitle: () => null,
+              headerLeft: () => <BackBlack />}}
+              />
             <Stack.Screen 
               name="SignUpSurveyIntro" 
               component={SignUpSurveyIntro} 
