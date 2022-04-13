@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
         fontFamily: 'Poppins_400Regular',
         color: '#ACACAC',
-        fontSize: 12
+        fontSize: 14
     },
     signupText2: {
         fontFamily: 'Poppins_500Medium',

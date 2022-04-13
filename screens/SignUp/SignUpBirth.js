@@ -108,6 +108,9 @@ export default function SignUpBirth({navigation}) {
                                     Please provide the following information.
                                 </Text>
                             </View>
+                            <Text style={styles.text4}>
+                                Date of Birth
+                            </Text>
                             <TouchableOpacity
                                 style={styles.datePicker}
                                 onPress={showDatepicker}
@@ -193,7 +196,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         width: '100%',
         height: 45,
-        marginTop: 15,
+        marginTop: 8,
         justifyContent: 'center',
         padding:8,
     },
@@ -259,6 +262,13 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_400Regular',
         color: '#505062',
         fontSize: 12
+        
+    },
+
+    text4: {
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#505062',
+        fontSize: 16
         
     },
     formHeader: {

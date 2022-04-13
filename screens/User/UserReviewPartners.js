@@ -107,6 +107,7 @@ import ratingService from '../../services/rating.service';
                 </View>
                 
                 <Stats stats={stats} />
+                <Text style={styles.text4}>Please rate this user: </Text>
                 <View style={styles.btnContainer}>
                     <TouchableOpacity onPress={rateTrue}>
                             <Image
@@ -137,7 +138,8 @@ const styles = StyleSheet.create({
     btnContainer: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 10
     },
     container: { 
         flexDirection: 'column', 
@@ -258,6 +260,7 @@ const styles = StyleSheet.create({
         color: '#5E5E5E',
         fontSize: 16,
         alignItems: 'center',
+        textAlign: 'center'
         
     },
 
