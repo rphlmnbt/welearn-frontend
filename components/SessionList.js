@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     textsection:{
         flexDirection: 'column',   
         justifyContent: 'center',
-        padding: 15,
+        padding: 20,
         paddingLeft: 0,
         marginLeft: 10,
         width: 300,

@@ -8,6 +8,7 @@ import sessionService from '../../services/session.service';
 import roomService from '../../services/room.service';
 import { useSelector, useDispatch } from 'react-redux';
 import { setReload } from '../../actions/partnerActions';
+import schema from '../../schemas/createSession.schema';
 import Moment from 'moment';
 import { 
     useFonts,
@@ -143,8 +144,9 @@ import invitationService from '../../services/invitation.service';
                     session_name:'',
                 }}
                 onSubmit={handleSubmit}
+                validationSchema={schema}
             >
-            {({ handleChange, handleBlur, handleSubmit, values }) =>( 
+            {({ handleChange, handleBlur, handleSubmit, values, errors, touched  }) =>( 
                 <View style={styles.container}>
                     <Modal
                         animationType="slide"
@@ -216,7 +218,11 @@ import invitationService from '../../services/invitation.service';
                             style={styles.textinput1}
                             onChangeText={handleChange('session_name')}
                             onBlur={handleBlur('session_name')}
+                            value={values.session_name}
                         />
+                        {errors.session_name && touched.session_name &&
+                            <Text style={{ fontSize: 11, color: '#EF4765', marginTop:5, marginLeft: 5 }}>{errors.session_name}</Text>
+                        }
                         <Text style={styles.text3}>
                         Room Number
                         </Text>
@@ -476,8 +482,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_600SemiBold',
         color: 'white',
         fontSize: 16,
-        marginBottom: 10
-        
+        marginBottom: 10,
+        alignSelf: 'center'
 
     },
     text3 : {

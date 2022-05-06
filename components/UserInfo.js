@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         fontFamily: 'Poppins_600SemiBold',
         color: '#5E5E5E',
-        fontSize: 18,
+        fontSize: 14,
         
     },
     infoText: {

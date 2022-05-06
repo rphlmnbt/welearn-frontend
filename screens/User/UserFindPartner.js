@@ -21,6 +21,11 @@ import invitationService from '../../services/invitation.service';
     const {session} = route.params
     const dispatch = useDispatch()
     const [isLoading, setLoading] = useState(true);
+
+    // const [studyPartners, setStudyPartners] = useState(null)
+    // const [resultSize, setSize] = useState(0)
+    const [count, setCount] = useState(0)
+
     const uuid_user = useSelector(state => state.user.uuid_user)
 
     let [fontsLoaded] = useFonts({
@@ -41,7 +46,7 @@ import invitationService from '../../services/invitation.service';
     const studyPartners = useSelector(state => state.partner.studyPartners)
     const resultSize = useSelector(state => state.partner.resultSize)
     const uuid_partner = useSelector(state => state.partner.uuid_user)
-    const count = useSelector(state => state.partner.count)
+    // const count = useSelector(state => state.partner.count)
 
     const [dupModal, setDupModal] = useState(false);
 
@@ -52,6 +57,9 @@ import invitationService from '../../services/invitation.service';
                 dispatch(setStudyPartners(response.data))
                 dispatch(setSize(response.data.length))
                 dispatch(setPartner(response.data[count]))
+                // setStudyPartners(response.data)
+                // setSize(response.data.length)
+                // setPartner(response.data[count])
                 setLoading(false)
             })
         } else {
@@ -60,6 +68,9 @@ import invitationService from '../../services/invitation.service';
                 dispatch(setStudyPartners(response.data))
                 dispatch(setSize(response.data.length))
                 dispatch(setPartner(response.data[count]))
+                // setStudyPartners(response.data)
+                // setSize(response.data.length)
+                // setPartner(response.data[count])
                 setLoading(false)
             })
         }
@@ -86,10 +97,11 @@ import invitationService from '../../services/invitation.service';
     const nextPartner = () => {
         if (count == resultSize-1) {
             dispatch(setPartner(studyPartners[0]))
-            dispatch(setCount(0))
+            setCount(0)
+            setPartner
         } else {
             dispatch(setPartner(studyPartners[count+1]))
-            dispatch(setCount(count+1))
+            setCount(count+1)
         }
     }
 
